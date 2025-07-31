@@ -13,7 +13,7 @@ import Profile from "./components/users/Profile"
 
 ///payments 
 import CheckoutForms from "./pages/users/CheckoutForms"
-import PaymentSuccessPage from "./pages/users/PaymentSuccesspage"
+import PaymentSuccessPage from "./pages/users/PaymentSuccessPage"
 
 // Admin Components
 import AdminDashboard from "./components/admin/AdminDashboard"
