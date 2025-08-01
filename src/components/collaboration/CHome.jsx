@@ -21,11 +21,11 @@ const ProjectManagementApp = () => {
     <div className=" bg-gradient-to-b from-gray-900 to-black min-h-screen text-white flex items-center justify-center relative">
       <div  className='  absolute top-5  left-5'>
         <Link   to={'/'} ><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> 
-        <span className="text-3xl font-bold text-white"><span className='text-green-600'>Volt</span>Spot</span></Link>
+        <span className="md:text-3xl  text-2xl font-bold text-white"><span className='text-green-600'>Volt</span>Spot</span></Link>
       </div>
       <section className="py-16 ">
       
-        <div className="container mx-auto px-6 text-center">
+        <div className="container mx-auto md:px-6 px-6 py-10 text-center">
           <div className="uppercase text-green-500 text-sm font-semibold tracking-wide mb-4">
             welcome... your work together 💪
           </div>

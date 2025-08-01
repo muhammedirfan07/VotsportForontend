@@ -6,7 +6,7 @@ import chargingImg1 from "../../assets/cola.jpg"
 import chargingImg2 from "../../assets/charging.jpg"
 import chargingImg3 from "../../assets/faq.webp"
 import { WorldMapDemo } from "../common/WorldMapDemo"
-import { motion } from "framer-motion"
+import { motion,AnimatePresence  } from "framer-motion"
 import img1 from "../../assets/frImg1.png"
 import img2 from "../../assets/frImg2.png"
 import img3 from "../../assets/frImg3.png"
@@ -14,20 +14,31 @@ import img4 from "../../assets/frImg4.png"
 import Header from "./Header"
 import { useNavigate } from "react-router-dom"
 import { ChevronDown, ChevronUp } from "lucide-react"
-import EVChargingLoader from "../../ui/loading/ev-charging-loader" // Corrected import path
-
+import EVChargingLoader from "../../ui/loading/ev-charging-loader" 
 const Landing = () => {
   const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(true) // State to manage loading
-
-  // Use useEffect to simulate a loading process
+  const [isLoading, setIsLoading] = useState(true)
+  
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false) // Set isLoading to false after 3 seconds
-    }, 3000) // Adjust time as needed
+  const handleOffline = () => {
+    setIsLoading(true)
+  }
 
-    return () => clearTimeout(timer) // Clean up the timer
-  }, []) // Empty dependency array means this runs once on mount
+  const handleOnline = () => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+  }
+
+  window.addEventListener("offline", handleOffline)
+  window.addEventListener("online", handleOnline)
+
+  return () => {
+    window.removeEventListener("offline", handleOffline)
+    window.removeEventListener("online", handleOnline)
+  }
+}, [])
+
 
   const [openAccordion, setOpenAccordion] = useState("open")
   const toggleAccordion = (id) => {
@@ -47,12 +58,14 @@ const Landing = () => {
   }
 
   return (
-    <>
-      {isLoading ? (
-        <EVChargingLoader />
-      ) : (
         <>
-          {" "}
+          <AnimatePresence>{isLoading && <EVChargingLoader />}</AnimatePresence>
+      <motion.main
+        className="min-h-screen"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.8 }}
+      >
           {/* Use a React Fragment to wrap multiple elements */}
           <Header />
           {/* ------------------------------------landing page -----------------------------------------------------------------------------*/}
@@ -265,161 +278,160 @@ const Landing = () => {
             </div>
             {/* FAQ Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 md:grid-flow-row-dense font-[DM_Sans] gap-8 px-5 items-center mb-20">
-              {/* Left Side - Image */}
-              <div className="h-100 rounded-2xl overflow-hidden shadow-lg">
-                <img
-                  className="object-cover h-full w-full rounded-2xl transition-transform duration-300 hover:scale-105"
-                  src={chargingImg3 || "/placeholder.svg"}
-                  alt="Charging Station"
-                />
-              </div>
-              {/* Right Side - FAQ */}
-              <div className="h-100 py-6 rounded-2xl">
-                <div className="space-y-4">
-                  {/* FAQ Items */}
-                  <div className="border-b border-gray-800">
-                    <button
-                      className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
-                      onClick={() => toggleAccordion("wifi")}
-                    >
-                      <span>How do I book a charging station?</span>
-                      {openAccordion === "wifi" ? (
-                        <ChevronUp className="flex-shrink-0 text-gray-400" />
-                      ) : (
-                        <ChevronDown className="flex-shrink-0 text-gray-400" />
-                      )}
-                    </button>
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{
-                        height: openAccordion === "wifi" ? "auto" : 0,
-                        opacity: openAccordion === "wifi" ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-4 text-gray-400">
-                        You can book a charging station through our mobile app or website. Simply select your location,
-                        choose an available slot, and confirm your booking.
-                      </div>
-                    </motion.div>
-                  </div>
-                  <div className="border-b border-gray-800">
-                    <button
-                      className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
-                      onClick={() => toggleAccordion("opt")}
-                    >
-                      <span>Why should I opt for a charging station?</span>
-                      {openAccordion === "opt" ? (
-                        <ChevronUp className="flex-shrink-0 text-gray-400" />
-                      ) : (
-                        <ChevronDown className="flex-shrink-0 text-gray-400" />
-                      )}
-                    </button>
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{
-                        height: openAccordion === "opt" ? "auto" : 0,
-                        opacity: openAccordion === "opt" ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-4 text-gray-400">
-                        Charging stations offer faster, safer, and more convenient charging for your electric vehicle.
-                        They provide higher power output than standard outlets, reducing charging time significantly and
-                        extending battery life.
-                      </div>
-                    </motion.div>
-                  </div>
-                  <div className="border-b border-gray-800">
-                    <button
-                      className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
-                      onClick={() => toggleAccordion("availability")}
-                    >
-                      <span>How can I check the availability of charging stations?</span>
-                      {openAccordion === "availability" ? (
-                        <ChevronUp className="flex-shrink-0 text-gray-400" />
-                      ) : (
-                        <ChevronDown className="flex-shrink-0 text-gray-400" />
-                      )}
-                    </button>
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{
-                        height: openAccordion === "availability" ? "auto" : 0,
-                        opacity: openAccordion === "availability" ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-4 text-gray-400">
-                        You can check the availability of charging stations through our mobile app or website. Simply
-                        enter your location to view nearby stations.
-                      </div>
-                    </motion.div>
-                  </div>
-                  <div className="border-b border-gray-800">
-                    <button
-                      className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
-                      onClick={() => toggleAccordion("cancellation")}
-                    >
-                      <span>What payment methods are supported?</span>
-                      {openAccordion === "cancellation" ? (
-                        <ChevronUp className="flex-shrink-0 text-gray-400" />
-                      ) : (
-                        <ChevronDown className="flex-shrink-0 text-gray-400" />
-                      )}
-                    </button>
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{
-                        height: openAccordion === "cancellation" ? "auto" : 0,
-                        opacity: openAccordion === "cancellation" ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-4 text-gray-400">
-                        We support various payment methods, including credit/debit cards, mobile wallets, and UPI
-                        payments. You can also set up automatic payments for a seamless experience.
-                      </div>
-                    </motion.div>
-                  </div>
-                  <div className="border-b border-gray-800">
-                    <button
-                      className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
-                      onClick={() => toggleAccordion("cancellation")}
-                    >
-                      <span>What is the cancellation policy for bookings?</span>
-                      {openAccordion === "cancellation" ? (
-                        <ChevronUp className="flex-shrink-0 text-gray-400" />
-                      ) : (
-                        <ChevronDown className="flex-shrink-0 text-gray-400" />
-                      )}
-                    </button>
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{
-                        height: openAccordion === "cancellation" ? "auto" : 0,
-                        opacity: openAccordion === "cancellation" ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-4 text-gray-400">
-                        You can cancel your booking up to is currenty not possible but the features added soon .... hand
-                        give your back
-                      </div>
-                    </motion.div>
-                  </div>
+            {/* Left Side - Image */}
+            <div className="rounded-2xl overflow-hidden shadow-lg">
+              <img
+                className="object-cover h-full w-full rounded-2xl transition-transform duration-300 hover:scale-105"
+                src="/images/chargingImg3"
+                alt="Charging Station"
+              />
+            </div>
+            {/* Right Side - FAQ */}
+            <div className="py-6 rounded-2xl">
+              <div className="space-y-4">
+                {/* FAQ Items */}
+                <div className="border-b border-gray-800">
+                  <button
+                    className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
+                    onClick={() => toggleAccordion("wifi")}
+                  >
+                    <span>How do I book a charging station?</span>
+                    {openAccordion === "wifi" ? (
+                      <ChevronUp className="flex-shrink-0 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="flex-shrink-0 text-gray-400" />
+                    )}
+                  </button>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{
+                      height: openAccordion === "wifi" ? "auto" : 0,
+                      opacity: openAccordion === "wifi" ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-4 text-gray-400">
+                      You can book a charging station through our mobile app or website. Simply select your location,
+                      choose an available slot, and confirm your booking.
+                    </div>
+                  </motion.div>
+                </div>
+                <div className="border-b border-gray-800">
+                  <button
+                    className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
+                    onClick={() => toggleAccordion("opt")}
+                  >
+                    <span>Why should I opt for a charging station?</span>
+                    {openAccordion === "opt" ? (
+                      <ChevronUp className="flex-shrink-0 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="flex-shrink-0 text-gray-400" />
+                    )}
+                  </button>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{
+                      height: openAccordion === "opt" ? "auto" : 0,
+                      opacity: openAccordion === "opt" ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-4 text-gray-400">
+                      Charging stations offer faster, safer, and more convenient charging for your electric vehicle.
+                      They provide higher power output than standard outlets, reducing charging time significantly and
+                      extending battery life.
+                    </div>
+                  </motion.div>
+                </div>
+                <div className="border-b border-gray-800">
+                  <button
+                    className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
+                    onClick={() => toggleAccordion("availability")}
+                  >
+                    <span>How can I check the availability of charging stations?</span>
+                    {openAccordion === "availability" ? (
+                      <ChevronUp className="flex-shrink-0 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="flex-shrink-0 text-gray-400" />
+                    )}
+                  </button>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{
+                      height: openAccordion === "availability" ? "auto" : 0,
+                      opacity: openAccordion === "availability" ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-4 text-gray-400">
+                      You can check the availability of charging stations through our mobile app or website. Simply
+                      enter your location to view nearby stations.
+                    </div>
+                  </motion.div>
+                </div>
+                <div className="border-b border-gray-800">
+                  <button
+                    className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
+                    onClick={() => toggleAccordion("payment")}
+                  >
+                    <span>What payment methods are supported?</span>
+                    {openAccordion === "payment" ? (
+                      <ChevronUp className="flex-shrink-0 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="flex-shrink-0 text-gray-400" />
+                    )}
+                  </button>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{
+                      height: openAccordion === "payment" ? "auto" : 0,
+                      opacity: openAccordion === "payment" ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-4 text-gray-400">
+                      We support various payment methods, including credit/debit cards, mobile wallets, and UPI
+                      payments. You can also set up automatic payments for a seamless experience.
+                    </div>
+                  </motion.div>
+                </div>
+                <div className="border-b border-gray-800">
+                  <button
+                    className="w-full flex justify-between items-center py-4 text-left text-lg font-medium transition-colors duration-200 hover:text-gray-300"
+                    onClick={() => toggleAccordion("cancellation")}
+                  >
+                    <span>What is the cancellation policy for bookings?</span>
+                    {openAccordion === "cancellation" ? (
+                      <ChevronUp className="flex-shrink-0 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="flex-shrink-0 text-gray-400" />
+                    )}
+                  </button>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{
+                      height: openAccordion === "cancellation" ? "auto" : 0,
+                      opacity: openAccordion === "cancellation" ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-4 text-gray-400">
+                      You can cancel your booking up to is currenty not possible but the features added soon .... hand
+                      give your back
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
+          </div>
           </section>
+          </motion.main>
         </>
-      )}
-    </>
   )
 }
 

@@ -104,9 +104,10 @@ const autho = ({insideRegister}) => {
 
   return (
     <div className="min-h-screen flex items-center font-[DM_Sans] justify-center bg-zinc-950 p-4">
-      <div className='poistion absolute top-5 left-5'>
-            <Link to={'/'}><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}> </i> </Link>
-           </div>
+      <div  className='  absolute top-5  left-5'>
+              <Link   to={'/'} ><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> 
+              <span className="md:text-3xl  text-2xl font-bold text-white"><span className='text-green-600'>Volt</span>Spot</span></Link>
+            </div>
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800  rounded-lg p-6 drop-shadow-lg">
         <h2 className=" font-[Manrope] text-2xl font-bold text-center text-white">Welcome Back</h2>
         <p className="text-zinc-400 text-center mb-6">Sign {insideRegister ? "up" :"in"}  to continue</p>
