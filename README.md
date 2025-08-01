@@ -24,11 +24,12 @@ User: Search and book approved stations
 💳 Stripe Payment Integration for seamless checkout
 
 📊 Auto-incremental Station IDs for easy tracking
-<p>
-  <img alt="Screenshot 2025-03-29 230750" src="https://github.com/user-attachments/assets/bcbd5f29-3cab-4192-b521-93948841813f" width="400"/> 
-  <img  alt="Screenshot 2025-03-29 230842" src="https://github.com/user-attachments/assets/87ba119c-7236-4e81-a6ed-c4bb39f1349a" width="400"/> 
-  <img alt="Screenshot 2025-03-29 230935" src="https://github.com/user-attachments/assets/f1544603-8339-426b-bb7f-af136483ab6a" width="400"/>
-</p>
+
+  <img alt="Screenshot 2025-03-29 230750" src="https://github.com/user-attachments/assets/bcbd5f29-3cab-4192-b521-93948841813f"  height="400" width="500"/> 
+  <img  alt="Screenshot 2025-03-29 230842" src="https://github.com/user-attachments/assets/87ba119c-7236-4e81-a6ed-c4bb39f1349a"  height="400" width="500"/> 
+  <img alt="Screenshot 2025-03-29 230935" src="https://github.com/user-attachments/assets/f1544603-8339-426b-bb7f-af136483ab6a"  height="400" width="500"/>
+<img width="500" height="400" alt="Screenshot 2025-07-28 212713" src="https://github.com/user-attachments/assets/ef764001-e131-4b9f-a3f9-e3e7be4ac364" />
+
 
 
 
