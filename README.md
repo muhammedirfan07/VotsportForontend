@@ -25,7 +25,8 @@ User: Search and book approved stations
 
 📊 Auto-incremental Station IDs for easy tracking
 
-<img width="837" height="534" alt="Screenshot 2025-03-29 230750" src="https://github.com/user-attachments/assets/bcbd5f29-3cab-4192-b521-93948841813f" />
+<img width="437" height="334" alt="Screenshot 2025-03-29 230750" src="https://github.com/user-attachments/assets/bcbd5f29-3cab-4192-b521-93948841813f" /><img width="424" height="319" alt="Screenshot 2025-03-29 230842" src="https://github.com/user-attachments/assets/87ba119c-7236-4e81-a6ed-c4bb39f1349a" />
+
 
 
 
