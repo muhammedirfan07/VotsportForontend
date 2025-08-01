@@ -1,4 +1,5 @@
-⚡ VoltSpot – EV Charging Station Booking System
+## ⚡ VoltSpot – EV Charging Station Booking System
+
 VoltSpot is a full-stack web application that helps users locate, book, and pay for EV (Electric Vehicle) charging stations in real-time. It streamlines the process of finding suitable charging points based on vehicle type, charging speed, location, and availability.
 🧑‍💼 Role-based Access:
 
@@ -8,7 +9,7 @@ Partner: Add stations, get notified in real-time
 
 User: Search and book approved stations
 
-🚀 Features
+## 🚀 Features
 
 🔐 Authentication & Authorization (JWT based)
 
@@ -21,7 +22,14 @@ User: Search and book approved stations
 🗺️ Interactive Google Maps Integration
 
 💳 Stripe Payment Integration for seamless checkout
+
 📊 Auto-incremental Station IDs for easy tracking
+
+<img width="837" height="534" alt="Screenshot 2025-03-29 230750" src="https://github.com/user-attachments/assets/bcbd5f29-3cab-4192-b521-93948841813f" />
+
+
+
+
 
 📱 Fully Responsive UI built with React and Tailwind CSS
 
