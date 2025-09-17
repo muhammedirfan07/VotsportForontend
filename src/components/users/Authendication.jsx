@@ -96,8 +96,9 @@ const autho = ({insideRegister}) => {
 
     } catch (err) {
         console.log("Login Error:", err);
-        // toast.error("Something went wrong! Please try again.", { position: "top-right", theme:"dark" });
+        toast.error("Something went wrong! Please try again.", { position: "top-right", theme:"dark" });
     }
+    setIsLoading(false)
 }
 
 
@@ -193,13 +194,13 @@ const autho = ({insideRegister}) => {
           }
           {
             insideRegister ? <button onClick={handleRegister} className="w-full bg-green-900 hover:bg-green-700 text-white p-3 rounded-lg">
-            {isLoading?(<div className="flex justify-center items-center">
+            { isRegister?(<div className="flex justify-center items-center">
                 <FaSpinner className="animate-spin mr-2" /> 
               </div>):("Register")}
             </button>
             : 
             <button  onClick={handleLogin}  className="w-full bg-green-900 hover:bg-green-700 text-white p-3 rounded-lg">
-           {isRegister?(<div className="flex justify-center items-center">
+           { isLoading?(<div className="flex justify-center items-center">
                 <FaSpinner className="animate-spin mr-2" /> Login...
               </div>):("Loging")}
             </button>

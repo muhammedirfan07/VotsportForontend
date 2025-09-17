@@ -31,10 +31,24 @@ import Notification from "./pages/collaboration/Notification"
 
 // Common Components
 import Footer from "./components/common/Footer"
+import EVChargingLoader from "./ui/loading/ev-charging-loader"
+import { useState,useEffect } from "react"
 
 
 
 function App() {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API/auth check or startup delay
+    const timer = setTimeout(() => setLoading(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <EVChargingLoader />; // Show loader ONLY during loading
+  }
   return (
     <>
     

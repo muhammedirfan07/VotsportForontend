@@ -91,9 +91,10 @@ setIsLoading(false);
 
   return (
     <div className="bg-gradient-to-b from-gray-900 p-3 to-black min-h-screen text-white flex items-center justify-center">
-      <div className='poistion absolute top-5 left-5'>
-      <Link to={'/'}><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> </Link>
-     </div>
+      <div  className='  absolute top-5  left-5'>
+              <Link   to={'/'} ><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> 
+              <span className="md:text-3xl  text-2xl font-bold text-white"><span className='text-green-600'>Volt</span>Spot</span></Link>
+            </div>
    <div className="w-full max-w-md mx-auto p-6  bg-gradient-to-r from-slate-700 to-neutral-900 drop-shadow-lg rounded-lg shadow-md">
       <h2 className="text-2xl  font-bold mb-6 text-center font-[DM_Sans] text-gray-200"> {InsideTheRegister ? "RGISTER PAGE ":" LOGIN PAGE"} </h2>
       

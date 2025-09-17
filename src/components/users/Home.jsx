@@ -328,12 +328,12 @@ const Home = () => {
                       <div class="md:flex">
                         <div class="md:shrink-0">
                           <img
-                            class="h-50 w-full object-cover md:h-[260px] md:w-60"
+                            class="h-50 w-90 object-cover md:h-[260px] md:w-full"
                             src={`${SERVER_URL}/${station?.image}`}
                             alt="image not get"
                           />
                         </div>
-                        <div class="p-4  w-100 ">
+                        <div class="p-4  w-full ">
                           <h1 class="text-xl font-semibold tracking-wide text-white uppercase">
                             {station?.stationName}
                           </h1>
