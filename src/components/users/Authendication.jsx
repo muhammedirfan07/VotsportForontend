@@ -201,7 +201,7 @@ const autho = ({insideRegister}) => {
             : 
             <button  onClick={handleLogin}  className="w-full bg-green-900 hover:bg-green-700 text-white p-3 rounded-lg">
            { isLoading?(<div className="flex justify-center items-center">
-                <FaSpinner className="animate-spin mr-2" /> Login...
+                <FaSpinner className="animate-spin mr-2" /> Login....
               </div>):("Loging")}
             </button>
           }
