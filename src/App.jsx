@@ -8,8 +8,7 @@ import "react-toastify/dist/ReactToastify.css"
 import Landing from "./components/users/Landing"
 import Home from "./components/users/Home"
 import Auth from "./components/users/Authendication"
-import About from "./components/users/About"
-import Profile from "./components/users/Profile"
+import Profile from "./components/users/profile/Profile"
 
 ///payments 
 import CheckoutForms from "./pages/users/CheckoutForms"
@@ -56,7 +55,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/about" element={<About />} />
+    
 
         {/* Authentication Routes */}
         <Route path="/login" element={<Auth />} />
@@ -82,10 +81,7 @@ function App() {
         <Route path="/optVerifyPage" element={<OTPInput />} />
         <Route path="/notifation" element={<Notification />} />
       
-        
-
       </Routes>
-
       {/* Footer */}
       <Footer />
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Star, ArrowBigLeftDash, TrafficCone } from "lucide-react";
+import { Star, ArrowBigLeftDash, TrafficCone,Zap } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   avilableSlotAPI,
@@ -58,10 +58,10 @@ const StationDetailsPage = () => {
       0
     );
     const averageRating = totalRating / reviews.length;
-    setOverallRating(averageRating.toFixed(1)); // Round to 1 decimal place
+    setOverallRating(averageRating.toFixed(1));
   };
 
-  // Callback function to handle fetched reviews
+  // handle fetched reviews
   const handleReviewsFetched = (reviews) => {
     setReviews(reviews);
     calculateOverallRating(reviews);
@@ -149,7 +149,7 @@ const StationDetailsPage = () => {
         setSlotNumber("");
         setDuration(1);
         const paymentResult = await paymentAPI(stationId, userId, price);
-        console.log("Stripe Session ID:", paymentResult.data.id); // Add this line
+        console.log("Stripe Session ID:", paymentResult.data.id);
         if (paymentResult.data.id) {
           navigate(`/stripe-checkout/${paymentResult.data.id}`);
         } else {
@@ -185,8 +185,8 @@ const StationDetailsPage = () => {
       )}
 
       {/* Main Content */}
-      <div className="bg-black min-h-screen text-white p-8">
-        <div className="max-w-6xl mx-auto">
+      <main className="bg-black min-h-screen text-white p-8">
+        <div className="container mx-auto">
           <Link to={"/home"}>
             <div className="flex text-green-700">
               <ArrowBigLeftDash /> Home
@@ -199,13 +199,20 @@ const StationDetailsPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left Column - Images */}
-            <div className="space-y-4">
-              <div className="bg-neutral-900 rounded-xl p-3">
+            <div className="bg-black/60  backdrop-blur-xl border border-gray-800 rounded-3xl overflow-hidden  transition-all duration-300 hover:shadow-lg hover:border-none hover:shadow-green-500/40  ">
+              <div className="relative  min-h-[280px] overflow-hidden">
                 <img
                   src={`${SERVER_URL}/${station?.image}`}
                   alt="Charging Station"
-                  className="w-full h-[350px] rounded-md object-cover"
+                  className="w-full h-[400px]  object-cover transition-transform duration-500 hover:scale-105"
                 />
+                <div className="absolute   inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-green-500" />
+                    <span className="text-sm text-gray-300">Solar Powered</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -253,7 +260,7 @@ const StationDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <div className="text-gray-400">Hours</div>
                     <input
                       type="number"
@@ -315,7 +322,7 @@ const StationDetailsPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 };

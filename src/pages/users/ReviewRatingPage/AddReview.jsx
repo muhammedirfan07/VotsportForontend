@@ -73,11 +73,11 @@ const AddReview = ({stationId}) => {
       </button>
       
       <div
-        className={`absolute right-0 w-80 z-10 transition-all duration-300 ${
+        className={`absolute right-0  w-80 z-10 transition-all duration-300 ${
           isOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
-        <div className="p-4 border border-gray-700 rounded-lg bg-neutral-800 shadow-lg">
+        <div className="p-4 border ms-9 md:ms-0 border-gray-700 rounded-lg bg-neutral-800 shadow-lg">
           <h3 className="text-white font-bold mb-3">Add Your Review</h3>
           
           <form onSubmit={handleSubmit}>

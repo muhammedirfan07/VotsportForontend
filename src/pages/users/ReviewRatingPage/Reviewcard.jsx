@@ -3,7 +3,7 @@ import { Star } from 'lucide-react';
 const Reviewcard = ({review }) => {
   return (
     <>
-        <div className="p-2 shadow bg-neutral-950 rounded-lg pb-4">
+        <div className="p-2 shadow  bg-neutral-950 rounded-lg pb-4">
                   <div className="items-center gap-2 mb-2">
                     <h3 className="font-bold mb-2">{review?.user?.fullName || "Anonymous"}</h3>
                     <div className="flex">

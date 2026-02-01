@@ -10,7 +10,6 @@ const PaymentSuccessPage = () => {
   useEffect(() => {
     if (sessionId) {
       toast.success("Payment successful!", { position: "top-center", theme: "dark" });
-      // You can also fetch additional details using the sessionId if needed
     } else {
       navigate('/home');
     }

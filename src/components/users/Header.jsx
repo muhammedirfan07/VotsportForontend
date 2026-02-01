@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown ,LogOut,User} from "lucide-react";
 import {  useNavigate } from 'react-router-dom';
 import { Button, Link } from "react-scroll";
 
@@ -45,15 +45,15 @@ const Header = ({isloging}) => {
             </>
           ) : (
             <div className="relative">
-              <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center bg-emerald-600 text-white px-4 py-1 rounded-lg font-semibold hover:bg-green-600 transition">
-                Profile <ChevronDown className="ml-2" />
+              <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center bg-black/15 border border-neutral-900 text-white px-4 py-1 rounded-md font-semibold hover:bg-neutral-800/20 transition">
+                Profile  <ChevronDown size={16} className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} /> 
               </button>
               {dropdownOpen && (
-                <div className="absolute top-8 right-0 mt-2 w-48 bg bg-neutral-800 shadow-xl  rounded-xl">
-                  <ul>
-                    <li><button onClick={()=>{navigate("/profile")}}  className="block w-full px-4 py-2 text-center hover:rounded-t-xl hover:text-gray-700 hover:bg-gray-300">Profile</button></li>
-                    <li><button onClick={handleLogout} className="block w-full text-center px-4 py-2  hover:text-gray-700 hover:rounded-b-xl hover:bg-gray-300">Logout</button></li>
-                  </ul>
+                <div className="absolute top-full right-0 mt-2 w-64 bg-gray-900 backdrop-blur-sm rounded-lg shadow-xl border border-gray-800 overflow-hidden z-50">
+                    <button onClick={()=>{navigate("/profile")}} className=" w-full flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-gray-700/50 transition-colors border-b border-gray-700"><User/> <span   className="font-normal">  Profile</span></button>
+                    <button onClick={handleLogout} className=" w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:text-gray-400  hover:bg-gray-700/50 transition-all border-b border-gray-700"><LogOut/> <span   className="font-normal">  Profile</span></button>
+                    
+
                 </div>
               )}
             </div>
