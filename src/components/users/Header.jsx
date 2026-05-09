@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown ,LogOut,User} from "lucide-react";
 import {  useNavigate } from 'react-router-dom';
 import { Button, Link } from "react-scroll";
+import { cn } from "../../util/lib/utils";
 
 const Header = ({isloging}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate =useNavigate()
-
-  // useEffect(() => {
-  //   setIsLoggedIn(!!sessionStorage.getItem("token"));
-  // }, []);
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -18,14 +15,17 @@ const Header = ({isloging}) => {
   };
 
   return (
-    <nav className="w-full z-40 font-[DM_Sans] backdrop-blur-lg text-white fixed top-0 left-0 font-manrope">
-      <div className="mx-auto px-10 py-4 flex items-center justify-between">
+    <header className=" z-50 font-[DM_Sans] fixed left-1/2 top-5 w-[min(1200px,calc(100%-2rem))] -translate-x-1/2 font-manrope">
+      <nav className={cn(
+          "nav-pill flex items-center justify-between px-4 py-2 pl-5 transition-[border-radius] duration-300",
+          open ? "rounded-3xl" : "rounded-full",
+        )}>
         
         {/* Logo */}
         <Link to="/">
-          <h3 className="text-xl text-green-100 font-bold">
-          <i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> 
-            <span className="text-2xl  text-green-600 font-michroma">Volt</span>Spot
+          <h3 className=" flex text-xl gap-2 text-green-100 font-bold">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xl" style={{color: "#f0efef"}}></i> </span>
+           <p> <span className="text-2xl  text-green-600 font-michroma">Volt</span>Spot</p>
           </h3>
         </Link>
 
@@ -33,29 +33,20 @@ const Header = ({isloging}) => {
         <div className="hidden md:flex items-center space-x-6 text-md font-bold">
           {!isloging ? (
             <>
-              <Link to="home" smooth={true} duration={500} className="hover:text-green-400">Home</Link>
-              <Link to="about" smooth={true} duration={500} className="hover:text-green-300">About</Link>
-              <button  onClick={()=>{navigate("/homecolab")}} smooth={true} duration={500} className="hover:text-green-300">Patners</button>
-              <Link to="features" smooth={true} duration={500} className="hover:text-green-300">features</Link>
-              <Link to="support" smooth={true} duration={500} className="hover:text-green-300">support</Link>
-                <button onClick={()=>{navigate("/login")}} className="bg-emerald-600 text-white px-4 py-1 rounded-lg font-semibold hover:bg-green-600 transition w-25">
-                  Sign Up
-                </button>
-             
+                <Link to="home" smooth={true} duration={500} className= "text-sm text-gray-400 cursor-pointer hover:text-green-400">Home</Link>
+                <Link to="about" smooth={true} duration={500} className= "text-sm text-gray-400 cursor-pointer hover:text-green-300">About</Link>
+                <button  onClick={()=>{navigate("/homecolab")}} smooth={true} duration={500} className="text-sm cursor-pointer text-gray-400 hover:text-green-300">Patners</button>
+                <Link to="features" smooth={true} duration={500} className="text-sm text-gray-400 cursor-pointer hover:text-green-300">features</Link>
+                <Link to="support" smooth={true} duration={500} className=" text-sm text-gray-400 cursor-pointer hover:text-green-300">support</Link>   
+                <button onClick={()=>{navigate("/login")}} className=" bg-green-500 cursor-pointer  text-gray-900 px-4 py-1 rounded-2xl font-semibold hover:bg-green-600 transition ease-in w-25">
+                    Sign Up
+                  </button>
             </>
+            
           ) : (
             <div className="relative">
-              <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center bg-black/15 border border-neutral-900 text-white px-4 py-1 rounded-md font-semibold hover:bg-neutral-800/20 transition">
-                Profile  <ChevronDown size={16} className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} /> 
-              </button>
-              {dropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-64 bg-gray-900 backdrop-blur-sm rounded-lg shadow-xl border border-gray-800 overflow-hidden z-50">
-                    <button onClick={()=>{navigate("/profile")}} className=" w-full flex items-center gap-3 px-4 py-3 text-gray-200 hover:bg-gray-700/50 transition-colors border-b border-gray-700"><User/> <span   className="font-normal">  Profile</span></button>
-                    <button onClick={handleLogout} className=" w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:text-gray-400  hover:bg-gray-700/50 transition-all border-b border-gray-700"><LogOut/> <span   className="font-normal">  Profile</span></button>
-                    
-
-                </div>
-              )}
+               <button onClick={()=>{navigate("/profile")}} className=" w-full flex rounded-full bg-[hsl(143,71%,28%)] items-center gap-1 px-3 py-2  hover:bg-green-700/50 transition-colors cursor-pointer text-gray-300 "><User className="w-5 h-5"/> <span   className="text-md font-normal">  Profile</span></button>
+              
             </div>
           )}
         </div>
@@ -64,20 +55,23 @@ const Header = ({isloging}) => {
         <button className="md:hidden text-white focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
-      </div>
+      </nav>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-black py-4 px-6 text-lg">
-          <ul className="flex flex-col space-y-4">
+        <div  className={cn(
+          "nav-pill mt-2 overflow-hidden rounded-3xl transition-all duration-300 md:hidden",
+          open ? "max-h-[28rem] opacity-100" : "pointer-events-none max-h-0 border-transparent opacity-0 shadow-none",
+        )}>
+          <ul className="flex flex-col gap-1 p-3">
             {!isloging ? (
               <>
-              <Link to="home" smooth={true} duration={500} className="hover:text-green-400">Home</Link>
-              <Link to="about" smooth={true} duration={500} className="hover:text-green-300">About</Link>
-              <button onClick={()=>{navigate("/homecolab")}}smooth={true} duration={500} className="hover:text-green-300">Patners</button>
-              <Link to="features" smooth={true} duration={500} className="hover:text-green-300">features</Link>
-              <Link to="support" smooth={true} duration={500} className="hover:text-green-300">support</Link>
-                  <button onClick={()=>{navigate("/login")}} className="w-full bg-emerald-600 text-white py-2 font-semibold rounded-lg hover:bg-green-600 transition">
+              <Link to="home" smooth={true} duration={500} className=" hover:bg-neutral-800 text-sm rounded-xl px-2 py-2 cursor-pointer text-gray-400 hover:text-gray-200 transition-all ease-in-out">Home</Link>
+              <Link to="about" smooth={true} duration={500} className=" hover:bg-neutral-800 text-sm rounded-xl px-2 py-2 cursor-pointer text-gray-400 hover:text-gray-200 transition-all ease-in-out">About</Link>
+              <button onClick={()=>{navigate("/homecolab")}}smooth={true} duration={500} className="hover:bg-neutral-800 cursor-pointer text-sm rounded-xl px-2 py-2 text-gray-400 hover:text-gray-200 transition-all ease-in-out">Patners</button>
+              <Link to="features" smooth={true} duration={500} className="hover:bg-neutral-800  cursor-pointer text-sm rounded-xl px-2 py-2 text-gray-400 hover:text-gray-200 transition-all ease-in-out ">features</Link>
+              <Link to="support" smooth={true} duration={500} className=" hover:bg-neutral-800 cursor-pointer text-sm rounded-xl px-2 py-2 text-gray-400 hover:text-gray-200 transition-all ease-in-out">support</Link>
+                  <button onClick={()=>{navigate("/login")}} className="w-full bg-green-600 text-gray-900 py-2 cursor-pointer font-semibold rounded-2xl hover:bg-green-500 transition">
                     Sign Up
                   </button>
               </>
@@ -90,7 +84,7 @@ const Header = ({isloging}) => {
           </ul>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

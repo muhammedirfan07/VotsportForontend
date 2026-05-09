@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import landingImg from "../../assets/bgImg2.jpg"
+import landingImg from "../../assets/bgImg1.jpg"
 import { motion, AnimatePresence } from "framer-motion"
 import Header from "./Header"
 import { useNavigate } from "react-router-dom"
@@ -72,7 +72,7 @@ const Landing = () => {
         >
           {/* Left-Side Gradient Overlay (40% Opacity) */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/100 to-transparent  " />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/100 to-transparent  " />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent  " />
           {/* Content Section */}
           <div className="relative text-white max-w-3xl">
             {/* Added relative to appear above overlay */}
@@ -96,7 +96,7 @@ const Landing = () => {
             <button
               onClick={GoToHomePage}
               size="lg"
-              className="font-[DM_Sans] font-medium px-8 py-4 bg-gradient-to-r from-green-600 to-gray-900 text-white rounded-md hover:from-gray-900 hover:to-green-500 mb-6"
+              className="font-[DM_Sans] font-medium px-8 py-4 bg-gradient-to-r from-green-600 to-gray-900 text-white rounded-2xl hover:from-gray-900 hover:to-green-500 mb-6 transition-all ease-in-out cursor-pointer"
             >
               {!tokenChecking ? <span className="flex items-center gap-2">
                 <MapPin className="h-5 w-5" />

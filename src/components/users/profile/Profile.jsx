@@ -71,7 +71,7 @@ const Profile = () => {
     <div className="min-h-screen bg-black">
       <div className="flex justify-end p-3">
         <button
-         onClick={()=>{navigate('/home')}}
+          onClick={() => { navigate('/home') }}
           className="flex items-center gap-2 text-green-500 font-semibold
                hover:text-green-400 transition-all duration-300 
                group"
@@ -289,7 +289,7 @@ const Profile = () => {
                 </div>
               </div>
             )}
-           
+
 
             {/* BOOKINGS */}
             {activeTab === 'bookings' && <BookingHistory />}

@@ -13,10 +13,7 @@ const AddReview = ({stationId}) => {
   const toggleCollapse = () => {
     setIsOpen(!isOpen);
   };
-
-
-  
-    const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
     console.log( "Inside add ratind reviews page...");
     
@@ -39,9 +36,7 @@ const AddReview = ({stationId}) => {
         Authorization: `Bearer ${token}`,
       };
       
-  
       const reviewData = { rating, review, stationId };
-  
       try {
         const result = await addReviewAPI(reviewData,reqHeaders);
         if (result.status === 200) {
@@ -62,7 +57,6 @@ const AddReview = ({stationId}) => {
       }
     };
   
-
   return (
     <div className="relative">
       <button 
@@ -77,7 +71,7 @@ const AddReview = ({stationId}) => {
           isOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
-        <div className="p-4 border ms-9 md:ms-0 border-gray-700 rounded-lg bg-neutral-800 shadow-lg">
+        <div className="p-4 border ms-9 md:ms-0 border-gray-700 rounded-lg bg-neutral-900 shadow-lg">
           <h3 className="text-white font-bold mb-3">Add Your Review</h3>
           
           <form onSubmit={handleSubmit}>

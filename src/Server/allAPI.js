@@ -125,8 +125,8 @@ export const singleUserDetailsAPI = async(userId,reqHeader)=>{
     return await commonAPI("POST",`${SERVER_URL}/user/booking`,reqBody,reqHeader)
  }
  //avilable sloat viewing
- export const avilableSlotAPI =async(stationId,startTime,duration,reqHeader)=>{
-    return await commonAPI("GET",`${SERVER_URL}user/slots?stationId=${stationId}&startTime=${startTime}&duration=${duration}`,{},reqHeader)
+ export const avilableSlotAPI =async(stationId,startTime,slotNumber,duration,reqHeader)=>{
+    return await commonAPI("GET",`${SERVER_URL}user/slots?stationId=${stationId}&startTime=${startTime}&duration=${duration}&slotNumber=${slotNumber}`,{},reqHeader)
  }
  //filer the stations 
  export const filterStationAPI =async(city,state,chargingType,vehicleType,reqHeader)=>{

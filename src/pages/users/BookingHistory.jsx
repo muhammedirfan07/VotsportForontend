@@ -172,7 +172,7 @@ const BookingHistory = () => {
 
       <div className="p-6 ">
         <div className={`space-y-6 pr-2 ${enableScroll
-            ? "max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900"
+            ? "max-h-[500px] overflow-y-auto custom-scroll"
             : ""
           }`}>
           {filteredBookings.length > 0 ? (
@@ -184,7 +184,7 @@ const BookingHistory = () => {
               return (
                 <div
                   key={booking._id}
-                  className="bg-neutral-900/50 rounded-xl border border-neutral-700 overflow-hidden hover:border-green-600/30 shadow transition-all ease-in-out"
+                  className="bg-neutral-900/50 rounded-xl border border-neutral-700 overflow-hidden hover:border-green-600/30 shadow transition-all ease-in-out "
                 >
                   <div
                     onClick={() => toggleBookingDetails(booking._id)}

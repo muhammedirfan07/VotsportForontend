@@ -39,7 +39,7 @@ const ReviewsAndRatingPage = ({ stationId ,onReviewsFetched  }) => {
 
   return (
     <div>
-      <div className="space-y-4 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-black">
+      <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scroll">
         {loading ? (
           <p className="text-gray-400">Loading reviews...</p>
         ) : reviews.length > 0 ? (

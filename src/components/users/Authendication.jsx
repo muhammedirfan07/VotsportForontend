@@ -1,222 +1,588 @@
-import React, {  useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {  loginAPI, registerAPI } from '../../Server/allAPI';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Eye,
+  EyeOff,
+  Zap,
+  ArrowRight,
+  Loader2,
+} from "lucide-react";
+import evVideo from "../../assets/evVideo.mp4"
+import { loginAPI, registerAPI } from "../../Server/allAPI";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaSpinner } from "react-icons/fa"; // Import spinner icon
 
+const Autho = ({ insideRegister }) => {
+  const navigate = useNavigate();
 
+  const [showPwd, setShowPwd] = useState(false);
+  const [showConfirmPwd, setShowConfirmPwd] =
+    useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
 
-const autho = ({insideRegister}) => {
-   const [isLoading,setIsLoading]= useState(false)
-   const [isRegister,setIsRegister]= useState(false)
-    const navigate =useNavigate()
-    const [inputData, setInputData] = useState({
-      fullName:"",
-      email:"",
-      password:"",
-      confirmPassword:""
-    });
-    console.log(inputData);
+  const [inputData, setInputData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-   
-  
-  const handleRegister= async(e)=>{
-    e.preventDefault()
-    console.log("registre Button clicked");
-    if (inputData.fullName && inputData.email && inputData.password && inputData.confirmPassword) {  
-      try {
-        setIsRegister(true)
-          const result = await registerAPI(inputData);
-          console.log(result);
+  // ---------------- register ----------------
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-          if (result.status === 200) {
-              toast.success(result.data.message,{position:"top-right" ,theme:"dark"});
-              navigate('/login');
-              setInputData({
-                  fullName: "",
-                  email: "",
-                  password: "",
-                  confirmPassword: ""
-              });
-          } else if (result.status === 400 || result.status === 406) {
-            toast.warning(result.response.data.error,{position:"top-right",theme:"dark"});  // incrrect pass amd already exist
-          } else {
-            toast.warning("Something went wrong. Please try again!", { position: "top-right",theme:"dark" });
-          }
-      } catch (err) {
-          console.log("Error:", err);
+    const {
+      fullName,
+      email,
+      password,
+      confirmPassword,
+    } = inputData;
+
+    if (
+      !fullName ||
+      !email ||
+      !password ||
+      !confirmPassword
+    ) {
+      toast.warning("Please fill all fields", {
+        position: "top-right",
+        theme: "dark",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match", {
+        position: "top-right",
+        theme: "dark",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const result = await registerAPI(inputData);
+
+      if (result.status === 200) {
+        toast.success(result.data.message, {
+          position: "top-right",
+          theme: "dark",
+        });
+
+        setInputData({
+          fullName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+
+        navigate("/login");
+      } else {
+        toast.warning(result.response.data.error, {
+          position: "top-right",
+          theme: "dark",
+        });
       }
-  }else{
-    toast.dark("Please fill out the form 😊", { position: "top-right" });
-    
-  }
- 
+    } catch (err) {
+      console.log(err);
 
-  console.log("Form Data:", inputData);
-}
- 
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        theme: "dark",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  // ---------------- login ----------------
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login button clicked");
 
-    if (!inputData.email || !inputData.password) {
-        toast.info("Please enter your email and password!", { position: "top-right" ,theme:"dark" });
-        return;
-    }
-      setIsLoading(true)
-    try {
-        const result = await loginAPI(inputData);
-        console.log("Login Response:", result);
+    const { email, password } = inputData;
 
-        if (result.status === 200) {
-            const { user, token } = result.data;
-
-            // Store user & token in session storage
-            sessionStorage.setItem("user", JSON.stringify(user));
-            sessionStorage.setItem("token", token);
-
-            toast.success(`Welcome, ! 🎉`, { position:"top-right", theme:"dark" });
-
-            // Redirect based on role
-            if (user.role === "admin") {
-                navigate("/AdminDashboard");
-            } else {
-                navigate("/");
-            }
-
-            // Clear input fields
-            setInputData({ email: "", password: "" });
-
-        } else if (result.status === 406  || result.status ===400 ) {
-            toast.warning(result.response.data.message, { position: "top-right" ,theme:"dark"});
+    if (!email || !password) {
+      toast.warning(
+        "Please enter email and password",
+        {
+          position: "top-right",
+          theme: "dark",
         }
-
-    } catch (err) {
-        console.log("Login Error:", err);
-        toast.error("Something went wrong! Please try again.", { position: "top-right", theme:"dark" });
+      );
+      return;
     }
-    setIsLoading(false)
-}
 
+    try {
+      setIsLoading(true);
 
+      const result = await loginAPI(inputData);
+
+      if (result.status === 200) {
+        const { user, token } = result.data;
+
+        sessionStorage.setItem(
+          "user",
+          JSON.stringify(user)
+        );
+
+        sessionStorage.setItem("token", token);
+
+        toast.success(
+          `Welcome ${user?.fullName || ""} 🎉`,
+          {
+            position: "top-right",
+            theme: "dark",
+          }
+        );
+
+        setInputData({
+          fullName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+
+        if (user.role === "admin") {
+          navigate("/AdminDashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        toast.warning(result.response.data.message, {
+          position: "top-right",
+          theme: "dark",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+
+      toast.error("Login failed. Try again!", {
+        position: "top-right",
+        theme: "dark",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center font-[DM_Sans] justify-center bg-zinc-950 p-4">
-      <div  className='  absolute top-5  left-5'>
-              <Link   to={'/'} ><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> 
-              <span className="md:text-3xl  text-2xl font-bold text-white"><span className='text-green-600'>Volt</span>Spot</span></Link>
-            </div>
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800  rounded-lg p-6 drop-shadow-lg">
-        <h2 className=" font-[Manrope] text-2xl font-bold text-center text-white">Welcome Back</h2>
-        <p className="text-zinc-400 text-center mb-6">Sign {insideRegister ? "up" :"in"}  to continue</p>
-        <form  className="space-y-4">
-          {
-              insideRegister &&<div className="relative">
-              <input
-                id="fullName"
-                type="text"
-                value={inputData.fullName}
-                onChange={e=>setInputData({...inputData,fullName:e.target.value})}
-                className=" w-full bg-zinc-800 border border-zinc-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
-              />
-              <label
-                htmlFor="fullName"
-                className={`absolute left-3 transition-all text-sm ${inputData.fullName ? "top-1 text-xs text-gray-300" : "top-3 text-base text-zinc-500"}`}
-              >
-                Full Name
-              </label>
-            </div>
-          }
-           {/* Email Address */}
-          <div className="relative">
-            <input
-              type="email"
-               autocomplete="email"
-              value={inputData.email}
-              onChange={e=>setInputData({...inputData,email:e.target.value})}
-              className=" w-full bg-zinc-800 border border-zinc-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
-            />
-            <label
-              className={`absolute left-3 transition-all text-sm ${inputData.email ? "top-1 text-xs text-gray-300" : "top-3 text-base text-zinc-500"}`}
-            >
-              Email Address
-            </label>
-          </div>
-          {/* Password */}
-          <div className="relative">
-            <input
-              id="password"
-              type="password"
-              name="authoEmail"
-              autocomplete="new-password"
-              value={inputData.password}
-              onChange={e=>setInputData({...inputData,password:e.target.value})}
-              className=" w-full bg-zinc-800 border border-zinc-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
-            />
-            <label
-              htmlFor="password"
-              className={`absolute left-3 transition-all text-sm ${inputData.password ? "top-1 text-xs text-gray-300" : "top-3 text-base text-zinc-500"}`}
-            >
-              Password
-            </label>
-          </div>
-          {
-            insideRegister && 
-            <div className="relative">
-              <input
-                id="confirmPassword"
-                type="password"
-                name="authoPassword"
-                autocomplete="new-password"
-                value={inputData.confirmPassword}
-                onChange={e=>setInputData({...inputData,confirmPassword:e.target.value})}
-                className="peer w-full bg-zinc-800 border border-zinc-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
-              />
-              <label
-                htmlFor="confirmPassword"
-                className={`absolute left-3 transition-all text-sm ${inputData.confirmPassword ? "top-1 text-xs text-gray-300" : "top-3 text-base text-zinc-500"}`}
-              >
-                Confirm Password
-              </label>
-            </div>
-          }
-          {
-            !insideRegister &&<div className="flex items-center justify-between text-sm text-zinc-400">
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" className="w-4 h-4 bg-zinc-800 border-zinc-700" />
-              <span>Remember me</span>
-            </label>
-            {/* <a href="#" className="text-indigo-500 hover:underline">Forgot password?</a> */}
-          </div>
-          }
-          {
-            insideRegister ? <button onClick={handleRegister} className="w-full bg-green-900 hover:bg-green-700 text-white p-3 rounded-lg">
-            { isRegister?(<div className="flex justify-center items-center">
-                <FaSpinner className="animate-spin mr-2" /> 
-              </div>):("Register")}
-            </button>
-            : 
-            <button  onClick={handleLogin}  className="w-full bg-green-900 hover:bg-green-700 text-white p-3 rounded-lg">
-           { isLoading?(<div className="flex justify-center items-center">
-                <FaSpinner className="animate-spin mr-2" /> Login....
-              </div>):("Loging")}
-            </button>
-          }
-         
-          
-        </form>
-        <div className="mt-6 text-center text-sm text-zinc-400">
-          {
-            insideRegister?<p>Already have an account? <Link className=' text-indigo-500' to={'/login'}>Sign in here</Link></p> :<p  > Not a member?<Link className=' text-indigo-500' to={'/register'}> Create an account</Link></p> 
-          }
-        </div>
-       
+    <main
+      className="min-h-screen w-full flex items-center justify-center p-4 md:p-20 relatve overflow-hidden"
+      style={{
+        background: "oklch(0.14 0.01 260)",
+        color: "oklch(0.98 0.005 260)",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
+
+      {/* brand */}
+      <div className="absolute hidden md:flex top-6 left-6 z-20">
+        <Link to="/">
+          <h3 className=" flex text-3xl gap-1 p text-green-100 font-bold">
+            <span className="flex h-10  w-10 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i> </span>
+            <p> <span className="text-3xl   text-green-600 font-michroma">Volt</span>Spot</p>
+          </h3>
+        </Link>
       </div>
-    </div>
+
+      {/* auth card */}
+      <div
+        className="w-full max-w-6xl overflow-hidden rounded-3xl grid grid-cols-1 lg:grid-cols-2"
+        style={{
+          background: "oklch(0.18 0.012 260)",
+          border:
+            "1px solid oklch(0.28 0.012 260)",
+          boxShadow:
+            "0 25px 60px -12px rgba(0,0,0,0.6)",
+        }}
+      >
+        {/* left section */}
+        <div className="relative min-h-[280px] lg:min-h-[640px] p-2 md:p-8 overflow-hidden">
+          <video
+            src={evVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+
+          {/* overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top right, oklch(0.14 0.01 260 / 0.9), oklch(0.14 0.01 260 / 0.4), transparent)",
+            }}
+          />
+
+          <div className="relative z-10 flex h-full flex-col justify-between p-4 md:p-6 sm:p-10">
+            {/* logo */}
+            <div className=" flex   items-center gap-2">
+              <Link to="/">
+                <h3 className=" flex md:hidden text-xl gap-2 text-green-100 font-bold">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i> </span>
+                  <p> <span className="text-2xl  text-green-600 font-michroma">Volt</span>Spot</p>
+                </h3>
+              </Link>
+            </div>
+             <div className="hidden md:flex w-40  h-8"> </div>
+
+            {/* content */}
+            <div className="max-w-sm space-y-3">
+
+              <div
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs backdrop-blur"
+                style={{
+                  border: "1px solid oklch(0.28 0.012 260 / 0.6)",
+                  backgroundColor: "oklch(0.14 0.01 260 / 0.4)",
+                  color: "oklch(0.98 0.005 260)",
+                }}
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full animate-pulse"
+                  style={{
+                    backgroundColor: "oklch(0.7 0.22 145)",
+                  }}
+                />
+
+                Live charging network
+              </div>
+
+              <h1
+                className="text-3xl sm:text-4xl font-semibold tracking-tight leading-tight"
+                style={{
+                  color: "oklch(0.98 0.005 260)",
+                }}
+              >
+                Power your drive.
+                <br />
+                Anywhere, anytime.
+              </h1>
+              <p
+                className=" text-xs md:text-sm"
+                style={{
+                  color: "oklch(0.65 0.015 260)",
+                }}
+              >
+                Manage your EV charging sessions, track energy use, and pay seamlessly.
+              </p>
+
+            </div>
+          </div>
+        </div>
+        {/* right section */}
+        <div
+          className="flex items-center justify-center p-4 md:p-6 "
+          style={{
+            background: "oklch(0.18 0.012 260)",
+          }}
+        >
+          <div className="w-full max-w-md space-y-7">
+            {/* heading */}
+            <div className="space-y-2">
+              <h2
+               className="text-2xl md:text-4xl"
+                style={{
+                  fontWeight: 600,
+                  letterSpacing: "-0.03em",
+                  color: "oklch(0.98 0.005 260)",
+                }}
+              >
+                {insideRegister
+                  ? "Create account"
+                  : "Welcome back"}
+              </h2>
+
+              <p
+               className=" text-xs md:text-lg"
+                style={{
+                  color: "oklch(0.65 0.015 260)",
+                  fontSize: "0.875rem",
+                }}
+              >
+                {insideRegister
+                  ? "Create your VoltSpot account to continue."
+                  : "Sign in to continue your EV journey."}
+              </p>
+            </div>
+
+            {/* form */}
+            <form
+              className="space-y-4"
+              onSubmit={
+                insideRegister
+                  ? handleRegister
+                  : handleLogin
+              }
+            >
+              {/* full name */}
+              {insideRegister && (
+                <div className="space-y-2">
+                  <label
+                    style={{
+                      color:
+                        "oklch(0.65 0.015 260)",
+                      fontSize: "0.875rem",
+                    }}
+                  >
+                    Full Name
+                  </label>
+
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={inputData.fullName}
+                    onChange={(e) =>
+                      setInputData({
+                        ...inputData,
+                        fullName: e.target.value,
+                      })
+                    }
+                    className="h-12 w-full rounded-2xl px-4 text-sm transition focus:outline-none"
+                    style={{
+                      background:
+                        "oklch(0.24 0.012 260 / 0.5)",
+                      border:
+                        "1px solid oklch(0.28 0.012 260)",
+                      color:
+                        "oklch(0.98 0.005 260)",
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* email */}
+              <div className="space-y-2">
+                <label
+                  style={{
+                    color:
+                      "oklch(0.65 0.015 260)",
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={inputData.email}
+                  onChange={(e) =>
+                    setInputData({
+                      ...inputData,
+                      email: e.target.value,
+                    })
+                  }
+                  className="h-12 w-full rounded-2xl px-4 text-sm transition focus:outline-none"
+                  style={{
+                    background:
+                      "oklch(0.24 0.012 260 / 0.5)",
+                    border:
+                      "1px solid oklch(0.28 0.012 260)",
+                    color:
+                      "oklch(0.98 0.005 260)",
+                  }}
+                />
+              </div>
+
+              {/* password */}
+              <div className="space-y-2">
+                <label
+                  style={{
+                    color:
+                      "oklch(0.65 0.015 260)",
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  Password
+                </label>
+
+                <div className="relative">
+                  <input
+                    type={
+                      showPwd ? "text" : "password"
+                    }
+                    placeholder="Enter password"
+                    value={inputData.password}
+                    onChange={(e) =>
+                      setInputData({
+                        ...inputData,
+                        password: e.target.value,
+                      })
+                    }
+                    className="h-12 w-full rounded-2xl px-4 pr-12 text-sm transition focus:outline-none"
+                    style={{
+                      background:
+                        "oklch(0.24 0.012 260 / 0.5)",
+                      border:
+                        "1px solid oklch(0.28 0.012 260)",
+                      color:
+                        "oklch(0.98 0.005 260)",
+                    }}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPwd(!showPwd)
+                    }
+                    className="absolute right-4 top-1/2 -translate-y-1/2"
+                    style={{
+                      color:
+                        "oklch(0.65 0.015 260)",
+                    }}
+                  >
+                    {showPwd ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* confirm password */}
+              {insideRegister && (
+                <div className="space-y-2">
+                  <label
+                    className="text-sm text-[oklch(0.65_0.015_260)]"
+                  >
+                    Confirm Password
+                  </label>
+
+                  <div className="relative">
+                    <input
+                      type={
+                        showConfirmPwd
+                          ? "text"
+                          : "password"
+                      }
+                      placeholder="Confirm password"
+                      value={
+                        inputData.confirmPassword
+                      }
+                      onChange={(e) =>
+                        setInputData({
+                          ...inputData,
+                          confirmPassword:
+                            e.target.value,
+                        })
+                      }
+                      className="h-12 w-full rounded-2xl px-4 pr-12 text-sm transition focus:outline-none"
+                      style={{
+                        background:
+                          "oklch(0.24 0.012 260 / 0.5)",
+                        border:
+                          "1px solid oklch(0.28 0.012 260)",
+                        color:
+                          "oklch(0.98 0.005 260)",
+                      }}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPwd(
+                          !showConfirmPwd
+                        )
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2"
+                      style={{
+                        color:
+                          "oklch(0.65 0.015 260)",
+                      }}
+                    >
+                      {showConfirmPwd ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* submit */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="group inline-flex bg-green-600  cursor-pointer hover:bg-green-500 text-black h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-semibold transition-all duration-300 disabled:opacity-70"
+                
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    {insideRegister
+                      ? "Create account"
+                      : "Sign in"}
+
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* divider */}
+            <div className="flex items-center gap-3 ">
+              <div
+                className="h-px flex-1 bg-[oklch(0.28_0.012_260)]"
+              />
+
+              <span className="text-xs text-[oklch(0.65_0.015_260)]"
+              >
+                or continue with
+              </span>
+
+              <div
+              className="h-px flex-1 bg-[oklch(0.28_0.012_260)]"
+               
+              />
+            </div>
+
+            {/* social */}
+            <div className="grid grid-cols-1">
+              <button
+                type="button"
+                className="h-12 rounded-2xl text-sm cursor-pointer hover:text-gray-100 text-white/60 bg-black/40 border border-neutral-800 hover:border-gray-700 font-medium transition"
+              >
+                Google
+              </button>
+
+            </div>
+
+            {/* switch auth */}
+            <p className="text-center text-sm text-[oklch(0.65_0.015_260)]"
+            >
+              {insideRegister
+                ? "Already have an account?"
+                : "New to VoltSpot?"}{" "}
+              <Link
+               className=" text-white font-semibold underline underline-offset-[3px] hover:text-white/80 transition-all"
+                to={
+                  insideRegister
+                    ? "/login"
+                    : "/register"
+                }
+              >
+                {insideRegister
+
+                  ? "Sign in"
+                  : "Create account"}
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 };
 
-export default autho;
+export default Autho;

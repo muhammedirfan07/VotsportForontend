@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import {
   Search,
   MapPin,
@@ -8,13 +8,16 @@ import {
   X,
   SlidersHorizontal,
   Filter,
+  User
 } from "lucide-react";
 import station1 from "../../assets/station1.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
+import { cn } from "../../util/lib/utils";
 import { feachApproveStationAPI, filterStationAPI } from "../../Server/allAPI";
 import SERVER_URL from "../../Server/serverURL";
 import Sidebar from "../../ui/SideBarFillter";
+import { useRef } from "react";
 
 
 const Home = () => {
@@ -25,9 +28,10 @@ const Home = () => {
   const [cities, setCities] = useState([]);
   const [states, setStates] = useState([]);
   const [searchStation, setSearchStation] = useState("");
-  const [suggestions, setSuggestions] = useState([]); //auto suggection
+  const [suggestions, setSuggestions] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [currentPage, SetCurrentPage] = useState(1);
+  const [visible,setVisible] =useState(true)
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     city: "",
@@ -35,6 +39,27 @@ const Home = () => {
     chargingType: "",
     vehicleType: "",
   });
+  const navigate = useNavigate()
+  const lastScrollY =useRef(0)
+  
+    useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        // Scrolling DOWN → hide
+        setVisible(false);
+      } else {
+        // Scrolling UP → show
+        setVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     fetchViewStations();
@@ -69,8 +94,6 @@ const Home = () => {
     }
   }, [filters]);
 
-
-
   // Fetch all approved stations
   const fetchViewStations = async () => {
     console.log("Fetching approved stations...");
@@ -87,13 +110,13 @@ const Home = () => {
     };
 
     try {
-      setLoading(true); 
+      setLoading(true);
       const result = await feachApproveStationAPI(reqHeaders);
       console.log("API Result:", result);
 
       if (result.status === 200) {
         setViewStation(result.data);
-        setViewStations(result.data); 
+        setViewStations(result.data);
         // Extract unique cities and states
         const uniqueCities = [
           ...new Set(result.data.map((station) => station.city)),
@@ -110,7 +133,7 @@ const Home = () => {
     } catch (error) {
       console.log("Error fetching stations:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -152,7 +175,6 @@ const Home = () => {
     }
   };
 
-
   // Handle city selection from autocomplete suggestions
   const handleCitySelect = (city) => {
     setSearchStation(city);
@@ -186,17 +208,54 @@ const Home = () => {
 
   return (
     <>
-      <Header isloging={isloging} />
       <div className="min-h-screen  font-[DM_Sans] pt-15 bg-neutral-950">
+        <header
+      className={cn(
+        "fixed top-5 left-0 w-full z-50 font-[DM_Sans] flex justify-center px-4 md:px-25 font-manrope",
+        "transition-transform duration-300",
+        visible ? "translate-y-0" : "-translate-y-20"
+      )}
+    >
+      <nav
+        className={cn(
+          "nav-pill flex items-center w-full justify-between px-2 md:px-4 py-2 md:pl-5 transition-[border-radius] duration-300",
+          open ? "rounded-3xl" : "rounded-full"
+        )}
+      >
+        {/* Logo */}
+        <div>
+          <Link to="/">
+            <h3 className="flex text-xl gap-1 md:gap-2 text-green-100 font-bold">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600">
+                <i className="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i>
+              </span>
+              <p>
+                <span className="md:text-2xl text-green-600 font-michroma">Volt</span>Spot
+              </p>
+            </h3>
+          </Link>
+        </div>
 
+        {/* Profile Button */}
+        <div>
+          <button
+            onClick={() => navigate("/profile")}
+            className="w-full flex rounded-full bg-[hsl(143,71%,28%)] items-center gap-1 px-3 py-2 hover:bg-green-700/50 transition-colors cursor-pointer text-gray-300"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-md font-normal">Profile</span>
+          </button>
+        </div>
+      </nav>
+    </header>
         <div className="container mx-auto px-4 py-6">
           <div className="flex gap-8">
             {/* Sidebar - Full width on mobile, fixed width on desktop */}
             <aside className="hidden lg:block w-80  flex-shrink-0">
               <div className="sticky top-24">
-                <div className="text-gray-400 font-medium mb-4">Filters</div>
+
                 {/* DESKTOP FILTER BOX */}
-                <div className="hidden mb-20 lg:block bg-gray-800/50 px-8 py-6 rounded-xl shadow-lg ">
+                <div className="hidden mb-20 mt-4 lg:block bg-neutral-900 border border-neutral-800  px-8 py-6 rounded-xl shadow-lg ">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-9 h-9 bg-green-500/10 rounded-lg flex items-center justify-center">
                       <Filter className="w-5 h-5 text-green-400/75" />
@@ -238,7 +297,7 @@ const Home = () => {
                       State
                     </label>
                     <select
-                      className="w-full bg-neutral-800 text-white rounded-xl px-2 py-3"
+                      className="w-full bg-neutral-800 text-white rounded-xl px- py-3"
                       value={filters.state}
                       onChange={(e) =>
                         setFilters({ ...filters, state: e.target.value })
