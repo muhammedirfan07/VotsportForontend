@@ -247,7 +247,7 @@ const StationDetailsPage = () => {
             </div>
 
             {/* Right Column - Station Info */}
-            <div className="bg-white/5 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 space-y-6 shadow-xl transition-all duration-300 hover:shadow-green-500/20">
+            <div className="bg-white/5 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 space-y-6 shadow-xl transition-all duration-300 ">
               {/* Station Title */}
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">

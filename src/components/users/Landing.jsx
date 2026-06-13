@@ -8,7 +8,7 @@ import EVChargingLoader from "../../ui/loading/ev-charging-loader"
 import AboutSection from "./AboutSection"
 import FAQSection from "./FAQSection"
 import FeaturesSection from "./FeaturesSection"
-import { MapPin,Search } from "lucide-react"
+import { MapPin, Search } from "lucide-react"
 const Landing = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
@@ -79,7 +79,7 @@ const Landing = () => {
             <div className=" max-w-md">
               {" "}
               <p className="font-[DM_Sans] text-green-600 font-bold text-md md:text-xm mb-2 ">
-                For Every One,Everey Business,Every Electic Vechile
+                For Every One<span className="text-green-300 px-1">-</span>Every Business<span className="text-green-300 px-1">-</span>Every Eclectic Vechile
               </p>
             </div>
             <h1 className="font-[Manrope] text-4xl md:text-6xl font-bold leading-tight mb-8 ">
@@ -88,25 +88,26 @@ const Landing = () => {
               Every Adventure
             </h1>
             <div className="max-w-lg">
-              <p className="font-[DM_Sans] mt-10 text-sm md:text-md md:mt-4 mb-6">
+              <p className="font-[DM_Sans] mt-10 text-sm md:text-md text-gray-400 md:mt-4 mb-6">
                 Our residential, commercial, and fast charging stations are widely compatible, built on open
                 standards, and designed to be accessible for everyone.
               </p>
             </div>
             <button
               onClick={GoToHomePage}
-              size="lg"
-              className="font-[DM_Sans] font-medium px-8 py-4 bg-gradient-to-r from-green-600 to-gray-900 text-white rounded-2xl hover:from-gray-900 hover:to-green-500 mb-6 transition-all ease-in-out cursor-pointer"
+              className="font-[DM_Sans]  px-6 py-4 bg-gradient-to-r from-gray-900 to-green-600 text-white rounded-2xl transition duration-300 group cursor-pointer"
             >
-              {!tokenChecking ? <span className="flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
-                Find Stations
-              </span> : <span className="flex items-center gap-2">
-                <Search className="h-5 w-5" />
-                Search Now
-              </span>}
-
-
+              {!tokenChecking ? (
+                <span className="flex items-center gap-1">
+                  <MapPin className="h-5 w-5 transition duration-300 delay-150 group-hover:-translate-y-1 group-hover:scale-110 ease-in-out" />
+                  Find Stations
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Search className="h-5 w-5" />
+                  Search Now
+                </span>
+              )}
             </button>
           </div>
         </section>

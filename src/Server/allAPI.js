@@ -12,7 +12,7 @@ export const loginAPI= async(reqBody)=>{
 
 
 // -------ADMIN DASHBOARD ------ 
- //geting all user details
+ //getting all user details
 export const getallUsersAPI =async()=>{
     return await commonAPI("GET",`${SERVER_URL}/admin/allUsers`,{})
 }
@@ -21,15 +21,15 @@ export const getallUsersAPI =async()=>{
 export const getNumberOfUserAPI=async()=>{
     return await commonAPI("GET",`${SERVER_URL}/admin/UserCount`,{})
 }
-// get all Ptener details
+// get all Partner details
 export const getallPatnersAPI =async()=>{
     return await commonAPI("GET",`${SERVER_URL}/admin/viewAllPatener`,{})
 }
-// get all number of patner
+// get all number of partner
 export const getNumberOfPatnersAPI =async()=>{
     return await commonAPI("GET",`${SERVER_URL}/admin/patnerCount`,{})
 }
-// aprove and rejected the sation
+// approve and rejected the station
 export const approveAndRejectAPI = async(stationId,reqBody,reqHeader)=>{
     return await commonAPI("PUT",`${SERVER_URL}/approveRejectStation/${stationId}`,reqBody,reqHeader)
 } 
@@ -44,18 +44,18 @@ export const getChartDeatilsAPI =async()=>{
 
 
 
-//------------------PATNERS----------------------
-//patners registre--------
+//------------------PARTNERS----------------------
+//partners register--------
 export const patnersRegisterAPI=async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/patner/patnerRegister`,reqBody)
 
 }
-// Email Verifiaction--------
+// Email Verification--------
 export const EmailVerifationAPI=async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/patner/verfiyemail`,reqBody)
 
 }
-//patner login----------------
+//partner login----------------
 export const patnersLoginAPI=async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/patner/patnerlogin`,reqBody)
 
@@ -74,12 +74,12 @@ export const viewNotificationsAPI = (reqHeader) => {
 //     return commonAPI("PUT", `${SERVER_URL}/notifications/${notificationId}/read`);
 //   };
 
-// delect single notification
+// delete single notification
 export const deleteNotificationAPI = (notificationId,reqHeader) => {
     return commonAPI("DELETE", `${SERVER_URL}/notifications/${notificationId}`,{},reqHeader);
   };
 
-// delect all notications
+// delete all notifications
   export const deleteAllNotificationsAPI = (reqHeader) => {
     return commonAPI("DELETE", `${SERVER_URL}/notifications`,{},reqHeader);
   };
@@ -112,7 +112,7 @@ export const singleUserDetailsAPI = async(userId,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/user/userDetails/${userId}`,{},reqHeader)
 }
 
-// view sations
+// view stations
  export const feachApproveStationAPI =async(reqHeader)=>{
    return await commonAPI("GET",`${SERVER_URL}/user/viewSations`,{},reqHeader)
  }
@@ -124,7 +124,7 @@ export const singleUserDetailsAPI = async(userId,reqHeader)=>{
  export const bookingStaionAPI =async(reqBody,reqHeader)=>{
     return await commonAPI("POST",`${SERVER_URL}/user/booking`,reqBody,reqHeader)
  }
- //avilable sloat viewing
+ //available slot viewing
  export const avilableSlotAPI =async(stationId,startTime,slotNumber,duration,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}user/slots?stationId=${stationId}&startTime=${startTime}&duration=${duration}&slotNumber=${slotNumber}`,{},reqHeader)
  }
@@ -153,4 +153,15 @@ export const paymentAPI = async (stationId, userId, totalPrice) => {
   // view booking history 
 export const viewBookingAPI = async (userId,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/veiw-allBooking?userId=${userId}`,{},reqHeader)
+}
+
+// add  our vehicles details------
+
+export const createVehicleDataAPI =async(reqBody,reqHeader)=>{
+    return await commonAPI("POST",`${SERVER_URL}/createVehicle`,reqBody,reqHeader)
+}
+
+// view single user vehicle details.
+export const viewSingleUserVehicleDetails =async(reqHeader)=>{
+    return await commonAPI("GET",`${SERVER_URL}/viewVehicle`,null,reqHeader)
 }

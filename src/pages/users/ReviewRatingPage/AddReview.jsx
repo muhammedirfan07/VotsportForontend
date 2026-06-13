@@ -32,13 +32,13 @@ const AddReview = ({stationId}) => {
         return;
       }
       
-    const reqHeaders = {
+    const reqHeader = {
         Authorization: `Bearer ${token}`,
       };
       
       const reviewData = { rating, review, stationId };
       try {
-        const result = await addReviewAPI(reviewData,reqHeaders);
+        const result = await addReviewAPI(reviewData,reqHeader);
         if (result.status === 200) {
             console.log("rewsult :",result.data);
             setReviewStaionResponse(result)
@@ -46,7 +46,7 @@ const AddReview = ({stationId}) => {
           setRating(0);
           setReview("");
         } else {
-          toast.error(response?.data?.message || "Failed to add review", {
+          toast.error(result?.data?.message || "Failed to add review", {
             position: "top-right",
             theme: "dark",
           });

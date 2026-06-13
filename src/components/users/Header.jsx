@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown ,LogOut,User} from "lucide-react";
+import { Menu, X, ChevronDown ,LogOut,User,ArrowRight} from "lucide-react";
 import {  useNavigate } from 'react-router-dom';
 import { Button, Link } from "react-scroll";
 import { cn } from "../../util/lib/utils";
@@ -15,9 +15,9 @@ const Header = ({isloging}) => {
   };
 
   return (
-    <header className=" z-50 font-[DM_Sans] fixed left-1/2 top-5 w-[min(1200px,calc(100%-2rem))] -translate-x-1/2 font-manrope">
+    <header className=" z-50 font-[DM_Sans] fixed left-1/2 top-5 w-[min(1200px,calc(100%-2rem))] -translate-x-1/2 ">
       <nav className={cn(
-          "nav-pill flex items-center justify-between px-4 py-2 pl-5 transition-[border-radius] duration-300",
+          "nav-pill flex items-center justify-between px-4 py-3 pl-5 transition-[border-radius] duration-300",
           open ? "rounded-3xl" : "rounded-full",
         )}>
         
@@ -30,7 +30,7 @@ const Header = ({isloging}) => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6 text-md font-bold">
+        <div className="hidden md:flex items-center space-x-6 text-md ">
           {!isloging ? (
             <>
                 <Link to="home" smooth={true} duration={500} className= "text-sm text-gray-400 cursor-pointer hover:text-green-400">Home</Link>
@@ -38,8 +38,9 @@ const Header = ({isloging}) => {
                 <button  onClick={()=>{navigate("/homecolab")}} smooth={true} duration={500} className="text-sm cursor-pointer text-gray-400 hover:text-green-300">Patners</button>
                 <Link to="features" smooth={true} duration={500} className="text-sm text-gray-400 cursor-pointer hover:text-green-300">features</Link>
                 <Link to="support" smooth={true} duration={500} className=" text-sm text-gray-400 cursor-pointer hover:text-green-300">support</Link>   
-                <button onClick={()=>{navigate("/login")}} className=" bg-green-500 cursor-pointer  text-gray-900 px-4 py-1 rounded-2xl font-semibold hover:bg-green-600 transition ease-in w-25">
-                    Sign Up
+                <button onClick={()=>{navigate("/login")}} className=" flex justify-center items-center gap-1 bg-green-500 cursor-pointer  text-gray-900 h-10 min-w-30 px-4 py-1 rounded-2xl font-semibold hover:bg-green-600  transition-all duration-300 
+               group ">
+                    Sign Up <ArrowRight width={20} height={20} className="h-5 w-5 transform transition-all duration-300 group-hover:translate-x-1"/>
                   </button>
             </>
             
