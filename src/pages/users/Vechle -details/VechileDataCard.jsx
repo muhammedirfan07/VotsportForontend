@@ -5,10 +5,6 @@ import { Car, Zap, Pencil, Trash2 } from "lucide-react";
 const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
   const [hovered, setHovered] = useState(false);
 
-  const viewAllVehicle =async()=>{
-    
-  }
-
   return (
     <div
       className="bg-neutral-900/50 rounded-xl p-6 border border-zinc-800 hover:border-green-500/30 transition-all relative"
@@ -28,12 +24,11 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
               </h3>
               <p className="text-gray-400">{vehicle?.RegisterNumber}</p>
             </div>
-
             {/* Edit / Delete — visible only on hover */}
             {hovered && (
               <div className="flex items-center gap-2">
                 <button
-                  onClick=""
+                  onClick={() => onEdit(vehicle)}  
                   className="p-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-colors"
                   title="Edit"
                 >
@@ -54,16 +49,16 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
 
       <div className="space-y-4">
         <div className="flex items-center justify-between py-2">
-          <span className="text-gray-400">{vehicle?.chargingTypes}</span>
+          <span className="text-gray-400">Charging Type </span>
           <div className="flex items-center gap-2 text-white font-semibold">
             <Zap className="text-green-500" size={18} />
-           fast
+          {vehicle?.chargingTypes}
           </div>
         </div>
         <div className="flex items-center justify-between py-2">
-          <span className="text-gray-400">{vehicle?.batteryCapacity}</span>
+          <span className="text-gray-400">Battery Capacity</span>
           <span className="text-white font-semibold">
-            200 kWh
+           {vehicle?.batteryCapacity} kWh
           </span>
         </div>
       </div>

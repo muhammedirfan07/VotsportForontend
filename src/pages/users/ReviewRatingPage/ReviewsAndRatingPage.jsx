@@ -18,7 +18,7 @@ const ReviewsAndRatingPage = ({ stationId ,onReviewsFetched  }) => {
     try {
       const token = sessionStorage.getItem("token");
       if (!token) {
-        console.log("token to geting ");
+        console.log("token to getting ");
         return;
       }
       const reqHeaders = {
