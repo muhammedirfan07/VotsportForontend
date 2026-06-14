@@ -40,7 +40,7 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
                   <Pencil size={18} />
                 </button>
                 <button
-                  onClick=""
+                  onClick={()=>onDelete(vehicle._id)}
                   className="p-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
                   title="Delete"
                 >

@@ -3,8 +3,8 @@ import { Car, Plus } from "lucide-react";
 import VehicleCard from "./VechileDataCard";
 import VechileModal from "./VechileModal";
 import { toast } from "react-toastify";
-import { createVehicleDataAPI } from "../../../Server/allAPI.js"
-import { viewSingleUserVehicleDetails } from "../../../Server/allAPI.js";
+import { createVehicleDataAPI, removeVehicleDataAPI } from "../../../Server/allAPI.js"
+import { viewSingleUserVehicleDetailsAPI } from "../../../Server/allAPI.js";
 
 
 const EMPTY_FORM = {
@@ -67,7 +67,8 @@ const VehicleDetails = () => {
       const result = await createVehicleDataAPI(reqBody, reqHeader)
       if (result.status === 201) {
         console.log(" result = ", result?.data)
-        toast.success("  new vehicle data create  ")
+        toast.success("  new vehicle data create  ",{ position: "top-right",
+          theme:"dark"})
         closeModal()
       } else {
         toast.error(result?.data?.message || "Failed to  create to vehicle data", {
@@ -95,7 +96,7 @@ const VehicleDetails = () => {
       Authorization: `Bearer ${token}`  
     }
     try {
-     const  response = await viewSingleUserVehicleDetails(reqHeader)
+     const  response = await viewSingleUserVehicleDetailsAPI(reqHeader)
      setVehicles(response?.data)
        console.log("all reviews :",response?.data);
      
@@ -105,6 +106,25 @@ const VehicleDetails = () => {
     }finally{
       setLoading(false)
     }
+ }
+
+ const handleRemove = async(id)=>{
+  const token = sessionStorage.getItem("token")
+  const reqHeader ={
+    Authorization :`Bearer ${token}`
+  }
+  try {
+    const removeVehicle = await removeVehicleDataAPI(id,reqHeader)
+    console.log("removeVehicle =",removeVehicle);
+    
+    if(removeVehicle.status===200){
+      toast.success(removeVehicle.data.message,{theme:"dark",position:"top-right"})
+      viewAllVehicle()
+    }
+    
+  } catch (error) {
+    
+  }
  }
 
 
@@ -139,6 +159,7 @@ const VehicleDetails = () => {
               <VehicleCard
                 key={vehicle._id}
                 vehicle={vehicle} 
+                onDelete={handleRemove}
               />
             ))}
           </div>

@@ -162,6 +162,10 @@ export const createVehicleDataAPI =async(reqBody,reqHeader)=>{
 }
 
 // view single user vehicle details.
-export const viewSingleUserVehicleDetails =async(reqHeader)=>{
+export const viewSingleUserVehicleDetailsAPI =async(reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/viewVehicle`,null,reqHeader)
+}
+// delete a single user vehicle details
+export const removeVehicleDataAPI = async (id,reqHeader)=>{
+    return await commonAPI("DELETE",`${SERVER_URL}/removeVehicle/${id}`,{},reqHeader)
 }
