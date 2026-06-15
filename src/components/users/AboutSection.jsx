@@ -6,7 +6,7 @@ import { motion  } from "framer-motion"
 function AboutSection() {
   return (
     <section id="about" className="bg-black text-white px-6 py-8 md:px-12">
-                {/* users, commpany, banners */}
+                {/* users, company, banners */}
                 <div className="grid gird-cols-1 md:grid-cols-3 gap-4 mb-14  items-center font-[Dm_Sans] ">
                    {[
                   { number: "1,500+", label: "Charging Stations" },

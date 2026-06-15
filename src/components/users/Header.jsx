@@ -14,6 +14,8 @@ const Header = ({isloging}) => {
     navigate("/")
   };
 
+  const isToken = sessionStorage.getItem("token")
+
   return (
     <header className=" z-50 font-[DM_Sans] fixed left-1/2 top-5 w-[min(1200px,calc(100%-2rem))] -translate-x-1/2 ">
       <nav className={cn(
@@ -38,10 +40,11 @@ const Header = ({isloging}) => {
                 <button  onClick={()=>{navigate("/homecolab")}} smooth={true} duration={500} className="text-sm cursor-pointer text-gray-400 hover:text-green-300">Patners</button>
                 <Link to="features" smooth={true} duration={500} className="text-sm text-gray-400 cursor-pointer hover:text-green-300">features</Link>
                 <Link to="support" smooth={true} duration={500} className=" text-sm text-gray-400 cursor-pointer hover:text-green-300">support</Link>   
-                <button onClick={()=>{navigate("/login")}} className=" flex justify-center items-center gap-1 bg-green-500 cursor-pointer  text-gray-900 h-10 min-w-30 px-4 py-1 rounded-2xl font-semibold hover:bg-green-600  transition-all duration-300 
+                { !isToken&&(<button onClick={()=>{navigate("/login")}} className=" flex justify-center items-center gap-1 bg-green-500 cursor-pointer  text-gray-900 h-10 min-w-30 px-4 py-1 rounded-2xl font-semibold hover:bg-green-600  transition-all duration-300 
                group ">
                     Sign Up <ArrowRight width={20} height={20} className="h-5 w-5 transform transition-all duration-300 group-hover:translate-x-1"/>
                   </button>
+                )}
             </>
             
           ) : (
