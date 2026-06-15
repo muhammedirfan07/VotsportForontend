@@ -12,6 +12,7 @@ import { loginAPI, registerAPI } from "../../Server/allAPI";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GoogleAuth from "./GoogleAuth";
 
 const Autho = ({ insideRegister }) => {
   const navigate = useNavigate();
@@ -549,12 +550,7 @@ const Autho = ({ insideRegister }) => {
 
             {/* social */}
             <div className="grid grid-cols-1">
-              <button
-                type="button"
-                className="h-12 rounded-2xl text-sm cursor-pointer hover:text-gray-100 text-white/60 bg-black/40 border border-neutral-800 hover:border-gray-700 font-medium transition"
-              >
-                Google
-              </button>
+              <GoogleAuth/>
 
             </div>
 

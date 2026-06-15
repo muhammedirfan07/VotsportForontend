@@ -10,6 +10,10 @@ export const loginAPI= async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/login`,reqBody)
 }
 
+// google user authentication...
+export const googleAuthAPI =async (reqBody)=>{
+    return await commonAPI("POST",`${SERVER_URL}/google-login`,reqBody)
+}
 
 // -------ADMIN DASHBOARD ------ 
  //getting all user details

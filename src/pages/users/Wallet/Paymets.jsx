@@ -43,24 +43,7 @@ export default function EVPaymentPage() {
       energy: '65 kWh',
       status: 'Completed'
     },
-    {
-      id: 2,
-      location: 'ChargePoint Station - Mall Parking',
-      date: '2024-11-28',
-      time: '09:15',
-      amount: 32.50,
-      energy: '48 kWh',
-      status: 'Completed'
-    },
-    {
-      id: 3,
-      location: 'EVgo Fast Charger - Highway Rest Stop',
-      date: '2024-11-15',
-      time: '18:45',
-      amount: 28.75,
-      energy: '42 kWh',
-      status: 'Completed'
-    },
+    
     {
       id: 4,
       location: 'Tesla Supercharger - Shopping Center',
@@ -70,42 +53,8 @@ export default function EVPaymentPage() {
       energy: '55 kWh',
       status: 'Completed'
     },
-    {
-      id: 5,
-      location: 'Electrify America - City Center',
-      date: '2024-09-18',
-      time: '16:20',
-      amount: 41.25,
-      energy: '60 kWh',
-      status: 'Completed'
-    },
-    {
-      id: 6,
-      location: 'ChargePoint - Airport Terminal',
-      date: '2024-07-10',
-      time: '08:00',
-      amount: 35.00,
-      energy: '52 kWh',
-      status: 'Completed'
-    },
-    {
-      id: 7,
-      location: 'Tesla Supercharger - Beach Road',
-      date: '2024-06-05',
-      time: '15:30',
-      amount: 42.00,
-      energy: '58 kWh',
-      status: 'Completed'
-    },
-    {
-      id: 8,
-      location: 'EVgo - Mountain View Station',
-      date: '2023-12-20',
-      time: '11:00',
-      amount: 30.00,
-      energy: '45 kWh',
-      status: 'Completed'
-    }
+   
+   
   ];
 
   const timeFilters = [
@@ -170,7 +119,7 @@ export default function EVPaymentPage() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('ind', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   const handleAddFunds = () => {
@@ -261,7 +210,7 @@ export default function EVPaymentPage() {
             </button>
           </div>
 
-          <div className="space-y-3 sm:space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900">
+          <div className="space-y-3 sm:space-y-4 max-h-[400px]  pr-2 overflow-y-auto custom-scroll">
             {cards.map((card) => (
               <div key={card.id} className="bg-zinc-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border border-zinc-800 hover:border-green-900 transition-all">
                 <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
@@ -292,7 +241,7 @@ export default function EVPaymentPage() {
         </div>
 
         {/* Payment History */}
-        <div className="bg-zinc-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-900">
+        <div className="bg-zinc-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-900 ">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5 sm:mb-6">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">Payment History</h2>
@@ -310,7 +259,7 @@ export default function EVPaymentPage() {
               </button>
               
               {showFilterDropdown && (
-                <div className="absolute top-full mt-2 w-full bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden z-10 shadow-xl">
+                <div className="absolute top-full mt-2 w-full bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden  z-10 shadow-xl">
                   {timeFilters.map((filter) => (
                     <button
                       key={filter.value}
@@ -330,7 +279,7 @@ export default function EVPaymentPage() {
             </div>
           </div>
 
-          <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900">
+          <div className="space-y-3 max-h-[600px]  pr-2 overflow-y-auto custom-scroll">
             {filteredPaymentHistory.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
                 <Battery className="w-12 h-12 mx-auto mb-3 opacity-50" />
@@ -374,10 +323,17 @@ export default function EVPaymentPage() {
                     <span className="text-xs bg-green-900/50 text-green-400 px-3 py-1 rounded-full font-medium">
                       {payment.status}
                     </span>
-                    <button className="text-green-400 hover:text-green-300 text-sm font-medium transition-colors">
-                      View Receipt
-                    </button>
-                  </div>
+                   <div className=' flex gap-4'>
+                      <button className="text-green-400 hover:text-green-300 text-sm font-medium transition-colors">
+                        Re-booking
+                      </button>
+                       <button 
+                    className="text-red-500 hover:text-red-400 font-semibold transition-colors text-sm sm:text-base self-end sm:self-auto"
+                  >
+                    Cancel
+                  </button>
+                    </div>
+                   </div>
                 </div>
               ))
             )}

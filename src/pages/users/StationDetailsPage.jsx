@@ -173,7 +173,7 @@ const StationDetailsPage = () => {
       setIsSubmitting(true);
       const result = await bookingStaionAPI(bookingData, reqHeaders);
       if (result.status === 200) {
-        toast.success("Booking successful!", {
+        toast.success(result.data.message, {
           position: "top-center",
           theme: "dark",
         });

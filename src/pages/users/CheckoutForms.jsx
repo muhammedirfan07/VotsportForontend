@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 const stripePromise = loadStripe("pk_test_51R2tErRZxoXS9LqVZoqMif8tyX8KO34xdcbHB7ql9mZOhgXnNLOQkBUDUHbndfxGf9jKKmice2iNdhSsp27JpL2e00zduaUSDC");
 
 const CheckoutForms = () => {
-  console.log("inside the Checkot form");
+  console.log("inside the Checkout form");
   const {sessionId}=useParams()
   
   useEffect(() => {
