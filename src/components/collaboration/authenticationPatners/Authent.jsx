@@ -64,11 +64,11 @@ try {
     console.log("Login Response:",result);
 
     if (result.status === 200) {
-        const { partner, token } = result.data;
+        const { partner, PartnerToken } = result.data;
 
         // Store user & token in session storage
         sessionStorage.setItem("partner", JSON.stringify(partner));
-        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("PartnerToken", PartnerToken);
 
         toast.success(`Welcome, ! 🎉`, { position:"top-right", theme:"dark" });   
             navigate("/homecolab");

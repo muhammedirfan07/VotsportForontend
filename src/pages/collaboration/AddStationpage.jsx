@@ -160,7 +160,7 @@ const AddStationpage = () => {
   
     console.log("reqBody", reqBody);
   
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("PartnerToken");
     if (!token) {
       toast.error("Authentication token not found", {
         position: "top-right",

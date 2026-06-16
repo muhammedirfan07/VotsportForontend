@@ -32,7 +32,7 @@ const Notification = () => {
   const fetchNotifications = async () => {
     console.log("Inside fetchNotifications...");
     try {
-      const token = sessionStorage.getItem("token");
+      const token = sessionStorage.getItem("PartnerToken");
       const reqHeader = { Authorization: `Bearer ${token}` };
       const result = await viewNotificationsAPI(reqHeader);
       if (result.status === 200) {
@@ -51,7 +51,7 @@ const Notification = () => {
     if (window.confirm("Are you sure you want to delete this notification?")) {
       console.log("inside the handle delete notification ...........");
       try {
-        const token = sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("PartnerToken");
         const reqHeader = { Authorization: `Bearer ${token}` };
         const result = await deleteNotificationAPI(notificationId, reqHeader);
         if (result.status === 200) {
@@ -67,7 +67,7 @@ const Notification = () => {
     if (window.confirm("Are you sure you want to delete all notifications?")) {
       console.log("inside the all delete notifications..............");
       try {
-        const token = sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("PartnerToken");
         const reqHeader = { Authorization: `Bearer ${token}` };
         const result = await deleteAllNotificationsAPI(reqHeader);
         if (result.status === 200) {

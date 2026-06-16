@@ -6,7 +6,7 @@ const Chart = () => {
   const [chartData, setChartData] = useState({
     totalUsers: 0,
     totalStations: 0,
-    weeklyData: [],
+    weeklyData:[],
   });
 
   useEffect(() => {

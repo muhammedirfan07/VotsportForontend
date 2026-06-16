@@ -292,7 +292,7 @@ const Profile = () => {
 
 
             {/* BOOKINGS */}
-            {activeTab === 'bookings' && <BookingHistory />}
+            {activeTab === 'bookings' && <BookingHistory joinData={singleUserDetails.createdAt} />}
 
             {/* vechle  */}
             {activeTab === 'vehicles' && <VehicleDetails />}

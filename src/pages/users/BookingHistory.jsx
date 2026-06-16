@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { ChevronDown, ChevronUp, MapPin, Calendar, Clock, Battery } from "lucide-react";
+import { ChevronDown, ChevronUp, MapPin, Calendar, Clock, Battery, Loader2 } from "lucide-react";
 import { viewBookingAPI } from "../../Server/allAPI";
 
-const BookingHistory = () => {
+const BookingHistory = ({joinData}) => {
   const [expandedBooking, setExpandedBooking] = useState(null);
   const [bookingHistory, setBookingHistory] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-
-
+  const [isLoading, setIsLoading] = useState(true)
+  
   useEffect(() => {
     viewBookingHistory();
   }, []);
+ // get  year filter 
+  const  currentYear = new Date().getFullYear()
+  console.log("curretYear=",currentYear);
+  
+  const joinYear = joinData? new Date(joinData).getFullYear():currentYear
+     console.log("joinYear=",joinYear);
+   
+  const yearFilters =[]
+  for(let year=currentYear; year>=joinYear;year--){
+    yearFilters.push({value:String(year),label:String(year)})
+  }
+
 
   const toggleBookingDetails = (id) => {
     if (expandedBooking === id) {
@@ -26,7 +38,6 @@ const BookingHistory = () => {
     const authUser = JSON.parse(userData);
     const userId = authUser?._id;
     const token = sessionStorage.getItem("token");
-
     if (!token) {
       console.log("Token is not available.");
       return;
@@ -44,6 +55,8 @@ const BookingHistory = () => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -52,9 +65,7 @@ const BookingHistory = () => {
     { value: '1week', label: 'Last 7 Days' },
     { value: '1month', label: 'Last Month' },
     { value: '6months', label: 'Last 6 Months' },
-    { value: '2024', label: '2024' },
-    { value: '2023', label: '2023' },
-    { value: '2022', label: '2022' }
+    ...yearFilters
   ];
 
   const filterBookingsByTime = () => {
@@ -151,7 +162,7 @@ const BookingHistory = () => {
           </button>
 
           {showFilterDropdown && (
-            <div className="absolute top-full mt-2 w-full bg-neutral-800 border border-neutral-600 rounded-lg overflow-hidden z-20 shadow-xl">
+            <div className="absolute top-full left-0 right-0 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-neutral-600 bg-neutral-800 shadow-xl z-40">
               {timeFilters.map((filter) => (
                 <button
                   key={filter.value}
@@ -159,7 +170,9 @@ const BookingHistory = () => {
                     setSelectedFilter(filter.value);
                     setShowFilterDropdown(false);
                   }}
-                  className={`w-full text-left px-4 py-2.5 hover:bg-neutral-700 transition-colors text-sm ${selectedFilter === filter.value ? 'bg-green-900/30 text-green-400' : 'text-white'
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-neutral-700 ${selectedFilter === filter.value
+                      ? 'bg-green-900/30 text-green-400'
+                      : 'text-white'
                     }`}
                 >
                   {filter.label}
@@ -172,148 +185,152 @@ const BookingHistory = () => {
 
       <div className="p-6 ">
         <div className={`space-y-6 pr-2 ${enableScroll
-            ? "max-h-[500px] overflow-y-auto custom-scroll"
-            : ""
+          ? "max-h-[500px] overflow-y-auto custom-scroll"
+          : ""
           }`}>
-          {filteredBookings.length > 0 ? (
-            filteredBookings.map((booking) => {
-              const startTime = new Date(booking.startTime);
-              const endTime = new Date(booking.endTime);
-              const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
+          {isLoading ?
+            (<p className="text-gray-400 flex gap-2 justify-center text-center py-8"><Loader2 className="w-5 h-5 animate-spin mt-1" /> Loading History...</p>
+            ) : (filteredBookings.length > 0 ? (
+              filteredBookings.map((booking) => {
+                const startTime = new Date(booking.startTime);
+                const endTime = new Date(booking.endTime);
+                const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
 
-              return (
-                <div
-                  key={booking._id}
-                  className="bg-neutral-900/50 rounded-xl border border-neutral-700 overflow-hidden hover:border-green-600/30 shadow transition-all ease-in-out "
-                >
+                return (
                   <div
-                    onClick={() => toggleBookingDetails(booking._id)}
-                    className="cursor-pointer p-6"
+                    key={booking._id}
+                    className="bg-neutral-900/50 rounded-xl border border-neutral-700 overflow-hidden hover:border-green-600/30 shadow transition-all ease-in-out "
                   >
-                    <div className=" flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2 flex-wrap">
-                          <h3 className="text-lg font-semibold text-white">
-                            {booking.stationId?.stationName || "Unknown Station"}
-                          </h3>
-                          <span className={`px-3 py-1 text-xs border border-green-600 bg-green-500/15 text-green-600 font-medium rounded-full ${getStatusStyles(booking.status)}`}>
-                            {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                          </span>
+                    <div
+                      onClick={() => toggleBookingDetails(booking._id)}
+                      className="cursor-pointer p-6"
+                    >
+                      <div className=" flex justify-between items-start mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2 flex-wrap">
+                            <h3 className="text-lg font-semibold text-white">
+                              {booking.stationId?.stationName || "Unknown Station"}
+                            </h3>
+                            <span className={`px-3 py-1 text-xs border border-green-600 bg-green-500/15 text-green-600 font-medium rounded-full ${getStatusStyles(booking.status)}`}>
+                              {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                            </span>
+                          </div>
+                          <div className="flex items-center text-gray-400 text-sm">
+                            <MapPin size={14} className="mr-1" />
+                            {booking.stationId?.city}{booking.stationId?.state ? `, ${booking.stationId?.state}` : " n/a"}
+                          </div>
                         </div>
-                        <div className="flex items-center text-gray-400 text-sm">
-                          <MapPin size={14} className="mr-1" />
-                          {booking.stationId?.city}{booking.stationId?.state ? `, ${booking.stationId?.state}` : " n/a"}
-                        </div>
+                        <button className="text-gray-400 hover:text-white transition-colors">
+                          {expandedBooking === booking._id ? (
+                            <ChevronUp size={24} />
+                          ) : (
+                            <ChevronDown size={24} />
+                          )}
+                        </button>
                       </div>
-                      <button className="text-gray-400 hover:text-white transition-colors">
-                        {expandedBooking === booking._id ? (
-                          <ChevronUp size={24} />
-                        ) : (
-                          <ChevronDown size={24} />
-                        )}
-                      </button>
-                    </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      <div>
-                        <div className="flex items-center text-gray-400 text-xs mb-1">
-                          <Calendar size={14} className="mr-1" />
-                          Date
-                        </div>
-                        <p className="text-white font-medium text-sm">
-                          {startTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="flex items-center text-gray-400 text-xs mb-1">
-                          <Clock size={14} className="mr-1" />
-                          Time
-                        </div>
-                        <p className="text-white font-medium text-sm">
-                          {startTime.toLocaleTimeString([], timeOptions)}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="flex items-center text-gray-400 text-xs mb-1">
-                          <Battery size={14} className="mr-1" />
-                          Energy
-                        </div>
-                        <p className="text-white font-medium text-sm">
-                          {booking.stationId?.chargingType || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="text-gray-400 text-xs mb-1">Amount</div>
-                        <p className="text-green-400 font-semibold text-lg">
-                          {formatCurrency(booking.totalPrice)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {expandedBooking === booking._id && (
-                    <div className="px-6 pb-6 pt-2 border-t border-gray-700">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div>
-                          <p className="text-gray-400 mb-1">Station Name</p>
-                          <p className="text-white font-medium">
-                            {booking.stationId?.stationName || "Unknown Station"}
+                          <div className="flex items-center text-gray-400 text-xs mb-1">
+                            <Calendar size={14} className="mr-1" />
+                            Date
+                          </div>
+                          <p className="text-white font-medium text-sm">
+                            {startTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">Location</p>
-                          <p className="text-white font-medium">
-                            {`${booking.stationId?.city}${booking.stationId?.state ? `, ${booking.stationId?.state}` : ""}`}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400 mb-1">Slot Number</p>
-                          <p className="text-white font-medium">
-                            {booking.slotNumber}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400 mb-1">Duration</p>
-                          <p className="text-white font-medium">
-                            {booking.duration} {booking.duration === 1 ? 'hour' : 'hours'}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400 mb-1">Start Time</p>
-                          <p className="text-white font-medium">
+                          <div className="flex items-center text-gray-400 text-xs mb-1">
+                            <Clock size={14} className="mr-1" />
+                            Time
+                          </div>
+                          <p className="text-white font-medium text-sm">
                             {startTime.toLocaleTimeString([], timeOptions)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">End Time</p>
-                          <p className="text-white font-medium">
-                            {endTime.toLocaleTimeString([], timeOptions)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400 mb-1">Energy Type</p>
-                          <p className="text-white font-medium">
+                          <div className="flex items-center text-gray-400 text-xs mb-1">
+                            <Battery size={14} className="mr-1" />
+                            Energy
+                          </div>
+                          <p className="text-white font-medium text-sm">
                             {booking.stationId?.chargingType || "N/A"}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">Total Price</p>
-                          <p className="text-green-400 font-semibold">
+                          <div className="text-gray-400 text-xs mb-1">Amount</div>
+                          <p className="text-green-400 font-semibold text-lg">
                             {formatCurrency(booking.totalPrice)}
                           </p>
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <div className="py-12 text-center">
-              <Battery className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-              <p className="text-gray-400 text-lg">No bookings found for this time period</p>
-            </div>
-          )}
+
+                    {expandedBooking === booking._id && (
+                      <div className="px-6 pb-6 pt-2 border-t border-gray-700">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <p className="text-gray-400 mb-1">Station Name</p>
+                            <p className="text-white font-medium">
+                              {booking.stationId?.stationName || "Unknown Station"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">Location</p>
+                            <p className="text-white font-medium">
+                              {`${booking.stationId?.city}${booking.stationId?.state ? `, ${booking.stationId?.state}` : ""}`}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">Slot Number</p>
+                            <p className="text-white font-medium">
+                              {booking.slotNumber}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">Duration</p>
+                            <p className="text-white font-medium">
+                              {booking.duration} {booking.duration === 1 ? 'hour' : 'hours'}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">Start Time</p>
+                            <p className="text-white font-medium">
+                              {startTime.toLocaleTimeString([], timeOptions)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">End Time</p>
+                            <p className="text-white font-medium">
+                              {endTime.toLocaleTimeString([], timeOptions)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">Energy Type</p>
+                            <p className="text-white font-medium">
+                              {booking.stationId?.chargingType || "N/A"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400 mb-1">Total Price</p>
+                            <p className="text-green-400 font-semibold">
+                              {formatCurrency(booking.totalPrice)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <div className="py-12 text-center">
+                <Battery className="w-12 h-12 mx-auto mb-3 text-gray-600" />
+                <p className="text-gray-400 text-lg">No bookings found for this time period</p>
+              </div>
+            ))
+          }
+
         </div>
       </div>
     </div>

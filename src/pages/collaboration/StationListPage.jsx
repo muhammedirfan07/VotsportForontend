@@ -19,7 +19,7 @@ const StationListPage = () => {
 
   const getViewStationDetails = async() => {
     console.log("View Station Details")
-    const  token =sessionStorage.getItem('token')
+    const  token =sessionStorage.getItem('PartnerToken')
     console.log(token);
     
     if(token){
@@ -46,7 +46,7 @@ const StationListPage = () => {
     console.log(".......inside the delect .......");
     console.log("id",id);
     
-    const token=sessionStorage.getItem('token')
+    const token=sessionStorage.getItem('PartnerToken')
     if(token){
        const reqHeader= {
         "Authorization":`Bearer ${token}`

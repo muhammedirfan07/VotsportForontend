@@ -19,7 +19,7 @@ const Header = ({isloging}) => {
   return (
     <header className=" z-50 font-[DM_Sans] fixed left-1/2 top-5 w-[min(1200px,calc(100%-2rem))] -translate-x-1/2 ">
       <nav className={cn(
-          "nav-pill flex items-center justify-between px-4 py-3 pl-5 transition-[border-radius] duration-300",
+          "nav-pill flex items-center justify-between px-6 py-3 pl-5 transition-[border-radius] duration-300",
           open ? "rounded-3xl" : "rounded-full",
         )}>
         
