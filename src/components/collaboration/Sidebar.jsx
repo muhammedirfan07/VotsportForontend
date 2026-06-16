@@ -10,9 +10,9 @@ const Sidebar = () => {
   };
   return (
     <>
-      <div className="w-64 sticky max-w-full top-0 font-[Dm_Sans] border-r border-r-zinc-900  px-5 py-7  bg-neutral-950 rounded-e-lg  min-h-screen overflow-y-auto">
-      <div className="flex items-center ps-14 md:ps-0 gap-1 mb-6 md:mb-8">
-        <i className="fa-solid fa-bolt text-lg md:text-xl" style={{color: "#f0efef"}}></i><span className="text-lg md:text-2xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
+      <div className="w-64 sticky max-w-full top-0 font-[Dm_Sans] border-r border-r-zinc-900 z-50  backdrop-blur-xl px-5 py-7  bg-neutral-950 rounded-e-lg  min-h-screen overflow-y-auto">
+      <div className="flex items-center ps-7 md:ps-0 gap-1 mb-6 md:mb-8">
+        <i className="fa-solid fa-bolt text-xl" style={{color: "#f0efef"}}></i><span className="text-2xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
       </div>
 
       <nav className="space-y-1 mt-10 md:space-y-2">
