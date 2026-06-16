@@ -10,20 +10,20 @@ const Sidebar = () => {
   };
   return (
     <>
-      <div className="w-64 max-w-full font-[Manrope] pt-6 md:pt-2 bg-gradient-to-t from-gray-800 to-black rounded-e-lg p-3 md:p-4 min-h-screen overflow-y-auto">
-      <div className="flex items-center ps-14 md:ps-0 gap-2 mb-6 md:mb-8">
-        <i className="fa-solid fa-bolt text-lg md:text-xl" style={{color: "#f0efef"}}></i><span className="text-lg md:text-xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
+      <div className="w-64 sticky max-w-full top-0 font-[Dm_Sans] border-r border-r-zinc-900  px-5 py-7  bg-neutral-950 rounded-e-lg  min-h-screen overflow-y-auto">
+      <div className="flex items-center ps-14 md:ps-0 gap-1 mb-6 md:mb-8">
+        <i className="fa-solid fa-bolt text-lg md:text-xl" style={{color: "#f0efef"}}></i><span className="text-lg md:text-2xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
       </div>
 
-      <nav className="space-y-1 md:space-y-2">
+      <nav className="space-y-1 mt-10 md:space-y-2">
         <Link to="/patnerDashboard">
-          <button className={`w-full flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base rounded-lg ${isActive('/patnerDashboard') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'}`}>
-          <MapPinHouse className="w-5 h-5" /> Stations
+          <button className={`w-full flex items-center mb-3 gap-2 md:gap-3 font-semibold  px-2 md:px-3 py-3 text-sm  rounded-2xl ${isActive('/patnerDashboard') ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <MapPinHouse className=" ms-2 w-5 h-5" /> Stations
           </button>
         </Link>
         <Link to="/notifation">
-          <button className={`w-full flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base rounded-lg ${isActive('/notifation') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700'}`}>
-          <BadgeIndianRupee className="w-5 h-5" /> Notification
+          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/notifation') ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <BadgeIndianRupee className=" ms-2 w-5 h-5" /> Notification
           </button>
         </Link> 
       </nav>

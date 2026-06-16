@@ -24,7 +24,7 @@ const StationHome = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900  overflow-hidden  to-black flex flex-col md:flex-row">
+    <div className="min-h-screen  font-[DM_Sans] overflow-hidden bg-black flex flex-col md:flex-row">
       {/* Mobile Sidebar Toggle */}
       <button 
         className="md:hidden fixed top-4 left-4 z-50 bg-gray-800 p-2 rounded-md text-white"
@@ -41,29 +41,24 @@ const StationHome = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 h-screen overflow-y-auto    p-4 md:p-8 w-full">
+      <div className="flex-1 h-screen overflow-y-auto  px-4 pb-16 pt-6 sm:px-6 lg:px-10 lg:pt-10  min-w-0">
         {/* Header */}
         <Headerr />
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8"> 
-          <div className="bg-gradient-to-b from-gray-700 to-black p-4 md:p-6 rounded-xl">
-            <div className="text-gray-300 mb-2">ADD new Station</div>
-            <AddStationpage />
-          </div>
+          <section className=" bg-zinc-950 border mb-6 border-zinc-900 flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <div className="min-w-0">
+          <h2 className="text-lg text-white font-semibold">Add a new station</h2>
+          <p className="mt-1 text-sm text-gray-500">
+            Onboard a new charging point to your VoltSpot network in under a minute.
+          </p>
         </div>
-
+         <AddStationpage />
+      </section>
         {/* Users Table */}
-        <div className="bg-gradient-to-t from-gray-800 to-slate-950  overflow-hidden  rounded-xl">
-          <div className="p-4 md:p-6 border-b border-gray-700">
-            <h2 className="text-lg md:text-xl font-[DM_Sans] font-semibold text-white">All Stations</h2>
-          </div>
-          <div >
-            <div className=" h-full overflow-y-auto">
+        <div className=" h-full overflow-y-auto custom-scroll">
               <StationListPage />
             </div>
-          </div>
-        </div>
       </div>
     </div>
   );

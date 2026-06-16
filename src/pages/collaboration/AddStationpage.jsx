@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Upload, X } from "lucide-react"; // Import icons from lucide-react
+import { Upload, X,Plus } from "lucide-react"; // Import icons from lucide-react
 import { toast } from "react-toastify";
 import { addStaionAPI } from "../../Server/allAPI";
 import { addStaionResponseContext } from "../../context/ContextAPI";
@@ -214,16 +214,17 @@ const AddStationpage = () => {
     <>
       <button
         onClick={openModal}
-        className="px-3 py-1 md:px-4 md:py-1 font-[DM_Sans] rounded-xl bg-gradient-to-b from-gray-900 to-zinc-900 hover:-translate-y-1 hover:scale-105 duration-300 hover:text-amber-100 text-amber-50 text-sm md:text-base"
+        className=" inline-flex gap-2 shrink-0 items-center cursor-pointer justify-center px-5 py-3 rounded-2xl bg-gradient-to-b from-gray-900 to-zinc-900 hover:-translate-y-1 hover:scale-105 group duration-300 hover:text-amber-100 text-amber-50 text-sm  md:text-base"
       >
-        Add +
+      <Plus className="h-4 w-4 transition-transform group-hover:rotate-180  duration-300" />
+          Add Station
       </button>
 
       {/* Modal Backdrop */}
       {isOpen && (
         <div className="fixed font-[DM_Sans] inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           {/* Modal Content */}
-          <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-xl shadow-2xl w-full max-w-4xl mx-auto overflow-hidden border border-gray-700">
+          <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl shadow-xl w-full max-w-4xl mx-auto overflow-hidden border border-gray-700">
             {/* Modal Header */}
             <div className="border-b border-gray-700 px-4 py-3 md:px-6 md:py-4">
               <div className="flex items-center justify-between">

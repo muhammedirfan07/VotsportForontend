@@ -222,7 +222,7 @@ const UpdateStation = ({ station }) => {
     <>
       <button
         onClick={openModal}
-        className="px-2 py-1 bg-emerald-500/10 text-indigo-500 rounded-full text-xs md:text-sm whitespace-nowrap"
+        className="px-3 py-1 bg-emerald-500/10 cursor-pointer text-indigo-500 rounded-md border border-blue-400  text-xs md:text-sm whitespace-nowrap"
       >
         Update
       </button>
