@@ -61,7 +61,7 @@ const StationHome = () => {
 </div>
 
       {/* Main Content */}
-      <div className="flex-1 h-screen  overflow-y-auto custom-scroll  px-4 pb-8 pt-6 sm:px-6 lg:px-10 lg:pt-10  min-w-0">
+      <div className="flex-1 h-screen  overflow-y-auto custom-scroll  px-4 pb-2 pt-6 sm:px-6 lg:px-10 lg:pt-10  min-w-0">
         {/* Header */}
         <Headerr />
 
