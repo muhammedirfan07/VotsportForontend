@@ -171,7 +171,7 @@ const Autho = ({ insideRegister }) => {
 
   return (
     <main
-      className="min-h-screen w-full flex items-center justify-center p-4 md:p-20 relatve overflow-hidden"
+      className="min-h-screen w-full flex items-center justify-center p-4 md:p-20 relative overflow-hidden"
       style={{
         background: "oklch(0.14 0.01 260)",
         color: "oklch(0.98 0.005 260)",

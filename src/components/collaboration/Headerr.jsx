@@ -8,7 +8,7 @@ const Headerr = () => {
   const dropdownRef = useRef(null);
 
   const handleLogout = () => {
-    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("PartnerToken");
     
     navigate("/");
   };

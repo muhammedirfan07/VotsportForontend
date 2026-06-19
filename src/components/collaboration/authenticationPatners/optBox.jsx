@@ -103,10 +103,10 @@ const OTPInput = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center p-8   bg-gradient-to-r from-slate-700 to-neutral-900 drop-shadow-lg rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-bold mb-4 font-[DM_Sans] text-gray-400">Enter Verification Code</h2>
-        <p className="text-gray-400 mb-4">We've sent a 6-digit code to your email.</p>
+    <div className="bg-black min-h-screen text-white flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center p-8  border border-zinc-900 bg-zinc-950 drop-shadow-lg rounded-lg shadow-md max-w-md mx-auto">
+        <h2 className="text-2xl font-bold mb-4 font-[DM_Sans] text-gray-200">Enter Verification Code</h2>
+        <p className="text-gray-500 mb-4">We've sent a 6-digit code to your email.</p>
 
         <div className="flex gap-2 mb-4">
           {otp.map((digit, index) => (
@@ -121,7 +121,7 @@ const OTPInput = () => {
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onPaste={handlePaste}
-              className="w-12 h-14 text-center shadow-md text-xl font-semibold border border-gray-300 rounded-md focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all"
+              className="w-12 h-14 text-center shadow-md text-xl font-semibold border border-zinc-600 rounded-md focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all"
             />
           ))}
         </div>

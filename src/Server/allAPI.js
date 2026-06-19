@@ -50,7 +50,7 @@ export const getChartDeatilsAPI =async()=>{
 
 //------------------PARTNERS----------------------
 //partners register--------
-export const patnersRegisterAPI=async(reqBody)=>{
+export const partnersRegisterAPI=async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/patner/patnerRegister`,reqBody)
 
 }

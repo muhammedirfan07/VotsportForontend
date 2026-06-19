@@ -1,225 +1,321 @@
 import React, { useState } from 'react';
-import { patnersRegisterAPI,patnersLoginAPI } from '../../../Server/allAPI';
+import { partnersRegisterAPI, patnersLoginAPI } from '../../../Server/allAPI';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
-import { FaSpinner } from "react-icons/fa"; // Import spinner icon
+import { FaSpinner } from "react-icons/fa";
+import { ArrowRight, Check, Eye, EyeOff, Zap,Building2 } from "lucide-react";
+import loginPatnerImg from '../../../assets/loginpatnerImg.jpeg'
 
-const Authen = ({InsideTheRegister}) => {
+function Field({ id, label, type = "text", placeholder, value, onChange }) {
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="block text-sm font-medium text-zinc-400">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className="h-12 w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors"
+      />
+    </div>
+  );
+}
+
+// ── main component ─────────────────────────────────────────────────────────────
+const Authen = ({ InsideTheRegister }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isregister,setIsRegister]= useState(false)
-   const [patnerInput,setPatnerInput]= useState({
-    StationName:"",
-    email:"",
-    password:"",
-    address:""
-   })
-   console.log(patnerInput);
- 
-   const navigate =useNavigate()
-
-const panterRegisterHandle= async(e)=>{
-    e.preventDefault();
-    // console.log("button clicked");
-    
-    if( patnerInput.StationName && patnerInput.email && patnerInput.password && patnerInput.address){
-       try{
-        setIsRegister(true)
-        const result =await patnersRegisterAPI(patnerInput)
-        console.log(result);
-        if(result.status===200){
-            toast.success(result.data.message,{position:"top-right",theme:"dark"})
-             navigate("/optVerifyPage")
-             setPatnerInput({
-                StationName:"",
-                email:"",
-                password:"",
-                address:""
-               })
-        }else{
-            if(result.status===406 || result.status === 400){
-                toast.error(result.response.data.message,{position:"top-right",theme:"dark"})
-            }
-        }
-       }catch(err){
-        console.log("error",err);
-       }
-      }else{
-        toast.warning("fill the  form completity ..... ",{position:"top-right",theme:"dark"})
-      }
-      console.log("paterdtails",patnerInput);
-}
-
-const PatnerLoginHandle =async(e)=>{
-  e.preventDefault();
-  console.log("inside the PatnerLoginHandle.......... ");
+  const [isRegister, setIsRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [patnerInput, setPatnerInput] = useState({
+    StationName: "",
+    email: "",
+    password: "",
+    address: "",
+  });
+   console.log("partnerInput",patnerInput);
    
-  if (!patnerInput.email || !patnerInput.password) {
-    toast.info("Please enter your email and password!", { position: "top-right" ,theme:"dark" });
-    return;
-}
-setIsLoading(true); // Start loading
-try {
-    const result = await patnersLoginAPI(patnerInput);
-    console.log("Login Response:",result);
+  const navigate = useNavigate();
 
-    if (result.status === 200) {
+  const rules = [
+    { label: "At least 8 characters", test: (p) => p.length >= 8 },
+    { label: "One uppercase letter", test: (p) => /[A-Z]/.test(p) },
+    { label: "One number", test: (p) => /\d/.test(p) },
+  ];
+
+  // ── register ──────────────────────────────────────────────────────────────
+  const panterRegisterHandle = async (e) => {
+    e.preventDefault();
+    if (
+      patnerInput.StationName &&
+      patnerInput.email &&
+      patnerInput.password &&
+      patnerInput.address
+    ) {
+      try {
+        setIsRegister(true);
+        const result = await partnersRegisterAPI(patnerInput);
+        if (result.status === 200) {
+          toast.success(result.data.message, { position: "top-right", theme: "dark" });
+          navigate("/optVerifyPage");
+          setPatnerInput({ StationName: "", email: "", password: "", address: "" });
+        } else if (result.status === 406 || result.status === 400) {
+          toast.error(result.response.data.message, { position: "top-right", theme: "dark" });
+        }
+      } catch (err) {
+        console.log("error", err);
+      } finally {
+        setIsRegister(false);
+      }
+    } else {
+      toast.warning("Fill the form completely…", { position: "top-right", theme: "dark" });
+    }
+  };
+
+  // ── login ─────────────────────────────────────────────────────────────────
+  const PatnerLoginHandle = async (e) => {
+    e.preventDefault();
+    if (!patnerInput.email || !patnerInput.password) {
+      toast.info("Please enter your email and password!", { position: "top-right", theme: "dark" });
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const result = await patnersLoginAPI(patnerInput);
+      if (result.status === 200) {
         const { partner, PartnerToken } = result.data;
-
-        // Store user & token in session storage
         sessionStorage.setItem("partner", JSON.stringify(partner));
         sessionStorage.setItem("PartnerToken", PartnerToken);
-
-        toast.success(`Welcome, ! 🎉`, { position:"top-right", theme:"dark" });   
-            navigate("/homecolab");
-
-        // Clear input fields
+        toast.success(`Welcome! 🎉`, { position: "top-right", theme: "dark" });
+        navigate("/homecolab");
         setPatnerInput({ email: "", password: "" });
-
-    } else if (result.status === 406  || result.status ===400 ) {
-        toast.warning(result.response.data.message, { position: "top-right" ,theme:"dark"});
+      } else if (result.status === 406 || result.status === 400) {
+        toast.warning(result.response.data.message, { position: "top-right", theme: "dark" });
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      toast.error("Something went wrong! Please try again.", { position: "top-right", theme: "dark" });
     }
-
-} catch (err) {
-  console.error("Login Error:", err);
-  toast.error("Something went wrong! Please try again.", { position: "top-right", theme: "dark" });
-}
-setIsLoading(false);  
-}
-
-
+    setIsLoading(false);
+  };
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 p-3 to-black min-h-screen text-white flex items-center justify-center">
-      <div  className='  absolute top-5  left-5'>
-              <Link   to={'/'} ><i class="fa-solid fa-bolt text-2xl" style={{color: "#f0efef"}}></i> 
-              <span className="md:text-3xl  text-2xl font-bold text-white"><span className='text-green-600'>Volt</span>Spot</span></Link>
-            </div>
-   <div className="w-full max-w-md mx-auto p-6  bg-gradient-to-r from-slate-700 to-neutral-900 drop-shadow-lg rounded-lg shadow-md">
-      <h2 className="text-2xl  font-bold mb-6 text-center font-[DM_Sans] text-gray-200"> {InsideTheRegister ? "RGISTER PAGE ":" LOGIN PAGE"} </h2>
-      
-      <form autocomplete="off" >
-        {/* Name Field */}
-        {
-          InsideTheRegister && <div className="relative mb-4">
-          <input
-          id='StationName'
-            type="text"
-            value={patnerInput.StationName}
-            onChange={(e)=>setPatnerInput({...patnerInput,StationName:e.target.value})}
-            className="block  px-2.5 pb-2.5 pt-4 w-full text-gray-400 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 peer"
-            placeholder="  "
+    <main className="min-h-screen w-full flex items-center justify-center  bg-zinc-950 text-zinc-100">
+
+      {/* brand bar */}
+      <header className="absolute hidden md:flex top-5 mb-3 left-6 z-20">
+        <Link to="/">
+          <h3 className=" flex text-3xl gap-1 p text-green-100 font-bold">
+            <span className="flex h-10  w-10 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i> </span>
+            <p> <span className="text-3xl   text-green-600 font-michroma">Volt</span>Spot</p>
+          </h3>
+        </Link>
+      </header>
+
+      <div className="mx-auto grid max-w-[1400px] gap-8 px-5 py-6 sm:gap-10 sm:px-10 sm:py-12 lg:grid-cols-2 lg:gap-12 lg:px-14 lg:py-14">
+
+        {/* ── left visual panel ── */}
+        <section className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 sm:rounded-3xl">
+        <header  className="absolute md:hidden  top-4  left-4 z-20">
+        <Link to="/">
+          <h3 className=" flex text-lg gap-1 justify-center items-center text-green-100 font-bold">
+            <span className="flex h-5  w-5 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xs" style={{ color: "#f0efef" }}></i> </span>
+            <p> <span className="text-lg   text-green-600 font-michroma">Volt</span>Spot</p>
+          </h3>
+        </Link>
+      </header>
+          <img
+            src={loginPatnerImg}
+            alt="VoltSpot device"
+            width={1024}
+            height={1408}
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          <label 
-            htmlFor="StationName"
-            className="absolute  text-gray-200 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] rounded-full bg-slate-700  px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-gray-200 left-1"
-          >
-            Company Name
-          </label>
-        
-        </div>
-        }
+          <div className="relative z-10 flex h-full min-h-[280px] flex-col justify-end p-6 sm:min-h-[360px] sm:p-8 lg:min-h-[640px] lg:p-10">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-green-500/30 bg-zinc-900/70 px-3 py-1 text-xs font-medium text-green-400 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+              Live partner network
+            </span>
+            <h2 className="mt-4 text-2xl font-semibold leading-[1.1] tracking-tight sm:text-3xl lg:mt-5 lg:text-4xl xl:text-5xl">
+              Power your drive.<br />
+              <span className="text-zinc-500">Anywhere, anytime.</span>
+            </h2>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-zinc-500 lg:mt-4">
+              Manage partner stations, track energy use, and grow your network — all in one place.
+            </p>
+          </div>
+        </section>
 
-        {/* Email Field */}
-        <div className="relative mb-4">
-          <input
-          id='email'
-            style={{displaya:"none"}}
-            value={patnerInput.email}
-            type="email" 
-            onChange={(e)=>setPatnerInput({...patnerInput,email:e.target.value})}
-            className="block px-2.5 pb-2.5 pt-4 w-full text-gray-400 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 peer"
-            placeholder=" "
-          />
-          <label 
-            htmlFor="email"
-            className="absolute text-gray-200 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] rounded-full  bg-slate-700 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75  peer-focus:text-gray-200 left-1"
-          >
-           Email
-          </label>
-          
-        </div>
+        {/* ── right form panel ── */}
+        <section className="flex items-center lg:px-6">
+          <div className="mx-auto w-full max-w-md">
 
-        {/* Password Field */}
-        <div className="relative mb-4">
-          <input
-          id='password'
-            name="pass" type="password" autocomplete="new-password"
-            value={patnerInput.password}
-            onChange={(e)=>setPatnerInput({...patnerInput,password:e.target.value})}
-            className="block px-2.5 pb-2.5 pt-4 w-full text-gray-400 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 peer"
-            placeholder=" "
-          />
-           <label 
-            htmlFor="password"
-            className="absolute text-gray-200 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] rounded-full bg-slate-700 px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75  peer-focus:text-gray-200 left-1"
-          >
-            Password
-          </label>
-        </div>
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              {InsideTheRegister ? "Join as partner" : "Welcome back"}
+            </h1>
+            <p className="mt-2 text-sm text-zinc-500 sm:mt-3">
+              {InsideTheRegister
+                ? "Register your company to start collaborating."
+                : "Sign in to continue to your partner workspace."}
+            </p>
 
-        {/* Address Field */}
-        {
-          InsideTheRegister &&
-          <div className="relative mb-6">
-          <textarea
-          id='address'
-            value={patnerInput.address}
-            onChange={(e)=>setPatnerInput({...patnerInput,address:e.target.value})}
-            className="block px-2.5 pb-2.5 pt-4 w-full text-gray-400 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-2  peer focus:ring-green-600 focus:border-green-600"
-            placeholder=" "
-            rows="3"
-          />
-          <label 
-            htmlFor="address"
-            className="absolute text-gray-200 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  bg-slate-700 rounded-full px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75  peer-focus:text-gray-200 left-1"
-          >
-            Address
-          </label>
-        </div>
-        }
+            <form
+              autoComplete="off"
+              onSubmit={InsideTheRegister ? panterRegisterHandle : PatnerLoginHandle}
+              className="mt-8 space-y-5 sm:mt-10"
+            >
+              {/* company name (register only) */}
+              {InsideTheRegister && (
+                <div className="space-y-2">
+                  <label htmlFor="StationName" className="block text-sm font-medium text-zinc-400">
+                    Company name
+                  </label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">
+                      <Building2 className="h-4 w-4" />
+                    </span>
+                    <input
+                      id="StationName"
+                      type="text"
+                      placeholder="Acme Inc."
+                      value={patnerInput.StationName}
+                      onChange={(e) => setPatnerInput({ ...patnerInput, StationName: e.target.value })}
+                      className="h-12 w-full rounded-xl border border-zinc-700 bg-zinc-800/60 pl-10 pr-4 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors"
+                    />
+                  </div>
+                </div>
+              )}
 
-        {/* alert message      */}
-{/* 
-        <div className=' mb-2 w-full py-4 px-1 0 bg-red-400/10 text-red-500 rounded-lg text-sm'>
-           <h1 className='text-center'> Cheack your email and verify .. </h1>
-        </div> */}
-    
-        {/* Submit Button */}
-        {
-          InsideTheRegister ?  <button
-          onClick={panterRegisterHandle}
-            className="w-full font-[DM_Sans]  bg-green-500 hover:-translate-y-1 hover:scale-108 text-white py-2.5 px-4 rounded-lg font-medium transition-all duration-300 ease-in-out hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-          >{ isregister?(<div className="flex justify-center items-center">
-    <FaSpinner className="animate-spin mr-2" /> 
-  </div>) :("Register")}
-            
-          </button>
-          :
-          <button
-            onClick={PatnerLoginHandle}
-            disabled={isLoading}
-            className="w-full font-[DM_Sans] bg-green-500 hover:-translate-y-1 hover:scale-108 text-white py-2.5 px-4 rounded-lg font-medium transition-all duration-300 ease-in-out hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-          >
-            {isLoading ? (
-  <div className="flex justify-center items-center">
-    <FaSpinner className="animate-spin mr-2" /> Logging ...
-  </div>
-) : (
-  "Login"
-)}
+              {/* email */}
+              <div  className="space-y-2">
+                 <label htmlFor="address" className="block text-sm font-medium text-zinc-400">
+                      Email
+                    </label>
+                <input
+                className='w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors resize-none'
+                  id="email"
+                  type="email"
+                  label="Email"
+                  placeholder="you@company.com"
+                  value={patnerInput.email}
+                  onChange={(e) => setPatnerInput({ ...patnerInput, email: e.target.value })}
+                />
+  
+              </div>
+              {/* password */}
+              <div className="space-y-2">
+                <label htmlFor="password" className="block text-sm font-medium text-zinc-400">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="pass"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="Enter password"
+                    value={patnerInput.password}
+                    onChange={(e) => setPatnerInput({ ...patnerInput, password: e.target.value })}
+                    className="h-12 w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 pr-12 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors"
+                  />
+                  <button
+                    type="button"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-700 hover:text-zinc-200"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
 
-          </button>
-        }
-      </form>
-      <div className="mt-6 text-center text-sm text-zinc-400">
-          {
-            InsideTheRegister?<p>Already have an account? <Link className=' text-indigo-500' to={'/logPatners'}>Sign in here</Link></p> :<p  > Not a member?<Link className=' text-indigo-500' to={'/regPatners'}> Create an account</Link></p> 
-          }
-        </div>
-    </div>
-  </div>
-        
+                {/* strength rules (register only) */}
+                {InsideTheRegister && (
+                  <ul className="mt-3 grid gap-1.5 text-xs sm:grid-cols-3">
+                    {rules.map((r) => {
+                      const ok = r.test(patnerInput.password);
+                      return (
+                        <li
+                          key={r.label}
+                          className={`flex items-center gap-1.5 transition-colors ${ok ? "text-green-400" : "text-zinc-500"}`}
+                        >
+                          <span
+                            className={`grid h-4 w-4 shrink-0 place-items-center rounded-full border ${ok ? "border-green-500 bg-green-500/15" : "border-zinc-700"
+                              }`}
+                          >
+                            {ok && <Check className="h-2.5 w-2.5" />}
+                          </span>
+                          <span className="truncate">{r.label}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+
+              {/* address (register only) */}
+              {InsideTheRegister && (
+                <div className="space-y-2">
+                  <label htmlFor="address" className="block text-sm font-medium text-zinc-400">
+                    Address
+                  </label>
+                  <textarea
+                    id="address"
+                    rows={3}
+                    placeholder="123 Market St, City"
+                    value={patnerInput.address}
+                    onChange={(e) => setPatnerInput({ ...patnerInput, address: e.target.value })}
+                    className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors resize-none"
+                  />
+                </div>
+              )}
+
+              {/* forgot password (login only) */}
+              {!InsideTheRegister && (
+                <div className="flex justify-end">
+                  <a href="#" className="text-xs font-medium text-zinc-500 hover:text-green-400 transition-colors">
+                    Forgot password?
+                  </a>
+                </div>
+              )}
+
+              {/* submit button */}
+              <button
+                type="submit"
+                disabled={isLoading || isRegister}
+                className="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-green-500 text-base font-semibold text-zinc-950 transition-colors hover:bg-green-400 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {isLoading || isRegister ? (
+                  <>
+                    <FaSpinner className="animate-spin" />
+                    {InsideTheRegister ? "Registering…" : "Logging in…"}
+                  </>
+                ) : (
+                  <>
+                    {InsideTheRegister ? "Create account" : "Sign in"}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* switch mode link */}
+            <p className=" text-center text-sm text-zinc-500 sm:mt-5 sm:text-left">
+              {InsideTheRegister ? "Already a partner? " : "New to VoltSpot? "}
+              <Link
+                to={InsideTheRegister ? "/logPatners" : "/regPatners"}
+                className="font-semibold text-zinc-100 underline-offset-4 hover:underline"
+              >
+                {InsideTheRegister ? "Sign in" : "Create account"}
+              </Link>
+            </p>
+
+          </div>
+        </section>
+      </div>
+    </main>
   );
 };
 
