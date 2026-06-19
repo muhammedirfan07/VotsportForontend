@@ -180,12 +180,12 @@ export default function EVPaymentPage() {
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6">
                   ${walletBalance.toFixed(2)}
                 </h1>
-                <button 
+                {/* <button 
                   onClick={() => setShowAddFundsModal(true)}
                   className="w-full sm:w-auto bg-green-500 hover:bg-green-400 text-black font-bold px-6 sm:px-8 py-3 rounded-xl transition-all transform hover:scale-105"
                 >
                   Add Funds
-                </button>
+                </button> */}
               </div>
               <div className="hidden sm:flex w-14 h-14 sm:w-16 sm:h-16 bg-green-700/30 rounded-2xl items-center justify-center">
                 <Wallet className="w-7 h-7 sm:w-8 sm:h-8 text-green-400" />
@@ -193,9 +193,9 @@ export default function EVPaymentPage() {
             </div>
           </div>
         </div>
-
+         
         {/* Payment Methods */}
-        <div className="bg-zinc-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-900">
+        {/* <div className="bg-zinc-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-900">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5 sm:mb-6">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">Payment Methods</h2>
@@ -238,7 +238,7 @@ export default function EVPaymentPage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Payment History */}
         <div className="bg-zinc-950 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-900 ">

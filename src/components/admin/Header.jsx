@@ -31,7 +31,7 @@ const Header = () => {
         <div className=" bg-zinc-950 border border-zinc-900 mb-8 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-3xl px-5 py-5 sm:px-7">
           <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.18em] text-gray-500 font-semibold ">Dashboard</p>
-            <h1 className="mt-1 truncate text-white text-2xl font-bold sm:text-3xl">Partner Page</h1>
+            <h1 className="mt-1 truncate text-white text-2xl font-bold sm:text-3xl">Admin Page</h1>
           </div>
           <div className="relative" ref={dropdownRef}>
               <button onClick={() => setDropdownOpen(!dropdownOpen)}

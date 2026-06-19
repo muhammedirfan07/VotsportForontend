@@ -203,7 +203,7 @@ setIsLoading(false);
           >
             {isLoading ? (
   <div className="flex justify-center items-center">
-    <FaSpinner className="animate-spin mr-2" /> Logging in...
+    <FaSpinner className="animate-spin mr-2" /> Logging ...
   </div>
 ) : (
   "Login"

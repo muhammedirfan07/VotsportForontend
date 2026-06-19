@@ -263,7 +263,7 @@ function AllPatnersViewPage() {
                         </div>
                       </td>
                       <td className="px-4 py-4 text-zinc-400">{u.email}</td>
-                      <td className="px-4 py-4 text-zinc-400">5</td>
+                      <td className="px-4 py-4 text-zinc-400">{u.stationCount}</td>
                       <td className="px-4 py-4 text-zinc-400">{u.address}</td>
                       <td className="px-4 py-4">
                         <StatusChip status={u.status || 'active'} />
@@ -295,7 +295,7 @@ function AllPatnersViewPage() {
                         <span className="truncate">{u.email}</span>
                       </p>
                       <div>
-                        <h3 className="mt-0.5 truncate text-sm font-semibold text-zinc-500">station : <span className="text-zinc-300">5</span> </h3>
+                        <h3 className="mt-0.5 truncate text-sm font-semibold text-zinc-500">stations : <span className="text-zinc-300">{u.stationCount}</span> </h3>
                       </div>
                     </div>
                   </div>
