@@ -137,7 +137,7 @@ const OTPInput = () => {
         {message && <p className="mt-3 text-sm font-medium text-gray-400">{message}</p>}
 
         <div className="mt-4 text-sm text-gray-600">
-          Didn't receive code? <button className="text-green-600 font-medium hover:underline">Resend</button>
+          Didn't receive code? <button onClick="" className="text-green-600 font-medium hover:underline">Resend</button>
         </div>
       </div>
     </div>
