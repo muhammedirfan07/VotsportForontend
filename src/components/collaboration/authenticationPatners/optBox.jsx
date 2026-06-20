@@ -1,16 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
-import { EmailVerifationAPI } from "../../../Server/allAPI";
+import { EmailVerifationAPI, reSendOtpAPI } from "../../../Server/allAPI";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
+
 
 const OTPInput = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [resendOtp,setResendOtp]=useState(false)
   const inputRefs = useRef([]);
   
   const navigate=useNavigate()
-
+  const location =useLocation()
   useEffect(() => {
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
@@ -86,9 +88,6 @@ const OTPInput = () => {
          navigate('/logPatners')
          setLoading(true);
         },3000)
-        
-       
-
       } else {
         toast.error(" Invalid or expired OTP. Try again.", { position: "top-right", theme:"dark"});
         setMessage(" Invalid or expired OTP. Try again.");
@@ -101,6 +100,26 @@ const OTPInput = () => {
 
     setLoading(false);
   };
+  const HandleResend =async()=>{
+    const email= location.state?.email
+    if(!email){
+      toast.error("Email not Founded . plz register again",{theme:"dark",position:"bottom-right"})
+    }
+    setResendOtp(true)
+    try {
+      const result = await reSendOtpAPI({email})
+      if(result.status===200){
+        toast.success("OTP resent! Check your email.",{theme:"dark",position:"bottom-right"})
+        setOtp(["","","","","",""])
+        inputRefs.current[0].focus()
+      }else{
+         toast.error("Failed to resend OTP.", { theme: "dark" ,position:"bottom-right"});
+      }   
+    } catch (error) {
+       toast.error("Something went wrong.", { theme: "dark" ,position:"bottom-right"});
+    }
+    setResendOtp(false)
+  }
 
   return (
     <div className="bg-black min-h-screen text-white flex items-center justify-center">
@@ -137,7 +156,7 @@ const OTPInput = () => {
         {message && <p className="mt-3 text-sm font-medium text-gray-400">{message}</p>}
 
         <div className="mt-4 text-sm text-gray-600">
-          Didn't receive code? <button onClick="" className="text-green-600 font-medium hover:underline">Resend</button>
+          Didn't receive code? <button onClick={HandleResend} className="text-green-600 font-medium hover:underline">{resendOtp?"Sending...." :"Resend"}</button>
         </div>
       </div>
     </div>

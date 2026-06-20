@@ -59,6 +59,10 @@ export const EmailVerifationAPI=async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/patner/verfiyemail`,reqBody)
 
 }
+// re-send otp--------------
+export const reSendOtpAPI =async(reqBody)=>{
+    return await commonAPI("POST",`${SERVER_URL}/patner/reSendOtp`,reqBody)
+}
 //partner login----------------
 export const patnersLoginAPI=async(reqBody)=>{
     return await commonAPI("POST",`${SERVER_URL}/patner/patnerlogin`,reqBody)

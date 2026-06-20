@@ -17,12 +17,12 @@ const Sidebar = () => {
 
       <nav className="space-y-1 mt-10 md:space-y-2">
         <Link to="/patnerDashboard">
-          <button className={`w-full flex items-center mb-3 gap-2 md:gap-3 font-semibold  px-2 md:px-3 py-3 text-sm  rounded-2xl ${isActive('/patnerDashboard') ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <button className={`w-full flex items-center mb-3 gap-2 md:gap-3 font-semibold  px-2 md:px-3 py-3 text-sm  rounded-2xl ${isActive('/patnerDashboard') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
           <MapPinHouse className=" ms-2 w-5 h-5" /> Stations
           </button>
         </Link>
         <Link to="/notifation">
-          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/notifation') ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/notifation') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
           <BadgeIndianRupee className=" ms-2 w-5 h-5" /> Notification
           </button>
         </Link> 

@@ -60,7 +60,7 @@ const Authen = ({ InsideTheRegister }) => {
         const result = await partnersRegisterAPI(patnerInput);
         if (result.status === 200) {
           toast.success(result.data.message, { position: "top-right", theme: "dark" });
-          navigate("/optVerifyPage");
+          navigate("/optVerifyPage",{state:{email:patnerInput.email}});
           setPatnerInput({ StationName: "", email: "", password: "", address: "" });
         } else if (result.status === 406 || result.status === 400) {
           toast.error(result.response.data.message, { position: "top-right", theme: "dark" });
