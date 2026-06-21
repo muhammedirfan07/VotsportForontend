@@ -183,3 +183,9 @@ export const updateVehicleDataAPI = async(id,reqBody,reqHeader)=>{
 export const removeVehicleDataAPI = async (id,reqHeader)=>{
     return await commonAPI("DELETE",`${SERVER_URL}/removeVehicle/${id}`,{},reqHeader)
 }
+
+
+
+export const getWalletSummaryAPI = async (reqHeader) => {
+  return await commonAPI("GET", `${SERVER_URL}/wallet-summary`, {}, reqHeader);
+};
