@@ -128,84 +128,100 @@ const StationDetailsPage = () => {
 
   // charging staion booking---
   const handleBooking = async () => {
-    if (!slotNumber || duration < 1) {
-      toast.warning("Please fill all required fields", {
-        position: "top-center",
-        theme: "dark",
-      });
-      return;
-    }
+  if (!slotNumber || duration < 1) {
+    toast.warning("Please fill all required fields", {
+      position: "top-center", theme: "dark",
+    });
+    return;
+  }
 
-    const userData = sessionStorage.getItem("user");
-    const authUser = JSON.parse(userData);
-    const userId = authUser?._id;
-    if (!userId) {
-      toast.error("User not found. Please log in.");
-      return;
-    }
-    const price = station?.pricePerHour * duration;
-    sessionStorage.setItem("slotNumber", slotNumber);
-    sessionStorage.setItem("duration", duration);
-    sessionStorage.setItem("price", price);
-    sessionStorage.setItem("stationId", stationId);
-    sessionStorage.setItem("userId", userId);
+  const authUser = JSON.parse(sessionStorage.getItem("user"));
+  const userId = authUser?._id;
+  if (!userId) {
+    toast.error("User not found. Please log in.");
+    return;
+  }
 
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-      toast.error("Authentication token not found");
-      return;
-    }
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    toast.error("Authentication token not found");
+    return;
+  }
 
-    const reqHeaders = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    const bookingData = {
-      userId,
-      stationId,
-      slotNumber: parseInt(slotNumber),
-      startTime: new Date().toISOString(),
-      duration,
-    };
-    console.log("booking data :", bookingData);
-
-    try {
-      setIsSubmitting(true);
-      const result = await bookingStaionAPI(bookingData, reqHeaders);
-      if (result.status === 200) {
-        toast.success(result.data.message, {
-          position: "top-center",
-          theme: "dark",
-        });
-
-        setSlotNumber("");
-        setDuration(1);
-        const paymentResult = await paymentAPI(stationId, userId, price);
-        console.log("Stripe Session ID:", paymentResult.data.id);
-        if (paymentResult.data.id) {
-          navigate(`/stripe-checkout/${paymentResult.data.id}`);
-        } else {
-          toast.error("Failed to initiate payment", {
-            position: "top-right",
-            theme: "dark",
-          });
-        }
-      } else {
-        toast.error(result.response?.data?.message || "Booking failed!", {
-          position: "top-right",
-          theme: "dark",
-        });
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      toast.error("Something went wrong!", {
-        position: "bottom-right",
-        theme: "dark",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+  const price = station?.pricePerHour * duration;
+  const reqHeaders = { Authorization: `Bearer ${token}` };
+  const bookingData = {
+    userId,
+    stationId,
+    slotNumber: parseInt(slotNumber),
+    startTime: new Date().toISOString(),
+    duration,
   };
+
+  try {
+    setIsSubmitting(true);
+
+    // STEP 1 — create booking
+    const result = await bookingStaionAPI(bookingData, reqHeaders);
+    
+    // DEBUG — remove after fix confirmed
+    console.log("🟡 bookingStaionAPI raw result:", result);
+    console.log("🟡 result.status:", result?.status);
+    console.log("🟡 result.data:", result?.data);
+
+    // Handle both axios success shape AND axios error shape
+    const isSuccess = result?.status === 200 || result?.data?.booking;
+    
+    if (!isSuccess) {
+      const errMsg = result?.data?.message 
+        || result?.response?.data?.message 
+        || "Booking failed!";
+      toast.error(errMsg, { position: "top-right", theme: "dark" });
+      return;
+    }
+
+    // STEP 2 — extract bookingId safely
+    const bookingMongoId = result?.data?.booking?._id 
+      || result?.data?.booking?.id;
+
+    console.log("🟡 bookingMongoId:", bookingMongoId);
+
+    if (!bookingMongoId) {
+      toast.error("Booking ID missing. Please try again.");
+      console.error("❌ booking._id is undefined. Full data:", result?.data);
+      return;
+    }
+
+    // Save for PaymentSuccessPage
+    sessionStorage.setItem("pendingBookingId", bookingMongoId);
+    toast.success("Slot booked! Redirecting to payment...", {
+      position: "top-center", theme: "dark",
+    });
+    setSlotNumber("");
+    setDuration(1);
+
+    // STEP 3 — create Stripe session WITH bookingId
+    const paymentResult = await paymentAPI(stationId, userId, price, bookingMongoId);
+    
+    console.log("🟡 paymentResult:", paymentResult?.data);
+
+    if (paymentResult?.data?.id) {
+      navigate(`/stripe-checkout/${paymentResult.data.id}`);
+    } else {
+      toast.error("Failed to initiate payment. Try again.", {
+        position: "top-right", theme: "dark",
+      });
+    }
+
+  } catch (err) {
+    console.error("❌ handleBooking crash:", err);
+    toast.error("Something went wrong!", {
+      position: "bottom-right", theme: "dark",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <>

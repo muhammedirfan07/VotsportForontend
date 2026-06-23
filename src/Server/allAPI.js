@@ -133,9 +133,9 @@ export const singleUserDetailsAPI = async(userId,reqHeader)=>{
     return await commonAPI("POST",`${SERVER_URL}/user/booking`,reqBody,reqHeader)
  }
  //available slot viewing
- export const avilableSlotAPI =async(stationId,startTime,slotNumber,duration,reqHeader)=>{
-    return await commonAPI("GET",`${SERVER_URL}user/slots?stationId=${stationId}&startTime=${startTime}&duration=${duration}&slotNumber=${slotNumber}`,{},reqHeader)
- }
+export const avilableSlotAPI = async (startTime, stationId, duration, slotNumber, reqHeader) => {
+    return await commonAPI("GET", `${SERVER_URL}/user/slots?stationId=${stationId}&startTime=${startTime}&duration=${duration}&slotNumber=${slotNumber}`, {}, reqHeader)
+}
  //filer the stations 
  export const filterStationAPI =async(city,state,chargingType,vehicleType,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/filter?city=${city}&state=${state}&chargingType=${chargingType}&vehicleType=${vehicleType}`,{},reqHeader)
@@ -150,11 +150,12 @@ export const singleUserDetailsAPI = async(userId,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/viewreview?stationId=${stationId}`,{},reqHeader)
  }
 //  Payment 
-export const paymentAPI = async (stationId, userId, totalPrice) => {
+export const paymentAPI = async (stationId, userId, totalPrice,bookingId) => {
     return await commonAPI("POST", `${SERVER_URL}/user/payment`, {
       stationId,
       userId,
-      price: totalPrice,  
+      price: totalPrice, 
+      bookingId, 
     });
   };
 
@@ -185,7 +186,17 @@ export const removeVehicleDataAPI = async (id,reqHeader)=>{
 }
 
 
-
+// this all demo link i need to delete 
 export const getWalletSummaryAPI = async (reqHeader) => {
   return await commonAPI("GET", `${SERVER_URL}/wallet-summary`, {}, reqHeader);
 };
+
+//cancel slot--
+export const cancelBookingAPI = async (bookingId, reqHeader) => {
+    return await commonAPI("PUT", `${SERVER_URL}/user/booking/${bookingId}/cancel`, {}, reqHeader);
+}
+
+// rebooking
+export const rebookCheckAPI = async (reqBody, reqHeader) => {
+    return await commonAPI("POST", `${SERVER_URL}/user/rebook-check`, reqBody, reqHeader);
+   };

@@ -231,7 +231,7 @@ const VehicleDetails = () => {
       <div className="p-6">
         {loading ? (
           <p className="text-gray-400 text-center py-8">Loading vehicles...</p>
-        ) : vehicles.length > 0 ? (
+        ) : vehicles?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {vehicles.map((vehicle) => (
               <VehicleCard

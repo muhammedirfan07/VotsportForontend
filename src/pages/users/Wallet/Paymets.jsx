@@ -19,7 +19,16 @@ export default function EVPaymentPage() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     getWalletSummaryAPI({ Authorization: `Bearer ${token}` })
-      .then((res) => { if (res?.data) setSummary(res.data); })
+      .then((res) => { if (res?.data) setSummary(res.data); 
+         // Display all data
+        console.log("Wallet Summary:", res.data);
+
+        // Display payments only
+        console.log("Payments:", res.data.payments);
+
+        // Display refunds only
+        console.log("Refunds:", res.data.refunds);
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -109,7 +118,7 @@ export default function EVPaymentPage() {
                   {isLoading ? "—" : `₹${(summary?.totalSpent || 0).toFixed(2)}`}
                 </p>
                 <p className="text-green-300/40 text-xs mt-0.5">
-                  {summary?.payments?.length || 0} payments
+                  {summary?.payments?.length || 0} transaction
                 </p>
               </div>
               <div className="bg-black/20 rounded-xl px-4 py-3 border border-green-700/20">
