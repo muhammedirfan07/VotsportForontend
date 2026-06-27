@@ -140,7 +140,10 @@ export const avilableSlotAPI = async (startTime, stationId, duration, slotNumber
  export const filterStationAPI =async(city,state,chargingType,vehicleType,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/filter?city=${city}&state=${state}&chargingType=${chargingType}&vehicleType=${vehicleType}`,{},reqHeader)
  }
-
+// update user profile (name, phone, image)
+export const updateUserProfileAPI = async (reqBody, reqHeader) => {
+    return await commonAPI("PUT", `${SERVER_URL}/user/updateProfile`, reqBody, reqHeader);
+};
  // add reviews
  export const addReviewAPI =async(reqBody,reqHeader)=>{
     return await commonAPI("POST",`${SERVER_URL}/addreview`,reqBody,reqHeader)

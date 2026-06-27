@@ -109,7 +109,7 @@ export default function EVPaymentPage() {
 
             {/* Stats row */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black/20 rounded-xl px-4 py-3 border border-green-700/20">
+              {/* <div className="bg-black/20 rounded-xl px-4 py-3 border border-green-700/20">
                 <div className="flex items-center gap-2 mb-1">
                   <ArrowUpCircle className="w-4 h-4 text-red-400" />
                   <span className="text-green-300/60 text-xs">Total Spent</span>
@@ -120,7 +120,7 @@ export default function EVPaymentPage() {
                 <p className="text-green-300/40 text-xs mt-0.5">
                   {summary?.payments?.length || 0} transaction
                 </p>
-              </div>
+              </div> */}
               <div className="bg-black/20 rounded-xl px-4 py-3 border border-green-700/20">
                 <div className="flex items-center gap-2 mb-1">
                   <ArrowDownCircle className="w-4 h-4 text-green-400" />
@@ -168,7 +168,7 @@ export default function EVPaymentPage() {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-5 bg-zinc-900 p-1 rounded-xl w-fit">
+          {/* <div className="flex gap-2 mb-5 bg-zinc-900 p-1 rounded-xl w-fit">
             {[
               { key: "all",      label: "All" },
               { key: "payments", label: "Payments" },
@@ -183,7 +183,7 @@ export default function EVPaymentPage() {
                 {tab.label}
               </button>
             ))}
-          </div>
+          </div> */}
 
           {/* List */}
           <div className="space-y-3 max-h-[520px] overflow-y-auto pr-1 custom-scroll">

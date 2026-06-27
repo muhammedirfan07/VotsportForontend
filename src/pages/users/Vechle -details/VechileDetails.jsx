@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Car, Plus } from "lucide-react";
+import { Car, Plus,Loader2 } from "lucide-react";
 import VehicleCard from "./VechileDataCard";
 import VechileModal from "./VechileModal";
 import { toast } from "react-toastify";
@@ -230,7 +230,9 @@ const VehicleDetails = () => {
       {/* Card grid */}
       <div className="p-6">
         {loading ? (
-          <p className="text-gray-400 text-center py-8">Loading vehicles...</p>
+         <p className="text-gray-400 flex gap-2 justify-center py-8">
+              <Loader2 className="w-5 h-5 animate-spin mt-1" /> Loading History...
+            </p>
         ) : vehicles?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {vehicles.map((vehicle) => (
