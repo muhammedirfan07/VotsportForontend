@@ -8,30 +8,31 @@ import { toast } from "react-toastify";
 import { viewBookingAPI, cancelBookingAPI, rebookCheckAPI, paymentAPI } from "../../Server/allAPI";
 
 const BookingHistory = ({ joinData }) => {
-  const [expandedBooking, setExpandedBooking]       = useState(null);
-  const [bookingHistory, setBookingHistory]         = useState([]);
-  const [selectedFilter, setSelectedFilter]         = useState("all");
+  const [expandedBooking, setExpandedBooking] = useState(null);
+  const [bookingHistory, setBookingHistory] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("all");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [isLoading, setIsLoading]                   = useState(true);
-  const [cancellingId, setCancellingId]             = useState(null);
-  const [rebookingId, setRebookingId]               = useState(null);
-  const [confirmCancelId, setConfirmCancelId]       = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [cancellingId, setCancellingId] = useState(null);
+  const [rebookingId, setRebookingId] = useState(null);
+  const [confirmCancelId, setConfirmCancelId] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => { viewBookingHistory();
-    
-   }, []);
+  useEffect(() => {
+    viewBookingHistory();
+
+  }, []);
 
   const currentYear = new Date().getFullYear();
-  const joinYear    = joinData ? new Date(joinData).getFullYear() : currentYear;
+  const joinYear = joinData ? new Date(joinData).getFullYear() : currentYear;
   const yearFilters = [];
   for (let y = currentYear; y >= joinYear; y--)
     yearFilters.push({ value: String(y), label: String(y) });
 
   const timeFilters = [
-    { value: "all",     label: "All Time" },
-    { value: "1week",   label: "Last 7 Days" },
-    { value: "1month",  label: "Last Month" },
+    { value: "all", label: "All Time" },
+    { value: "1week", label: "Last 7 Days" },
+    { value: "1month", label: "Last Month" },
     { value: "6months", label: "Last 6 Months" },
     ...yearFilters,
   ];
@@ -41,14 +42,15 @@ const BookingHistory = ({ joinData }) => {
 
   const viewBookingHistory = async () => {
     const authUser = JSON.parse(sessionStorage.getItem("user"));
-    const userId   = authUser?._id;
-    const token    = sessionStorage.getItem("token");
+    const userId = authUser?._id;
+    const token = sessionStorage.getItem("token");
     if (!token) return;
     try {
       const result = await viewBookingAPI(userId, { Authorization: `Bearer ${token}` });
-      if (result.status === 200) {setBookingHistory(result.data.bookings);
-          console.log("booking history =",result.data.bookings);
-    
+      if (result.status === 200) {
+        setBookingHistory(result.data.bookings);
+        console.log("booking history =", result.data.bookings);
+
       }
     } catch (err) {
       console.error(err);
@@ -56,6 +58,14 @@ const BookingHistory = ({ joinData }) => {
       setIsLoading(false);
     }
   };
+  const isCancelAllowed = (booking) => {
+    if (booking?.status !== "confirmed")
+      return false
+    const bookedAt = new Date(booking.createdAt)
+    const now = new Date()
+    const diffminutes = (now - bookedAt) / (1000 * 60)
+    return diffminutes <= 15
+  }
 
   // ── Cancel booking ──────────────────────────────────────────────────────────
   const handleCancel = async (bookingId) => {
@@ -89,17 +99,17 @@ const BookingHistory = ({ joinData }) => {
   // ── Rebook slot ─────────────────────────────────────────────────────────────
   const handleRebook = async (booking) => {
     setRebookingId(booking._id);
-    const token    = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const authUser = JSON.parse(sessionStorage.getItem("user"));
-    const userId   = authUser?._id;
+    const userId = authUser?._id;
 
     try {
-      // 1. Check slot availability
+      //  Check slot availability
       const checkResult = await rebookCheckAPI(
         {
-          stationId:  booking.stationId?._id,
+          stationId: booking.stationId?._id,
           slotNumber: booking.slotNumber,
-          duration:   booking.duration,
+          duration: booking.duration,
         },
         { Authorization: `Bearer ${token}` }
       );
@@ -107,20 +117,20 @@ const BookingHistory = ({ joinData }) => {
       if (checkResult.status !== 200) {
         toast.warning(
           checkResult.response?.data?.message ||
-            "Slot no longer available. Choose another slot.",
+          "Slot no longer available. Choose another slot.",
           { position: "top-center", theme: "dark" }
         );
         return;
       }
 
-      // 2. Slot is free → create new booking then go to payment
+      //  Slot is free  create new booking then go to payment
       const { bookingStaionAPI } = await import("../../Server/allAPI");
       const bookingData = {
         userId,
-        stationId:  booking.stationId?._id,
+        stationId: booking.stationId?._id,
         slotNumber: booking.slotNumber,
-        startTime:  new Date().toISOString(),
-        duration:   booking.duration,
+        startTime: new Date().toISOString(),
+        duration: booking.duration,
       };
 
       const bookResult = await bookingStaionAPI(bookingData, { Authorization: `Bearer ${token}` });
@@ -128,7 +138,7 @@ const BookingHistory = ({ joinData }) => {
         toast.success("Slot rebooked! Redirecting to payment...", {
           position: "top-center", theme: "dark",
         });
-        const price         = booking.totalPrice;
+        const price = booking.totalPrice;
         const paymentResult = await paymentAPI(
           booking.stationId?._id,
           userId,
@@ -163,8 +173,8 @@ const BookingHistory = ({ joinData }) => {
 
     if (["1week", "1month", "6months"].includes(selectedFilter)) {
       const d = new Date(now);
-      if (selectedFilter === "1week")   d.setDate(d.getDate() - 7);
-      if (selectedFilter === "1month")  d.setMonth(d.getMonth() - 1);
+      if (selectedFilter === "1week") d.setDate(d.getDate() - 7);
+      if (selectedFilter === "1month") d.setMonth(d.getMonth() - 1);
       if (selectedFilter === "6months") d.setMonth(d.getMonth() - 6);
       return bookingHistory.filter((b) => new Date(b.startTime) >= d);
     }
@@ -177,14 +187,14 @@ const BookingHistory = ({ joinData }) => {
   };
 
   const filteredBookings = filterBookingsByTime();
-  const enableScroll     = filteredBookings.length > 5;
+  const enableScroll = filteredBookings.length > 5;
 
   const getStatusStyles = (status) => {
     switch (status.toLowerCase()) {
-      case "confirmed":  return "bg-green-500/20 text-green-400 border border-green-500/30";
-      case "completed":  return "bg-blue-500/20 text-blue-400 border border-blue-500/30";
-      case "canceled":   return "bg-red-500/20 text-red-400 border border-red-500/30";
-      default:           return "bg-gray-500/20 text-gray-400 border border-gray-500/30";
+      case "confirmed": return "bg-green-500/20 text-green-400 border border-green-500/30";
+      case "completed": return "bg-blue-500/20 text-blue-400 border border-blue-500/30";
+      case "canceled": return "bg-red-500/20 text-red-400 border border-red-500/30";
+      default: return "bg-gray-500/20 text-gray-400 border border-gray-500/30";
     }
   };
 
@@ -210,9 +220,8 @@ const BookingHistory = ({ joinData }) => {
                 <button
                   key={filter.value}
                   onClick={() => { setSelectedFilter(filter.value); setShowFilterDropdown(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-neutral-700 ${
-                    selectedFilter === filter.value ? "bg-green-900/30 text-green-400" : "text-white"
-                  }`}
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-neutral-700 ${selectedFilter === filter.value ? "bg-green-900/30 text-green-400" : "text-white"
+                    }`}
                 >
                   {filter.label}
                 </button>
@@ -231,20 +240,19 @@ const BookingHistory = ({ joinData }) => {
             </p>
           ) : filteredBookings.length > 0 ? (
             filteredBookings.map((booking) => {
-              const startTime  = new Date(booking.startTime);
-              const endTime    = new Date(booking.endTime);
-              const timeOpts   = { hour: "2-digit", minute: "2-digit", hour12: true };
+              const startTime = new Date(booking.startTime);
+              const endTime = new Date(booking.endTime);
+              const timeOpts = { hour: "2-digit", minute: "2-digit", hour12: true };
               const isCanceled = booking.status === "canceled";
               const isConfirmed = booking.status === "confirmed";
 
               return (
                 <div
                   key={booking._id}
-                  className={`rounded-xl border overflow-hidden transition-all ease-in-out ${
-                    isCanceled
+                  className={`rounded-xl border overflow-hidden transition-all ease-in-out ${isCanceled
                       ? "bg-neutral-950/60 border-neutral-800 opacity-70"
                       : "bg-neutral-900/50 border-neutral-700 hover:border-green-600/30 shadow"
-                  }`}
+                    }`}
                 >
                   {/* Confirm-cancel overlay */}
                   {confirmCancelId === booking._id && (
@@ -353,10 +361,10 @@ const BookingHistory = ({ joinData }) => {
                           <p className="text-white font-medium">{booking.stationId?.chargingType || "N/A"}</p>
                         </div>
                       </div>
-
                       {/* Action buttons */}
                       <div className="flex flex-wrap gap-3 pt-3 border-t border-neutral-800">
-                        {isConfirmed && (
+                        {/* Cancel only within 15 min */}
+                        {isConfirmed && isCancelAllowed(booking) && (
                           <button
                             onClick={(e) => { e.stopPropagation(); setConfirmCancelId(booking._id); }}
                             disabled={!!cancellingId}
@@ -366,6 +374,22 @@ const BookingHistory = ({ joinData }) => {
                           </button>
                         )}
 
+                        {/* Window expired  show rebook instead */}
+                        {isConfirmed && !isCancelAllowed(booking) && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleRebook(booking); }}
+                            disabled={rebookingId === booking._id}
+                            className="flex items-center gap-1.5 bg-green-900/30 hover:bg-green-900/50 border border-green-700/40 text-green-400 hover:text-green-300 text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
+                          >
+                            {rebookingId === booking._id ? (
+                              <><Loader2 size={14} className="animate-spin" /> Checking slot...</>
+                            ) : (
+                              <><RefreshCw size={14} /> Rebook Same Slot</>
+                            )}
+                          </button>
+                        )}
+
+                        {/* Already cancelled always show rebook */}
                         {isCanceled && (
                           <button
                             onClick={(e) => { e.stopPropagation(); handleRebook(booking); }}

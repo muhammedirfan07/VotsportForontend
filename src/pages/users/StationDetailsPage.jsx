@@ -42,8 +42,6 @@ const StationDetailsPage = () => {
     }
   }, [stationId, duration]);
 
-
-
   const singleStaionDetails = async () => {
     try {
       const result = await getSingleStaionAPI(stationId);
@@ -70,7 +68,6 @@ const StationDetailsPage = () => {
     const averageRating = totalRating / reviews.length;
     setOverallRating(averageRating.toFixed(1));
   };
-
 
   const getRatingDistribution = (reviews) => {
     const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
@@ -225,16 +222,14 @@ const StationDetailsPage = () => {
 
   return (
     <>
-      {/* Loading Spinner */}
-      {loading && (
+      {/* Main Content */}
+      <main className="bg-black min-h-screen text-white p-4 md:p-8">
+        { loading ? (
         <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-0 z-50">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500 border-solid"></div>
         </div>
-      )}
-
-      {/* Main Content */}
-      <main className="bg-black min-h-screen text-white p-4 md:p-8">
-        <div className="container mx-auto">
+      ):
+         ( <div className="container mx-auto">
           <Link to={"/home"}>
             <div className="flex text-green-700">
               <ArrowBigLeftDash /> Home
@@ -490,7 +485,8 @@ const StationDetailsPage = () => {
               )
             }
           </div>
-        </div>
+        </div>)
+        }
       </main>
     </>
   );

@@ -119,7 +119,18 @@ export const deleteStaionAPI=async(id,reqHeader)=>{
 export const singleUserDetailsAPI = async(userId,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/user/userDetails/${userId}`,{},reqHeader)
 }
-
+// forgot password
+export const forgotPasswordApi =async (reqBody)=>{
+    return await commonAPI("POST",`${SERVER_URL}/forgot-password`,reqBody)
+}
+//resend password
+export const resendPasswordApi =async (reqBody,resendToken)=>{
+    return await commonAPI("POST",`${SERVER_URL}/resent-password/${resendToken}`,reqBody)
+}
+//verify token ----
+export const verifyResetTokenApi = async (token) => {
+    return await commonAPI("GET", `${SERVER_URL}/resent-password/${token}`)
+}
 // view stations
  export const feachApproveStationAPI =async(reqHeader)=>{
    return await commonAPI("GET",`${SERVER_URL}/user/viewSations`,{},reqHeader)

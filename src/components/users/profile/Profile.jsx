@@ -109,12 +109,12 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-black">
       {/* Top Bar */}
-      <div className="flex justify-end p-3">
+      <div className="flex  justify-end  px-4 pt-4 pb-0 max-w-7xl mx-auto">
         <button
           onClick={() => navigate('/home')}
-          className="flex items-center gap-2 text-green-500 font-semibold hover:text-green-400 transition-all duration-300 group"
+          className="flex items-center gap-1.5 text-green-500 font-semibold hover:text-green-400 transition-all duration-300 group flex-shrink-0 ml-4"
         >
-          Home
+          <span className=" text-sm">Home</span>
           <ArrowBigRightDash className="h-5 w-5 transform transition-all duration-300 group-hover:translate-x-1" />
         </button>
       </div>
@@ -152,11 +152,10 @@ const Profile = () => {
                     <li key={key}>
                       <button
                         onClick={() => setActiveTab(key)}
-                        className={`w-full flex items-center p-3 text-left cursor-pointer rounded-2xl transition-all ease-in-out ${
-                          activeTab === key
+                        className={`w-full flex items-center p-3 text-left cursor-pointer rounded-2xl transition-all ease-in-out ${activeTab === key
                             ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500'
                             : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
-                        }`}
+                          }`}
                       >
                         <Icon size={18} className="mr-3" />
                         <span>{label}</span>

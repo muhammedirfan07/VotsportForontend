@@ -31,7 +31,7 @@ const Home = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [currentPage, SetCurrentPage] = useState(1);
-  const [visible,setVisible] =useState(true)
+  const [visible, setVisible] = useState(true)
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     city: "",
@@ -40,9 +40,9 @@ const Home = () => {
     vehicleType: "",
   });
   const navigate = useNavigate()
-  const lastScrollY =useRef(0)
-  
-    useEffect(() => {
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
@@ -65,15 +65,14 @@ const Home = () => {
     fetchViewStations();
   }, []);
 
+
   useEffect(() => {
+    SetCurrentPage(1);
     if (searchStation.trim() !== "") {
-      // Filter stations based on search input
       const filtered = viewStation.filter((station) =>
         station.city.toLowerCase().includes(searchStation.toLowerCase())
       );
       setViewStations(filtered);
-
-      // Generate autocomplete suggestions
       const citySuggestions = [
         ...new Set(viewStation.map((station) => station.city)),
       ].filter((city) =>
@@ -86,7 +85,9 @@ const Home = () => {
     }
   }, [searchStation]);
 
+
   useEffect(() => {
+    SetCurrentPage(1);
     if (filters.city || filters.state || filters.chargingType || filters.vehicleType) {
       fetchFilteredStations();
     } else {
@@ -152,7 +153,6 @@ const Home = () => {
     };
 
     try {
-      setLoading(true);
       const result = await filterStationAPI(
         filters.city,
         filters.state,
@@ -170,9 +170,7 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error fetching stations:", error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   // Handle city selection from autocomplete suggestions
@@ -210,44 +208,44 @@ const Home = () => {
     <>
       <div className="min-h-screen  font-[DM_Sans] pt-15 bg-neutral-950">
         <header
-      className={cn(
-        "fixed top-5 left-0 w-full z-50 font-[DM_Sans] flex justify-center px-4 md:px-25 font-manrope",
-        "transition-transform duration-300",
-        visible ? "translate-y-0" : "-translate-y-20"
-      )}
-    >
-      <nav
-        className={cn(
-          "nav-pill flex items-center w-full justify-between px-2 md:px-4 py-2 md:pl-5 transition-[border-radius] duration-300",
-          open ? "rounded-3xl" : "rounded-full"
-        )}
-      >
-        {/* Logo */}
-        <div>
-          <Link to="/">
-            <h3 className="flex text-xl gap-1 md:gap-2 text-green-100 font-bold">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600">
-                <i className="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i>
-              </span>
-              <p>
-                <span className="md:text-2xl text-green-600 font-michroma">Volt</span>Spot
-              </p>
-            </h3>
-          </Link>
-        </div>
-
-        {/* Profile Button */}
-        <div>
-          <button
-            onClick={() => navigate("/profile")}
-            className="w-full flex rounded-full bg-[hsl(143,71%,28%)] items-center gap-1 px-3 py-2 hover:bg-green-700/50 transition-colors cursor-pointer text-gray-300"
+          className={cn(
+            "fixed top-5 left-0 w-full z-50 font-[DM_Sans] flex justify-center px-4 md:px-25 font-manrope",
+            "transition-transform duration-300",
+            visible ? "translate-y-0" : "-translate-y-20"
+          )}
+        >
+          <nav
+            className={cn(
+              "nav-pill flex items-center w-full justify-between px-2 md:px-4 py-2 md:pl-5 transition-[border-radius] duration-300",
+              open ? "rounded-3xl" : "rounded-full"
+            )}
           >
-            <User className="w-5 h-5" />
-            <span className="text-md font-normal">Profile</span>
-          </button>
-        </div>
-      </nav>
-    </header>
+            {/* Logo */}
+            <div>
+              <Link to="/">
+                <h3 className="flex text-xl gap-1 md:gap-2 text-green-100 font-bold">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600">
+                    <i className="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i>
+                  </span>
+                  <p>
+                    <span className="md:text-2xl text-green-600 font-michroma">Volt</span>Spot
+                  </p>
+                </h3>
+              </Link>
+            </div>
+
+            {/* Profile Button */}
+            <div>
+              <button
+                onClick={() => navigate("/profile")}
+                className="w-full flex rounded-full bg-[hsl(143,71%,28%)] items-center gap-1 px-3 py-2 hover:bg-green-700/50 transition-colors cursor-pointer text-gray-300"
+              >
+                <User className="w-5 h-5" />
+                <span className="text-md font-normal">Profile</span>
+              </button>
+            </div>
+          </nav>
+        </header>
         <div className="container mx-auto px-4 py-6">
           <div className="flex gap-8">
             {/* Sidebar - Full width on mobile, fixed width on desktop */}
@@ -432,11 +430,18 @@ const Home = () => {
 
               {/* Pagination */}
               <div className="my-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="text-gray-400">Showing {viewStations.length} charging stations</div>
-                <button className="text-emerald-400 hover:text-emerald-300">
+                <p className="text-gray-400 text-sm">
+                  Showing{" "}
+                  <span className="text-white font-medium">
+                    {Math.min((currentPage - 1) * 4 + 1, viewStations.length)}–
+                    {Math.min(currentPage * 4, viewStations.length)}
+                  </span>{" "}
+                  of <span className="text-white font-medium">{viewStations.length}</span> stations
+                </p>
+                <p className="text-emerald-400 hover:text-emerald-300">
                   {" "}
                   Page {currentPage} of {Math.ceil(viewStations.length / 4)}
-                </button>
+                </p>
               </div>
 
               {/* Charging Stations Grid */}
@@ -522,7 +527,6 @@ const Home = () => {
                         </div>
                       </div>
                     </div>
-
                   ))
                 ) : (
                   <div className="text-center py-12">
@@ -540,52 +544,75 @@ const Home = () => {
               </div>
 
               {/* Pagination */}
-              {viewStations.length > 0 && (
-                <div className="flex items-center justify-center gap-3 mt-8">
+              {viewStations.length > 0 && (() => {
+                const totalPages = Math.ceil(viewStations.length / 4);
 
-                  {/* Previous Button */}
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-6 py-2.5 bg-neutral-900 text-gray-300 rounded-lg border border-gray-700 
-                    hover:bg-neutral-800 hover:border-gray-600 transition-all duration-200 
-                    disabled:opacity-40 disabled:cursor-not-allowed font-medium"
-                  >
-                    Previous
-                  </button>A
+                const getPageNumbers = () => {
+                  if (totalPages <= 5) return [...Array(totalPages)].map((_, i) => i + 1);
+                  const pages = new Set(
+                    [1, totalPages, currentPage, currentPage - 1, currentPage + 1]
+                      .filter((p) => p >= 1 && p <= totalPages)
+                  );
+                  return [...pages].sort((a, b) => a - b);
+                };
 
-                  {/* Page Numbers */}
-                  <div className="flex gap-2">
-                    {[...Array(Math.ceil(viewStations.length / 4))].map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={`min-w-[44px] h-[44px] rounded-lg font-semibold transition-all duration-200
-              ${currentPage === index + 1
-                            ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30"
-                            : "bg-neutral-900 text-gray-300 border border-gray-700 hover:bg-neutral-800 hover:border-gray-600"
-                          }
-            `}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
+                const pageNumbers = getPageNumbers();
+
+                return (
+                  <div className="flex items-center justify-center gap-2 mt-8 flex-wrap">
+
+                    {/* Previous */}
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="px-3 sm:px-5 py-2 bg-neutral-900 text-gray-300 rounded-lg border border-gray-700
+          hover:bg-neutral-800 hover:border-gray-600 transition-all duration-200
+          disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium"
+                    >
+                      ← <span className="hidden sm:inline">Prev</span>
+                    </button>
+
+                    {/* Page numbers with ellipsis */}
+                    <div className="flex gap-1.5 flex-wrap justify-center">
+                      {pageNumbers.map((page, i) => {
+                        const prev = pageNumbers[i - 1];
+                        const showEllipsis = prev && page - prev > 1;
+                        return (
+                          <React.Fragment key={page}>
+                            {showEllipsis && (
+                              <span className="min-w-[36px] h-[36px] flex items-center justify-center text-gray-500 text-sm select-none">
+                                …
+                              </span>
+                            )}
+                            <button
+                              onClick={() => handlePageChange(page)}
+                              className={`min-w-[36px] h-[36px] sm:min-w-[40px] sm:h-[40px] rounded-lg text-sm font-semibold transition-all duration-200
+                  ${currentPage === page
+                                  ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/30"
+                                  : "bg-neutral-900 text-gray-300 border border-gray-700 hover:bg-neutral-800 hover:border-gray-600"
+                                }`}
+                            >
+                              {page}
+                            </button>
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
+
+                    {/* Next */}
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="px-3 sm:px-5 py-2 bg-neutral-900 text-gray-300 rounded-lg border border-gray-700
+          hover:bg-neutral-800 hover:border-gray-600 transition-all duration-200
+          disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium"
+                    >
+                      <span className="hidden sm:inline">Next</span> →
+                    </button>
+
                   </div>
-
-                  {/* Next Button */}
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === Math.ceil(viewStations.length / 4)}
-                    className="px-6 py-2.5 bg-neutral-900 text-gray-300 rounded-lg border border-gray-700 
-                    hover:bg-neutral-800 hover:border-gray-600 transition-all duration-200 
-                    disabled:opacity-40 disabled:cursor-not-allowed font-medium"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
-
-
+                );
+              })()}
             </main>
           </div >
         </div>

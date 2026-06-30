@@ -9,6 +9,8 @@ import Landing from "./components/users/Landing"
 import Home from "./components/users/Home"
 import Auth from "./components/users/Authendication"
 import Profile from "./components/users/profile/Profile"
+import ForgotPassword from "./pages/users/ForgotPassword"
+import ResetPassword from "./pages/users/ResentPassword"
 
 ///payments 
 import CheckoutForms from "./pages/users/CheckoutForms"
@@ -74,6 +76,8 @@ function App() {
         <Route path="/:stationId/view" element={<StationDetailsPage />} />
         <Route path="/stripe-checkout/:sessionId" element={<CheckoutForms />} />
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/resent-password/:token" element={<ResetPassword />} />
 
         {/* Collaboration Pages */}
         <Route path="/homecolab" element={<ProjectManagementApp />} />

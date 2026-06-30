@@ -222,271 +222,170 @@ const AddStationpage = () => {
 
       {/* Modal Backdrop */}
       {isOpen && (
-        <div className="fixed font-[DM_Sans] inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          {/* Modal Content */}
-          <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl shadow-xl w-full max-w-4xl mx-auto overflow-hidden border border-gray-700">
-            {/* Modal Header */}
-            <div className="border-b border-gray-700 px-4 py-3 md:px-6 md:py-4">
+        <div className="fixed font-[DM_Sans] inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl lg:max-w-4xl mx-auto flex flex-col max-h-[95dvh] sm:max-h-[90vh]">
+
+            {/* Header */}
+            <div className="border-b border-zinc-800 px-4 py-3 md:px-6 md:py-4 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg md:text-xl font-semibold text-gray-100">
-                  Add Station
-                </h3>
+                <h3 className="text-base md:text-lg font-semibold text-zinc-100">Add Station</h3>
                 <button
                   onClick={closeModal}
-                  className="text-gray-400 hover:text-gray-200 focus:outline-none transition-colors"
+                  className="text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors p-1.5 rounded-lg"
                 >
-                  <X className="h-5 w-5 md:h-6 md:w-6" />
+                  <X className="h-4 w-4 md:h-5 md:w-5" />
                 </button>
               </div>
             </div>
 
-            {/* Modal Body */}
-            <div className="px-4 py-3 md:px-6 md:py-4">
-              <div className="flex flex-col md:flex-row gap-4">
-                {/* Image section */}
-                <div className="w-full md:w-1/3">
+            {/* Scrollable Body */}
+            <div className="overflow-y-auto flex-1 px-4 py-4 md:px-6 md:py-5">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-5">
+
+                {/* Image Upload */}
+                <div className="w-full md:w-1/3 flex-shrink-0">
                   <label className="block cursor-pointer group">
-                    <input
-                      type="file"
-                      className="hidden"
-                      onChange={handleImageChange}
-                      accept="image/*"
-                    />
-                    <div className="relative mb-3 rounded-xl overflow-hidden bg-gradient-to-b from-gray-800 to-gray-900 border-2 border-dashed border-gray-700 hover:border-gray-500 transition-colors">
+                    <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
+                    <div className="relative rounded-xl overflow-hidden bg-zinc-950 border border-dashed border-zinc-700 group-hover:border-zinc-500 transition-colors">
                       {previewUrl ? (
                         <img
                           src={previewUrl || "/placeholder.svg"}
                           alt="Station preview"
-                          className="w-full h-48 sm:h-64 md:h-96 object-cover"
+                          className="w-full h-44 sm:h-52 md:h-72 lg:h-80 object-cover"
                         />
                       ) : (
-                        <div className="w-full h-48 sm:h-64 md:h-96 flex flex-col items-center justify-center text-gray-400 group-hover:text-gray-300">
-                          <Upload className="w-8 h-8 mb-2" />
-                          <span className="text-sm">Click to upload image</span>
-                          <span className="text-xs text-gray-500 mt-1">
-                            PNG, JPG up to 10MB
-                          </span>
+                        <div className="w-full h-44 sm:h-52 md:h-72 lg:h-80 flex flex-col items-center justify-center text-zinc-600 group-hover:text-zinc-400 transition-colors">
+                          <Upload className="w-6 h-6 mb-2" />
+                          <span className="text-sm text-zinc-500">Click to upload image</span>
+                          <span className="text-xs text-zinc-600 mt-1">PNG, JPG up to 10MB</span>
                         </div>
                       )}
                       {previewUrl && (
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="text-white text-sm">
-                            Change image
-                          </span>
+                          <span className="text-zinc-200 text-sm">Change image</span>
                         </div>
                       )}
                     </div>
                   </label>
                 </div>
 
-                {/* Input fields section */}
-                <div className="w-full md:w-2/3 space-y-2 md:space-y-3">
-                  {/* station name */}
-                  <div>
-                    <input
-                      onChange={(e) =>
+                {/* Form Fields */}
+                <div className="w-full md:w-2/3 flex flex-col gap-2.5">
+                  <input
+                   onChange={(e) =>
                         setAddStationDetails({
                           ...addStationDetails,
                           stationName: e.target.value,
                         })
                       }
-                      className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                      type="text"
-                      placeholder="Station name"
-                      value={addStationDetails.stationName}
-                    />
-                  </div>
-                  {/* station location */}
+                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors"
+                    type="text"
+                    placeholder="Station name"
+                    value={addStationDetails.stationName}
+                  />
 
-                  {/* label for latitude and longitude */}
-                  <div className=" w-full flex flex-col md:flex-row gap-2">
-                    <div>
-                      <input
-                        onChange={(e) =>
+                  {/* Lat / Lng */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <input onChange={(e) =>
                           setAddStationDetails({
                             ...addStationDetails,
                             latitude: e.target.value,
                           })
-                        }
-                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                        type="text"
-                        placeholder="latitude"
-                        value={addStationDetails.latitude}
-                      />
-                    </div>
-                    <div>
-                      <input
-                        onChange={(e) =>
+                        }  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Latitude" value={addStationDetails.latitude} />
+                    <input  onChange={(e) =>
                           setAddStationDetails({
                             ...addStationDetails,
                             longitude: e.target.value,
                           })
-                        }
-                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                        type="text"
-                        placeholder="longitude"
-                        value={addStationDetails.longitude}
-                      />
-                    </div>
+                        }  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Longitude" value={addStationDetails.longitude} />
                   </div>
-                  {/* label for city and state */}
-                  <div className=" w-full flex flex-col md:flex-row gap-2">
-                    <div>
-                      <input
-                        onChange={(e) =>
+
+                  {/* City / State */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <input  onChange={(e) =>
                           setAddStationDetails({
                             ...addStationDetails,
                             city: e.target.value,
                           })
-                        }
-                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                        type="text"
-                        placeholder="city"
-                        value={addStationDetails.city}
-                      />
-                    </div>
-                    <div>
-                      <input
-                        onChange={(e) =>
+                        }  type="text" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" placeholder="City" value={addStationDetails.city} />
+                    <input onChange={(e) =>
                           setAddStationDetails({
                             ...addStationDetails,
                             state: e.target.value,
                           })
-                        }
-                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                        type="text"
-                        placeholder="state"
-                        value={addStationDetails.state}
-                      />
-                    </div>
+                        } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="State" value={addStationDetails.state} />
                   </div>
-                  {/*  charging type and vechile type */}
-                  <div className=" w-full flex flex-col md:flex-row gap-2">
-                    <div className="w-full">
-                      <select
-                        onChange={(e) =>
+
+                  {/* Vehicle / Charging Type */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <select onChange={(e) =>
                           setAddStationDetails({
                             ...addStationDetails,
                             vehicleType: e.target.value,
                           })
-                        }
-                        value={addStationDetails.vehicleType}
-                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                      >
-                        <option value="" className="bg-gray-800/50">
-                          Select Vehicle Type
-                        </option>
-                        <option value="2-wheeler" className="bg-gray-800">
-                          2-wheeler
-                        </option>
-                        <option value="3-wheeler" className="bg-gray-800">
-                          3-wheeler
-                        </option>
-                        <option value="4-wheeler" className="bg-gray-800">
-                          4-wheeler
-                        </option>
-                      </select>
-                    </div>
-                    <div className="w-full">
-                      <select
-                        onChange={(e) =>
+                        } value={addStationDetails.vehicleType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
+                      <option value="" className="bg-zinc-900">Select vehicle type</option>
+                      <option value="2-wheeler" className="bg-zinc-900">2-wheeler</option>
+                      <option value="3-wheeler" className="bg-zinc-900">3-wheeler</option>
+                      <option value="4-wheeler" className="bg-zinc-900">4-wheeler</option>
+                    </select>
+                    <select onChange={(e) =>
                           setAddStationDetails({
                             ...addStationDetails,
                             chargingType: e.target.value,
                           })
-                        }
-                        value={addStationDetails.chargingType}
-                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                      >
-                        <option value="" className="bg-gray-800/50">
-                          Select Charging Type
-                        </option>
-                        <option value="slow" className="bg-gray-800">
-                          Slow
-                        </option>
-                        <option value="fast" className="bg-gray-800">
-                          Fast
-                        </option>
-                        <option value="superfast" className="bg-gray-800">
-                          superFast
-                        </option>
-                      </select>
-                    </div>
+                        } value={addStationDetails.chargingType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
+                      <option value="" className="bg-zinc-900">Select charging type</option>
+                      <option value="slow" className="bg-zinc-900">Slow</option>
+                      <option value="fast" className="bg-zinc-900">Fast</option>
+                      <option value="superfast" className="bg-zinc-900">Superfast</option>
+                    </select>
                   </div>
 
-                  {/* map url */}
-                  <div>
-                    <input
-                      onChange={(e) =>
+                  <input onChange={(e) =>
                         setAddStationDetails({
                           ...addStationDetails,
                           mapUrl: e.target.value,
                         })
-                      }
-                      className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                      type="url"
-                      placeholder="Map url"
-                      value={addStationDetails.mapUrl}
-                    />
-                  </div>
-                  {/* price */}
-                  <div>
-                    <input
-                      onChange={(e) =>
+                      } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="url" placeholder="Map URL" value={addStationDetails.mapUrl} />
+
+                  {/* Slots / Price */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <input onChange={(e) =>
                         setAddStationDetails({
                           ...addStationDetails,
                           availableSlots: e.target.value,
                         })
-                      }
-                      className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                      type="number"
-                      placeholder="Active Slots"
-                      value={addStationDetails.availableSlots}
-                    />
-                  </div>
-                  <div>
-                    <input
-                      onChange={(e) =>
+                      } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Active slots" value={addStationDetails.availableSlots} />
+                    <input onChange={(e) =>
                         setAddStationDetails({
                           ...addStationDetails,
                           pricePerHour: e.target.value,
                         })
-                      }
-                      className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors"
-                      type="number"
-                      placeholder="Price/hr"
-                      value={addStationDetails.pricePerHour}
-                    />
+                      } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Price/hr" value={addStationDetails.pricePerHour} />
                   </div>
-                  {/* <div>
-                    <textarea 
-                      className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-2 md:p-2.5 text-gray-100 placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none transition-colors resize-none" 
-                      placeholder='Notes'
-                      rows="3"
-                    />
-                  </div> */}
+
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className="border-t border-gray-700 px-4 py-3 md:px-6 md:py-4 flex justify-end space-x-3">
+            {/* Footer */}
+            <div className="border-t border-zinc-800 px-4 py-3 md:px-6 md:py-4 flex justify-end gap-3 flex-shrink-0">
               <button
                 onClick={closeModal}
-                className="px-4 py-1.5 md:px-5 md:py-2 rounded-lg text-sm md:text-base font-medium text-gray-300 hover:text-gray-100 bg-gray-800 hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-600"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-100 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-600"
               >
                 Cancel
               </button>
               <button
                 onClick={stationDetailHandler}
                 disabled={isSubmitting}
-                className={`px-4 py-1.5 md:px-5 md:py-2 rounded-lg text-sm md:text-base font-medium text-white bg-gradient-to-r from-green-500 to-green-900 hover:from-green-900 hover:to-green-500 transition-colors focus:outline-none focus:ring-2 focus:ring-green-700 ${
-                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-900 hover:from-green-900 hover:to-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-700 ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
               >
                 {isSubmitting ? "Adding..." : "Add Station"}
               </button>
             </div>
+
           </div>
         </div>
       )}

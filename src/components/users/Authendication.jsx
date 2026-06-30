@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import evVideo from "../../assets/evVideo.mp4"
 import { loginAPI, registerAPI } from "../../Server/allAPI";
-
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GoogleAuth from "./GoogleAuth";
@@ -230,7 +229,7 @@ const Autho = ({ insideRegister }) => {
                 </h3>
               </Link>
             </div>
-             <div className="hidden md:flex w-40  h-8"> </div>
+            <div className="hidden md:flex w-40  h-8"> </div>
 
             {/* content */}
             <div className="max-w-sm space-y-3">
@@ -286,7 +285,7 @@ const Autho = ({ insideRegister }) => {
             {/* heading */}
             <div className="space-y-2">
               <h2
-               className="text-2xl md:text-4xl"
+                className="text-2xl md:text-4xl"
                 style={{
                   fontWeight: 600,
                   letterSpacing: "-0.03em",
@@ -299,7 +298,7 @@ const Autho = ({ insideRegister }) => {
               </h2>
 
               <p
-               className=" text-xs md:text-lg"
+                className=" text-xs md:text-lg"
                 style={{
                   color: "oklch(0.65 0.015 260)",
                   fontSize: "0.875rem",
@@ -506,13 +505,18 @@ const Autho = ({ insideRegister }) => {
                   </div>
                 </div>
               )}
+              <div className="flex justify-end">
+                <a onClick={()=>navigate("/forgot-password")} href="#" className="text-xs font-medium text-zinc-500 hover:text-green-400 transition-colors">
+                  Forgot password?
+                </a>
+              </div>
 
               {/* submit */}
               <button
                 type="submit"
                 disabled={isLoading}
                 className="group inline-flex bg-green-600  cursor-pointer hover:bg-green-500 text-black h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-semibold transition-all duration-300 disabled:opacity-70"
-                
+
               >
                 {isLoading ? (
                   <>
@@ -543,14 +547,14 @@ const Autho = ({ insideRegister }) => {
               </span>
 
               <div
-              className="h-px flex-1 bg-[oklch(0.28_0.012_260)]"
-               
+                className="h-px flex-1 bg-[oklch(0.28_0.012_260)]"
+
               />
             </div>
 
             {/* social */}
             <div className="grid grid-cols-1">
-              <GoogleAuth/>
+              <GoogleAuth />
 
             </div>
 
@@ -561,7 +565,7 @@ const Autho = ({ insideRegister }) => {
                 ? "Already have an account?"
                 : "New to VoltSpot?"}{" "}
               <Link
-               className=" text-white font-semibold underline underline-offset-[3px] hover:text-white/80 transition-all"
+                className=" text-white font-semibold underline underline-offset-[3px] hover:text-white/80 transition-all"
                 to={
                   insideRegister
                     ? "/login"
