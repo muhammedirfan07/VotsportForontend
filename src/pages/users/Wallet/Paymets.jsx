@@ -123,7 +123,7 @@ export default function EVPaymentPage() {
           <div className="relative z-10">
             <div className="flex justify-between items-start mb-5 sm:mb-6 gap-3">
               <div className="min-w-0">
-                <p className="text-green-300/70 text-xs sm:text-sm mb-1">Wallet Balance (Refunded)</p>
+                <p className="text-green-300/70 text-xs sm:text-sm mb-1">Wallet Balance (paid)</p>
                 <h1 className="text-4xl sm:text-5xl font-bold text-white truncate">
                   {isLoading ? "—" : `₹${(summary?.walletBalance || 0).toFixed(2)}`}
                 </h1>
