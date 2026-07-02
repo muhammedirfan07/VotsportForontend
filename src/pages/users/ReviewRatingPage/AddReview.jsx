@@ -96,7 +96,7 @@ const AddReview = ({stationId}) => {
               <textarea
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
-                className="w-full bg-neutral-700 text-white rounded p-2"
+                className="w-full bg-neutral-700 text-white rounded p-2 custom-scroll"
                 rows="3"
                 placeholder="Share your experience..."
               ></textarea>

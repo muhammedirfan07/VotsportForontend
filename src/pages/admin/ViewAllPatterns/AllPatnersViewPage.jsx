@@ -3,15 +3,15 @@ import SideBars from "../../../components/admin/SideBars";
 import Header from "../../../components/admin/Header";
 import { getallPatnersAPI } from "../../../Server/allAPI";
 import socket from "../../../Server/socket";
-import { Search, X,XIcon,Menu, SlidersHorizontal, Mail, Users as UsersIcon } from 'lucide-react'
+import { Search, X, XIcon, Menu, SlidersHorizontal, Mail, Users as UsersIcon } from 'lucide-react'
 
 const STATUS_STYLES = {
   active: { dot: 'bg-emerald-400', text: 'text-emerald-300', ring: 'ring-emerald-900/60' },
   inactive: { dot: 'bg-zinc-400', text: 'text-zinc-300', ring: 'ring-zinc-700' },
 }
 
-const StatusChip = ({ status = 'active' }) => {
-  const style = STATUS_STYLES[status] || STATUS_STYLES.active
+const StatusChip = ({ status = 'inactive' }) => {
+  const style = STATUS_STYLES[status] || STATUS_STYLES.inactive
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-2.5 py-1 text-xs font-medium ${style.text} ring-1 ${style.ring}`}
@@ -54,22 +54,29 @@ const FilterSelect = ({ value, onChange, options }) => (
 
 function AllPatnersViewPage() {
   const [patnerdetails, setPatnerDetails] = useState([]);
-  const [partnerStatus, setPartnerStatus] = useState({});
+  const [partnerStatus, setPartnerStatus] = useState({}); // { [partnerId]: 'active' | 'inactive' }
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
 
   useEffect(() => {
-    getPatnerDetails()
+    socket.connect();
+    getPatnerDetails();
+
+    // Seed with whoever is already online when this page mounts
+    socket.on("initialStatus", ({ partners }) => {
+      const seed = {};
+      (partners || []).forEach((id) => { seed[id] = "active"; });
+      setPartnerStatus((prev) => ({ ...prev, ...seed }));
+    });
 
     // Listen for real-time status updates
     socket.on("updatePartnerStatus", ({ partnerId, status }) => {
-      console.log("Received updatePartnerStatus event:", partnerId, status);
       setPartnerStatus((prev) => ({ ...prev, [partnerId]: status }));
     });
 
-    // Cleanup on unmount
     return () => {
+      socket.off("initialStatus");
       socket.off("updatePartnerStatus");
       socket.disconnect();
     };
@@ -80,8 +87,6 @@ function AllPatnersViewPage() {
       const result = await getallPatnersAPI()
       if (result.status === 200) {
         setPatnerDetails(result.data)
-        console.log("view all partners=", result.data);
-
       }
     } catch (err) {
       console.log(err)
@@ -92,24 +97,28 @@ function AllPatnersViewPage() {
     setSidebarOpen(!sidebarOpen)
   }
 
+  const partnersWithLiveStatus = useMemo(() => {
+    return patnerdetails.map((p) => ({
+      ...p,
+      liveStatus: partnerStatus[p._id] || 'inactive',
+    }))
+  }, [patnerdetails, partnerStatus])
+
   const statusOptions = useMemo(() => {
-    const unique = Array.from(
-      new Set(patnerdetails.map((u) => u.status || 'active').filter(Boolean))
-    )
-    return ['all', ...unique]
-  }, [patnerdetails])
+    return ['all', 'active', 'inactive']
+  }, [])
 
   const filtered = useMemo(() => {
-    return patnerdetails.filter((u) => {
+    return partnersWithLiveStatus.filter((u) => {
       const matchesSearch =
         !search ||
         [u.StationName, u.email]
           .filter(Boolean)
           .some((field) => field.toLowerCase().includes(search.toLowerCase()))
-      const matchesStatus = status === 'all' || (u.status || 'active') === status
+      const matchesStatus = status === 'all' || u.liveStatus === status
       return matchesSearch && matchesStatus
     })
-  }, [patnerdetails, search, status])
+  }, [partnersWithLiveStatus, search, status])
 
   const hasActiveFilters = Boolean(search) || status !== 'all'
 
@@ -120,7 +129,6 @@ function AllPatnersViewPage() {
 
   return (
     <div className="min-h-screen font-[DM_Sans] flex flex-col md:flex-row bg-black">
-      {/* Mobile Sidebar Toggle */}
       <header className=' flex z-40 w-full md:hidden  justify-between items-center px-4 py-3 bg-zinc-950'>
         <div>
           <i className="fa-solid fa-bolt text-lg md:text-xl" style={{ color: "#f0efef" }}></i><span className="text-lg md:text-2xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
@@ -135,7 +143,6 @@ function AllPatnersViewPage() {
         </div>
       </header>
 
-      {/* Sidebar - Hidden on mobile by default, shown when toggled */}
       <div
         className={`
     fixed
@@ -153,9 +160,7 @@ function AllPatnersViewPage() {
         <SideBars />
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 h-screen overflow-y-auto custom-scroll px-4 pb-2 pt-6 sm:px-6 lg:px-10 lg:pt-10 w-full">
-        {/* Header */}
         <Header />
 
         <section className="font-[DM_Sans] text-zinc-100 mt-2">
@@ -169,7 +174,6 @@ function AllPatnersViewPage() {
             </div>
           </div>
 
-          {/* Search + filters */}
           <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-zinc-900 bg-zinc-950 p-4 sm:flex-row sm:items-center">
             <div className="relative flex-1">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
@@ -215,7 +219,6 @@ function AllPatnersViewPage() {
             </div>
           </div>
 
-          {/* Empty states */}
           {patnerdetails.length === 0 && (
             <div className="grid place-items-center rounded-2xl border border-zinc-900 bg-zinc-950 px-6 py-16 text-center">
               <UsersIcon className="h-8 w-8 text-zinc-700" />
@@ -238,7 +241,6 @@ function AllPatnersViewPage() {
             </div>
           )}
 
-          {/* Desktop table */}
           {filtered.length > 0 && (
             <div className="hidden overflow-x-auto rounded-2xl border border-zinc-900 bg-zinc-950 lg:block">
               <table className="w-full min-w-[640px] text-left text-sm">
@@ -266,7 +268,7 @@ function AllPatnersViewPage() {
                       <td className="px-4 py-4 text-zinc-400">{u.stationCount}</td>
                       <td className="px-4 py-4 text-zinc-400">{u.address}</td>
                       <td className="px-4 py-4">
-                        <StatusChip status={u.status || 'active'} />
+                        <StatusChip status={u.liveStatus} />
                       </td>
                     </tr>
                   ))}
@@ -275,7 +277,6 @@ function AllPatnersViewPage() {
             </div>
           )}
 
-          {/* Mobile / tablet cards */}
           {filtered.length > 0 && (
             <div className="grid gap-4 lg:hidden">
               {filtered.map((u, i) => (
@@ -288,7 +289,7 @@ function AllPatnersViewPage() {
                           <p className="text-xs font-mono text-zinc-500">#{String(i + 1).padStart(2, '0')}</p>
                           <h3 className="mt-0.5 truncate text-base font-semibold text-zinc-100">{u.StationName}</h3>
                         </div>
-                        <StatusChip status={u.status || 'active'} />
+                        <StatusChip status={u.liveStatus} />
                       </div>
                       <p className="mt-1 flex items-center gap-1.5 text-sm text-zinc-500">
                         <Mail className="h-3.5 w-3.5 shrink-0" />

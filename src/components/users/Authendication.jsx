@@ -12,6 +12,8 @@ import { loginAPI, registerAPI } from "../../Server/allAPI";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GoogleAuth from "./GoogleAuth";
+import socket from "../../Server/socket";
+
 
 const Autho = ({ insideRegister }) => {
   const navigate = useNavigate();
@@ -127,6 +129,8 @@ const Autho = ({ insideRegister }) => {
           "user",
           JSON.stringify(user)
         );
+        socket.connect();
+        socket.emit("registerUser", user._id);
 
         sessionStorage.setItem("token", token);
 
@@ -506,7 +510,7 @@ const Autho = ({ insideRegister }) => {
                 </div>
               )}
               <div className="flex justify-end">
-                <a onClick={()=>navigate("/forgot-password")} href="#" className="text-xs font-medium text-zinc-500 hover:text-green-400 transition-colors">
+                <a onClick={() => navigate("/forgot-password")} href="#" className="text-xs font-medium text-zinc-500 hover:text-green-400 transition-colors">
                   Forgot password?
                 </a>
               </div>

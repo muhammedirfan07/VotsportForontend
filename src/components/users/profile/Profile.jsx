@@ -6,6 +6,7 @@ import SERVER_URL from '../../../Server/serverURL';
 import { useNavigate } from 'react-router-dom';
 import VehicleDetails from '../../../pages/users/Vechle -details/VechileDetails';
 import Payments from '../../../pages/users/Wallet/Paymets';
+import socket from '../../../Server/socket';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -153,8 +154,8 @@ const Profile = () => {
                       <button
                         onClick={() => setActiveTab(key)}
                         className={`w-full flex items-center p-3 text-left cursor-pointer rounded-2xl transition-all ease-in-out ${activeTab === key
-                            ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500'
-                            : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
+                          ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500'
+                          : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
                           }`}
                       >
                         <Icon size={18} className="mr-3" />
@@ -166,7 +167,11 @@ const Profile = () => {
                   <div className="h-px bg-neutral-700 my-4"></div>
 
                   <button
-                    onClick={() => { sessionStorage.clear(); navigate('/'); }}
+                    onClick={() => {
+                      socket.disconnect();
+                      sessionStorage.clear();
+                      navigate("/"); 
+                    }}
                     className="w-full flex cursor-pointer items-center gap-4 px-3 py-3 rounded-2xl text-red-500 hover:bg-red-800/10 transition-all duration-200"
                   >
                     <LogOut className="w-5 h-5" />

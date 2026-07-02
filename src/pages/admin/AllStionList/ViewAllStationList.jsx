@@ -383,7 +383,7 @@ const ViewAllStationList = () => {
                           <p className="font-mono text-xs text-zinc-500">
                             #{String(i + 1).padStart(2, '0')}
                           </p>
-                          <h3 className="mt-0.5 truncate text-base font-semibold text-zinc-100">
+                          <h3 className="mt-0.5 truncate text-base text-wrap font-semibold text-zinc-100">
                             {s.stationName}
                           </h3>
                         </div>

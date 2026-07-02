@@ -7,13 +7,16 @@ import {
   deleteNotificationAPI,
   deleteAllNotificationsAPI,
 } from '../../Server/allAPI';
-import { CircleAlert, Trash2,Menu,XIcon } from "lucide-react"
+import { CircleAlert, Trash2, Menu, XIcon, Loader2, BellOff } from "lucide-react"
 import { format } from "timeago.js";
 
 const Notification = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [clearingAll, setClearingAll] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -33,6 +36,7 @@ const Notification = () => {
 
   const fetchNotifications = async () => {
     console.log("Inside fetchNotifications...");
+    setLoading(true);
     try {
       const token = sessionStorage.getItem("PartnerToken");
       const reqHeader = { Authorization: `Bearer ${token}` };
@@ -45,13 +49,16 @@ const Notification = () => {
       }
     } catch (error) {
       console.log("Error fetching notifications:", error);
-      setNotifications([]); // Set to empty array in case of error
+      setNotifications([]); 
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDeleteNotification = async (notificationId) => {
     if (window.confirm("Are you sure you want to delete this notification?")) {
       console.log("inside the handle delete notification ...........");
+      setDeletingId(notificationId);
       try {
         const token = sessionStorage.getItem("PartnerToken");
         const reqHeader = { Authorization: `Bearer ${token}` };
@@ -61,6 +68,8 @@ const Notification = () => {
         }
       } catch (error) {
         console.log('Error deleting notification:', error);
+      } finally {
+        setDeletingId(null);
       }
     }
   };
@@ -68,6 +77,7 @@ const Notification = () => {
   const handleClearAllNotifications = async () => {
     if (window.confirm("Are you sure you want to delete all notifications?")) {
       console.log("inside the all delete notifications..............");
+      setClearingAll(true);
       try {
         const token = sessionStorage.getItem("PartnerToken");
         const reqHeader = { Authorization: `Bearer ${token}` };
@@ -78,6 +88,8 @@ const Notification = () => {
         }
       } catch (error) {
         console.log('Error clearing all notifications:', error);
+      } finally {
+        setClearingAll(false);
       }
     }
   };
@@ -126,33 +138,62 @@ const Notification = () => {
           <div className="flex w-full justify-between items-center gap-3  md:gap-6 mb-6 md:mb-4">
             <div>
               <h2 className="text-xl text-white font-bold sm:text-2xl">Notifications</h2>
-              <p className='text-sm mt-2 text-gray-500 font-semibold'>{notifications?.length} <span> updates from the VoltSpot team</span></p>
+              <p className='text-sm mt-2 text-gray-500 font-semibold'>
+                {loading ? "Loading..." : (
+                  <>{notifications?.length} <span>updates from the VoltSpot team</span></>
+                )}
+              </p>
             </div>
             <div className='shrink-0'>
               <button
                 onClick={handleClearAllNotifications}
-                className="bg-zinc-900 border border-zinc-800 text-center  px-4 py-2 text-amber-50 from-gray-700 to-black text-sm  cursor-pointer rounded-2xl hover:bg-zinc-800"
+                disabled={loading || clearingAll || notifications.length === 0}
+                className="bg-zinc-900 border border-zinc-800 flex items-center gap-2 justify-center px-4 py-2 text-amber-50 from-gray-700 to-black text-sm cursor-pointer rounded-2xl hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Clear all
+                {clearingAll && <Loader2 className="w-4 h-4 animate-spin" />}
+                {clearingAll ? "Clearing..." : "Clear all"}
               </button>
             </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4 md:gap-6 mb-6 md:mb-8">
             <div className=" bg-zinc-950 border border-zinc-800  overflow-hidden rounded-3xl">
-              {notifications?.map((notification) => (
-                <div key={notification?._id} className="px-6 py-4 border-b border-zinc-900">
-                  <div className='grid grid-cols-[auto_minmax(0,1fr)]  '>
-                    <div className="px-4 py-5">
-                      <div className="w-10 h-10 rounded-full border border-green-500/20 bg-green-500/10 flex items-center justify-center">
+
+              {/* Loading state */}
+              {loading && (
+                <div className="flex flex-col items-center justify-center gap-3 py-16 px-6">
+                  <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+                  <p className="text-gray-500 text-sm font-medium">Loading notifications...</p>
+                </div>
+              )}
+
+              {/* Empty state */}
+              {!loading && notifications.length === 0 && (
+                <div className="flex flex-col items-center justify-center gap-3 py-16 px-6">
+                  <div className="w-12 h-12 rounded-full border border-zinc-800 bg-zinc-900 flex items-center justify-center">
+                    <BellOff className="w-5 h-5 text-gray-600" />
+                  </div>
+                  <p className="text-gray-500 text-sm font-medium">No notifications yet</p>
+                </div>
+              )}
+
+              {/* Notifications list */}
+              {!loading && notifications?.map((notification) => (
+                <div key={notification?._id} className="px-3 sm:px-6 py-4 border-b border-zinc-900 last:border-b-0">
+                  <div className='flex flex-col sm:grid sm:grid-cols-[auto_minmax(0,1fr)] gap-2 sm:gap-0'>
+                    <div className="flex sm:block px-0 sm:px-4 py-0 sm:py-5">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-green-500/20 bg-green-500/10 flex items-center justify-center shrink-0">
                         <CircleAlert className="w-4 h-4 text-green-500" />
                       </div>
                     </div>
-                    <div>
-                      <div className='flex justify-between items-center'>
-                        <div className='flex gap-4 mb-2 items-center'>
-                          <h3 className="text-gray-500 font-semibold  text-xl  uppercase">{notification?.stationId?.stationName}</h3>
+                    <div className="min-w-0">
+                      <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4 mb-2'>
+                        <div className='flex flex-wrap gap-2 sm:gap-4 items-center min-w-0'>
+                          <h3 className="text-gray-500 font-semibold text-base sm:text-xl uppercase truncate max-w-[160px] xs:max-w-none">
+                            {notification?.stationId?.stationName}
+                          </h3>
                           <p
-                            className={`text-xs  px-3 py-0.5 items-center rounded-2xl shrink-0  ${notification?.status === "approved"
+                            className={`text-xs  px-3 py-0.5 items-center rounded-2xl shrink-0 whitespace-nowrap  ${notification?.status === "approved"
                               ? "text-green-500 border border-green-500/30  bg-green-500/10 "
                               : notification?.status === "rejected"
                                 ? "text-red-500 border border-red/20 bg-red-500/10"
@@ -162,15 +203,23 @@ const Notification = () => {
                             {notification?.status}
                           </p>
                         </div>
-                        <p className='text-xs text-gray-500'> {format(notification?.createdAt)}</p>
+                        <p className='text-xs text-gray-500 shrink-0'>{format(notification?.createdAt)}</p>
                       </div>
-                      <p className='text-gray-500 text-sm font-semibold mb-2'>{notification?.message}</p>
-                      <button
-                        onClick={() => handleDeleteNotification(notification?._id)}
-                        className="flex items-center float-end gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-2 py-1.5 text-sm font-medium text-red-400 transition hover:bg-red-500/20"
-                      >
-                        <Trash2 className="h-4 w-4" /> Delete
-                      </button>
+                      <p className='text-gray-500 text-sm font-semibold mb-3 sm:mb-2 break-words'>{notification?.message}</p>
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => handleDeleteNotification(notification?._id)}
+                          disabled={deletingId === notification?._id}
+                          className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-2 py-1.5 text-sm font-medium text-red-400 transition hover:bg-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {deletingId === notification?._id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
+                          {deletingId === notification?._id ? "Deleting..." : "Delete"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -171,7 +171,7 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error fetching stations:", error);
-    } 
+    }
   };
 
   // Handle city selection from autocomplete suggestions
@@ -428,8 +428,8 @@ const Home = () => {
                 //   </div>
                 // </div>
                 <StationsMapModal
-                stations={viewStation}
-                  onClose={()=>setShowMap(false)}
+                  stations={viewStation}
+                  onClose={() => setShowMap(false)}
                 />
               )}
 
@@ -452,8 +452,53 @@ const Home = () => {
               {/* Charging Stations Grid */}
               <div className=" items-center font-[Dm_Sans] overflow-y-auto  ">
                 {isloding ? (
-                  <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-0 z-50">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500 border-solid"></div>
+                  <div className="space-y-6 animate-pulse">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden"
+                      >
+                        <div className="flex flex-col sm:flex-row">
+                          {/* Image skeleton */}
+                          <div className="sm:w-64 sm:flex-shrink-0">
+                            <div className="w-full h-48 sm:h-[276px] bg-zinc-900" />
+                          </div>
+
+                          {/* Content skeleton */}
+                          <div className="flex-1 p-6">
+                            <div className="flex flex-col h-full">
+                              {/* Header skeleton */}
+                              <div className="mb-4">
+                                <div className="h-6 w-2/3 bg-zinc-900 rounded mb-3" />
+                                <div className="h-4 w-1/3 bg-zinc-900 rounded" />
+                              </div>
+
+                              {/* Details skeleton */}
+                              <div className="space-y-4 mb-4 flex-1">
+                                <div className="flex items-center justify-between">
+                                  <div className="h-4 w-24 bg-zinc-900 rounded" />
+                                  <div className="h-4 w-16 bg-zinc-900 rounded" />
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <div className="h-4 w-28 bg-zinc-900 rounded" />
+                                  <div className="h-4 w-20 bg-zinc-900 rounded" />
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <div className="h-4 w-32 bg-zinc-900 rounded" />
+                                  <div className="h-5 w-16 bg-zinc-900 rounded" />
+                                </div>
+                              </div>
+
+                              {/* Actions skeleton */}
+                              <div className="flex items-center justify-between gap-4">
+                                <div className="h-4 w-28 bg-zinc-900 rounded" />
+                                <div className="h-9 w-24 bg-zinc-900 rounded-lg" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ) : viewStations.length > 0 ? (
                   viewStations.slice(currentPage * 4 - 4, currentPage * 4).map((station) => (

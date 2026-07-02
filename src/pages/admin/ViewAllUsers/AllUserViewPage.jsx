@@ -2,15 +2,16 @@ import React, { useEffect, useMemo, useState } from 'react'
 import SideBars from '../../../components/admin/SideBars'
 import Header from '../../../components/admin/Header'
 import { getallUsersAPI } from '../../../Server/allAPI'
-import { Search, X,XIcon,Menu, SlidersHorizontal, Mail, Users as UsersIcon } from 'lucide-react'
+import socket from '../../../Server/socket'
+import { Search, X, XIcon, Menu, SlidersHorizontal, Mail, Users as UsersIcon } from 'lucide-react'
 
 const STATUS_STYLES = {
   active: { dot: 'bg-emerald-400', text: 'text-emerald-300', ring: 'ring-emerald-900/60' },
   inactive: { dot: 'bg-zinc-400', text: 'text-zinc-300', ring: 'ring-zinc-700' },
 }
 
-const StatusChip = ({ status = 'active' }) => {
-  const style = STATUS_STYLES[status] || STATUS_STYLES.active
+const StatusChip = ({ status = 'inactive' }) => {
+  const style = STATUS_STYLES[status] || STATUS_STYLES.inactive
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-2.5 py-1 text-xs font-medium ${style.text} ring-1 ${style.ring}`}
@@ -53,12 +54,32 @@ const FilterSelect = ({ value, onChange, options }) => (
 
 function AllUserViewPage() {
   const [allUserDetails, setAllUserDetails] = useState([])
+  const [userStatus, setUserStatus] = useState({}) 
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
 
   useEffect(() => {
+    socket.connect();
     getAllUserDetails()
+
+    // Seed with whoever is already online when this page mounts
+    socket.on("initialStatus", ({ users }) => {
+      const seed = {};
+      (users || []).forEach((id) => { seed[id] = "active"; });
+      setUserStatus((prev) => ({ ...prev, ...seed }));
+    });
+
+    // Listen for real-time status updates
+    socket.on("updateUserStatus", ({ userId, status }) => {
+      setUserStatus((prev) => ({ ...prev, [userId]: status }));
+    });
+
+    return () => {
+      socket.off("initialStatus");
+      socket.off("updateUserStatus");
+      socket.disconnect();
+    };
   }, [])
 
   const getAllUserDetails = async () => {
@@ -76,24 +97,29 @@ function AllUserViewPage() {
     setSidebarOpen(!sidebarOpen)
   }
 
+  // Merge live socket status into each user record
+  const usersWithLiveStatus = useMemo(() => {
+    return allUserDetails.map((u) => ({
+      ...u,
+      liveStatus: userStatus[u._id] || 'inactive',
+    }))
+  }, [allUserDetails, userStatus])
+
   const statusOptions = useMemo(() => {
-    const unique = Array.from(
-      new Set(allUserDetails.map((u) => u.status || 'active').filter(Boolean))
-    )
-    return ['all', ...unique]
-  }, [allUserDetails])
+    return ['all', 'active', 'inactive']
+  }, [])
 
   const filtered = useMemo(() => {
-    return allUserDetails.filter((u) => {
+    return usersWithLiveStatus.filter((u) => {
       const matchesSearch =
         !search ||
         [u.fullName, u.email]
           .filter(Boolean)
           .some((field) => field.toLowerCase().includes(search.toLowerCase()))
-      const matchesStatus = status === 'all' || (u.status || 'active') === status
+      const matchesStatus = status === 'all' || u.liveStatus === status
       return matchesSearch && matchesStatus
     })
-  }, [allUserDetails, search, status])
+  }, [usersWithLiveStatus, search, status])
 
   const hasActiveFilters = Boolean(search) || status !== 'all'
 
@@ -104,7 +130,6 @@ function AllUserViewPage() {
 
   return (
     <div className="min-h-screen font-[DM_Sans] flex flex-col md:flex-row bg-black">
-      {/* Mobile Sidebar Toggle */}
       <header className=' flex z-40 w-full md:hidden  justify-between items-center px-4 py-3 bg-zinc-950'>
         <div>
           <i className="fa-solid fa-bolt text-lg md:text-xl" style={{ color: "#f0efef" }}></i><span className="text-lg md:text-2xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
@@ -119,7 +144,6 @@ function AllUserViewPage() {
         </div>
       </header>
 
-      {/* Sidebar - Hidden on mobile by default, shown when toggled */}
       <div
         className={`
     fixed
@@ -137,9 +161,7 @@ function AllUserViewPage() {
         <SideBars />
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 h-screen overflow-y-auto custom-scroll px-4 pb-2 pt-6 sm:px-6 lg:px-10 lg:pt-10 w-full">
-        {/* Header */}
         <Header />
 
         <section className="font-[DM_Sans] text-zinc-100 mt-2">
@@ -153,7 +175,6 @@ function AllUserViewPage() {
             </div>
           </div>
 
-          {/* Search + filters */}
           <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-zinc-900 bg-zinc-950 p-4 sm:flex-row sm:items-center">
             <div className="relative flex-1">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
@@ -199,7 +220,6 @@ function AllUserViewPage() {
             </div>
           </div>
 
-          {/* Empty states */}
           {allUserDetails.length === 0 && (
             <div className="grid place-items-center rounded-2xl border border-zinc-900 bg-zinc-950 px-6 py-16 text-center">
               <UsersIcon className="h-8 w-8 text-zinc-700" />
@@ -222,7 +242,6 @@ function AllUserViewPage() {
             </div>
           )}
 
-          {/* Desktop table */}
           {filtered.length > 0 && (
             <div className="hidden overflow-x-auto rounded-2xl border border-zinc-900 bg-zinc-950 lg:block">
               <table className="w-full min-w-[640px] text-left text-sm">
@@ -246,7 +265,7 @@ function AllUserViewPage() {
                       </td>
                       <td className="px-4 py-4 text-zinc-400">{u.email}</td>
                       <td className="px-4 py-4">
-                        <StatusChip status={u.status || 'active'} />
+                        <StatusChip status={u.liveStatus} />
                       </td>
                     </tr>
                   ))}
@@ -255,7 +274,6 @@ function AllUserViewPage() {
             </div>
           )}
 
-          {/* Mobile / tablet cards */}
           {filtered.length > 0 && (
             <div className="grid gap-4 lg:hidden">
               {filtered.map((u, i) => (
@@ -268,7 +286,7 @@ function AllUserViewPage() {
                           <p className="text-xs font-mono text-zinc-500">#{String(i + 1).padStart(2, '0')}</p>
                           <h3 className="mt-0.5 truncate text-base font-semibold text-zinc-100">{u.fullName}</h3>
                         </div>
-                        <StatusChip status={u.status || 'active'} />
+                        <StatusChip status={u.liveStatus} />
                       </div>
                       <p className="mt-1 flex items-center gap-1.5 text-sm text-zinc-500">
                         <Mail className="h-3.5 w-3.5 shrink-0" />

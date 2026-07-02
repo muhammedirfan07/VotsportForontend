@@ -4,8 +4,9 @@ import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { FaSpinner } from "react-icons/fa";
-import { ArrowRight, Check, Eye, EyeOff, Zap,Building2 } from "lucide-react";
+import { ArrowRight, Check, Eye, EyeOff, Zap, Building2 } from "lucide-react";
 import loginPatnerImg from '../../../assets/loginpatnerImg.jpeg'
+import socket from "../../../Server/socket";
 
 function Field({ id, label, type = "text", placeholder, value, onChange }) {
   return (
@@ -36,8 +37,8 @@ const Authen = ({ InsideTheRegister }) => {
     password: "",
     address: "",
   });
-   console.log("partnerInput",patnerInput);
-   
+  console.log("partnerInput", patnerInput);
+
   const navigate = useNavigate();
 
   const rules = [
@@ -60,7 +61,7 @@ const Authen = ({ InsideTheRegister }) => {
         const result = await partnersRegisterAPI(patnerInput);
         if (result.status === 200) {
           toast.success(result.data.message, { position: "top-right", theme: "dark" });
-          navigate("/optVerifyPage",{state:{email:patnerInput.email}});
+          navigate("/optVerifyPage", { state: { email: patnerInput.email } });
           setPatnerInput({ StationName: "", email: "", password: "", address: "" });
         } else if (result.status === 406 || result.status === 400) {
           toast.error(result.response.data.message, { position: "top-right", theme: "dark" });
@@ -88,6 +89,8 @@ const Authen = ({ InsideTheRegister }) => {
       if (result.status === 200) {
         const { partner, PartnerToken } = result.data;
         sessionStorage.setItem("partner", JSON.stringify(partner));
+        socket.connect();
+        socket.emit("registerPartner", partner._id);
         sessionStorage.setItem("PartnerToken", PartnerToken);
         toast.success(`Welcome! 🎉`, { position: "top-right", theme: "dark" });
         navigate("/homecolab");
@@ -119,14 +122,14 @@ const Authen = ({ InsideTheRegister }) => {
 
         {/* ── left visual panel ── */}
         <section className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 sm:rounded-3xl">
-        <header  className="absolute md:hidden  top-4  left-4 z-20">
-        <Link to="/">
-          <h3 className=" flex text-lg gap-1 justify-center items-center text-green-100 font-bold">
-            <span className="flex h-5  w-5 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xs" style={{ color: "#f0efef" }}></i> </span>
-            <p> <span className="text-lg   text-green-600 font-michroma">Volt</span>Spot</p>
-          </h3>
-        </Link>
-      </header>
+          <header className="absolute md:hidden  top-4  left-4 z-20">
+            <Link to="/">
+              <h3 className=" flex text-lg gap-1 justify-center items-center text-green-100 font-bold">
+                <span className="flex h-5  w-5 items-center justify-center rounded-full bg-green-600 "> <i class="fa-solid fa-bolt text-xs" style={{ color: "#f0efef" }}></i> </span>
+                <p> <span className="text-lg   text-green-600 font-michroma">Volt</span>Spot</p>
+              </h3>
+            </Link>
+          </header>
           <img
             src={loginPatnerImg}
             alt="VoltSpot device"
@@ -190,12 +193,12 @@ const Authen = ({ InsideTheRegister }) => {
               )}
 
               {/* email */}
-              <div  className="space-y-2">
-                 <label htmlFor="address" className="block text-sm font-medium text-zinc-400">
-                      Email
-                    </label>
+              <div className="space-y-2">
+                <label htmlFor="address" className="block text-sm font-medium text-zinc-400">
+                  Email
+                </label>
                 <input
-                className='w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors resize-none'
+                  className='w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-colors resize-none'
                   id="email"
                   type="email"
                   label="Email"
@@ -203,7 +206,7 @@ const Authen = ({ InsideTheRegister }) => {
                   value={patnerInput.email}
                   onChange={(e) => setPatnerInput({ ...patnerInput, email: e.target.value })}
                 />
-  
+
               </div>
               {/* password */}
               <div className="space-y-2">

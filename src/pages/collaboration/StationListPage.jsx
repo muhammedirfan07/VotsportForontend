@@ -299,7 +299,7 @@ const StationListPage = () => {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-xs font-mono text-zinc-500">#{String(i + 1).padStart(2, '0')}</p>
-                      <h3 className="mt-0.5 truncate text-base font-semibold text-zinc-100">{s.stationName}</h3>
+                      <h3 className="mt-0.5 truncate text-base text-wrap font-semibold text-zinc-100">{s.stationName}</h3>
                     </div>
                     <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-zinc-900 px-2.5 py-1 text-sm font-semibold text-emerald-400 ring-1 ring-zinc-800">
                       ₹{s.pricePerHour}
