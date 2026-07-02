@@ -1,2 +1,2 @@
-const SERVER_URL= import.meta.env.VITE_API_URL
+const SERVER_URL="https://voltspot-backend.onrender.com"
 export default SERVER_URL
