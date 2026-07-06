@@ -3,7 +3,6 @@ import SideBars from "../../../components/admin/SideBars";
 import Header from "../../../components/admin/Header";
 import { viewAllStayionAPI } from "../../../Server/allAPI";
 import { MapPinned } from "lucide-react";
-import SERVER_URL from "../../../Server/serverURL";
 import {
   addStaionResponseContext,
   updateStaionResponseContext,
@@ -50,7 +49,7 @@ const StationImage = ({ image, alt }) => {
   }
   return (
     <img
-      src={`${SERVER_URL}/${image}`}
+      src={image}   
       alt={alt}
       className="h-10 w-10 shrink-0 rounded-lg object-cover ring-1 ring-zinc-800"
     />
@@ -127,17 +126,32 @@ const ViewAllStationList = () => {
     setSidebarOpen(!sidebarOpen)
   }
 
-  const HandleApprove = async (stationId, status) => {
-    try {
-      const token = sessionStorage.getItem('token')
-      if (!token) throw new Error('Token not found')
-      const reqHeaders = { Authorization: `Bearer ${token}` }
-      const result = await approveAndRejectAPI(stationId, { status }, reqHeaders)
-      if (result.status === 200) setUpdateStaionResponse((prev) => !prev)
-    } catch (err) {
-      console.log('error updating..', err)
+const HandleApprove = async (stationId, status) => {
+ 
+  setViewStationDetails((prev) =>
+    prev.map((s) => (s._id === stationId ? { ...s, status } : s))
+  )
+
+  try {
+    const token = sessionStorage.getItem('token')
+    if (!token) throw new Error('Token not found')
+    const reqHeaders = { Authorization: `Bearer ${token}` }
+    const result = await approveAndRejectAPI(stationId, { status }, reqHeaders)
+
+    if (result.status !== 200) {
+      setViewStationDetails((prev) =>
+        prev.map((s) => (s._id === stationId ? { ...s, status: 'pending' } : s))
+      )
+    } else {
+      setUpdateStaionResponse((prev) => !prev) 
     }
+  } catch (err) {
+    console.log('error updating..', err)
+    setViewStationDetails((prev) =>
+      prev.map((s) => (s._id === stationId ? { ...s, status: 'pending' } : s))
+    )
   }
+}
 
   /* ── Filtering ── */
   const filtered = useMemo(() => {

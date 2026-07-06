@@ -44,7 +44,7 @@ const StationImage = ({ image, alt }) => {
   }
   return (
     <img
-      src={`${SERVER_URL}/${image}`}
+      src={image}   
       alt={alt}
       className="h-10 w-10 shrink-0 rounded-lg object-cover ring-1 ring-zinc-800"
     />

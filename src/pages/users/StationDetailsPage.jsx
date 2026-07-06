@@ -339,7 +339,7 @@ const StationDetailsPage = () => {
               <div className="bg-black/60  backdrop-blur-xl border border-none rounded-3xl overflow-hidden  transition-all duration-300 hover:shadow-lg  hover:shadow-green-500/40  ">
                 <div className="relative  min-h-[280px] overflow-hidden">
                   <img
-                    src={`${SERVER_URL}/${station?.image}`}
+                    src={station?.image}
                     alt="Charging Station"
                     className="w-full h-[400px]  object-cover transition-transform duration-500 hover:scale-105"
                   />

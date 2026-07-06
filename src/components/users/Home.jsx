@@ -409,24 +409,7 @@ const Home = () => {
 
               {/* Map View - Conditionally rendered */}
               {showMap && (
-                // <div className="mb-8 rounded-lg overflow-hidden shadow-lg">
-                //   <div className="relative">
-                //     <button
-                //       onClick={() => setShowMap(false)}
-                //       className="absolute top-2 right-2 z-10 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-75"
-                //     >
-                //       <X size={20} />
-                //     </button>
-                //     <iframe
-                //       src="https://www.google.com/maps/d/u/0/embed?mid=1ZJAUHIjyykkJtqurWZ8SlSCZrBENF7g&ehbc=2E312F"
-                //       width="100%"
-                //       height="480"
-                //       className="border-0"
-                //       allowFullScreen
-                //       loading="lazy"
-                //     ></iframe>
-                //   </div>
-                // </div>
+                
                 <StationsMapModal
                   stations={viewStation}
                   onClose={() => setShowMap(false)}
@@ -508,7 +491,7 @@ const Home = () => {
                         <div className="relative overflow-hidden sm:w-64 sm:flex-shrink-0">
                           <img
                             className="w-full h-48 sm:h-[276px] object-cover transition-transform duration-300 group-hover:scale-105"
-                            src={`${SERVER_URL}/${station?.image}`}
+                            src={station?.image}
                             alt={station.stationName}
                           />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

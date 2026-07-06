@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Upload, X } from "lucide-react"; // Import icons from lucide-react
-import SERVER_URL from "../../Server/serverURL";
 import { updateStaionAPI } from "../../Server/allAPI";
 import { updateStaionResponseContext } from "../../context/ContextAPI";
 import { toast } from "react-toastify";
@@ -11,11 +10,11 @@ const UpdateStation = ({ station }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(
-    station.image ? `${SERVER_URL}/${station.image}` : null
+    station.image || null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const{updateStaionResponse,setUpdateStaionResponse}=useContext(updateStaionResponseContext)
+  const { updateStaionResponse, setUpdateStaionResponse } = useContext(updateStaionResponseContext)
 
   const [addStationDetails, setAddStationDetails] = useState({
     id: station._id,
@@ -61,7 +60,7 @@ const UpdateStation = ({ station }) => {
   const closeModal = () => {
     setIsOpen(false);
     setImage(null);
-    setPreviewUrl(station.image ? `${SERVER_URL}/${station.image}` : null); // Reset to original image
+    setPreviewUrl(station.image || null); 
     setAddStationDetails({
       id: station._id,
       stationName: station.stationName,
@@ -142,7 +141,7 @@ const UpdateStation = ({ station }) => {
       !longitude ||
       !city ||
       !state ||
-      !availableSlots 
+      !availableSlots
     ) {
       toast.info("Please fill all the fields", {
         position: "top-right",
@@ -150,6 +149,24 @@ const UpdateStation = ({ station }) => {
       });
       return;
     }
+
+  
+    if (Number(availableSlots) <= 0 || Number(availableSlots) > 10) {
+      toast.info("Available slots must be between 1 and 10", {
+        position: "top-right",
+        theme: "dark",
+      });
+      return;
+    }
+
+    if (Number(pricePerHour) <= 10) {
+      toast.info("Price per hour must be greater than 10", {
+        position: "top-right",
+        theme: "dark",
+      });
+      return;
+    }
+
     // Validate longitude & latitude format
     if (!isValidCoordinates(longitude, latitude)) {
       toast.error("Invalid longitude or latitude format", {
@@ -203,16 +220,16 @@ const UpdateStation = ({ station }) => {
       const result = await updateStaionAPI(id, reqBody, reqHeaders);
       if (result.status == 200) {
         toast.success("successulsully updated", {
-            position: "top-right",
-            theme: "dark",
-          });
+          position: "top-right",
+          theme: "dark",
+        });
         setUpdateStaionResponse(result)
         closeModal();
       } else {
         throw new Error("Station not found");
       }
     } catch (error) {
-        toast.error( "Something went wrong", { position: "bottom-right", theme: "dark" });
+      toast.error("Something went wrong", { position: "bottom-right", theme: "dark" });
     } finally {
       setIsSubmitting(false);
     }
@@ -280,13 +297,13 @@ const UpdateStation = ({ station }) => {
                 <div className="w-full md:w-2/3 flex flex-col gap-2.5">
 
                   <input
-                   onChange={(e) =>
-                        setAddStationDetails({
-                          ...addStationDetails,
-                          stationName: e.target.value,
-                        })
-                      }
-                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors"
+                    onChange={(e) =>
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        stationName: e.target.value,
+                      })
+                    }
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors"
                     type="text"
                     placeholder="Station name"
                     value={addStationDetails.stationName}
@@ -295,54 +312,54 @@ const UpdateStation = ({ station }) => {
                   {/* Lat / Lng */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <input onChange={(e) =>
-                          setAddStationDetails({
-                            ...addStationDetails,
-                            latitude: e.target.value,
-                          })
-                        }  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Latitude" value={addStationDetails.latitude} />
-                    <input  onChange={(e) =>
-                          setAddStationDetails({
-                            ...addStationDetails,
-                            longitude: e.target.value,
-                          })
-                        }  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Longitude" value={addStationDetails.longitude} />
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        latitude: e.target.value,
+                      })
+                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Latitude" value={addStationDetails.latitude} />
+                    <input onChange={(e) =>
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        longitude: e.target.value,
+                      })
+                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Longitude" value={addStationDetails.longitude} />
                   </div>
 
                   {/* City / State */}
                   <div className="grid grid-cols-2 gap-2.5">
-                    <input  onChange={(e) =>
-                          setAddStationDetails({
-                            ...addStationDetails,
-                            city: e.target.value,
-                          })
-                        }  type="text" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" placeholder="City" value={addStationDetails.city} />
                     <input onChange={(e) =>
-                          setAddStationDetails({
-                            ...addStationDetails,
-                            state: e.target.value,
-                          })
-                        } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="State" value={addStationDetails.state} />
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        city: e.target.value,
+                      })
+                    } type="text" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" placeholder="City" value={addStationDetails.city} />
+                    <input onChange={(e) =>
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        state: e.target.value,
+                      })
+                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="State" value={addStationDetails.state} />
                   </div>
 
                   {/* Vehicle / Charging Type */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <select onChange={(e) =>
-                          setAddStationDetails({
-                            ...addStationDetails,
-                            vehicleType: e.target.value,
-                          })
-                        } value={addStationDetails.vehicleType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        vehicleType: e.target.value,
+                      })
+                    } value={addStationDetails.vehicleType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
                       <option value="" className="bg-zinc-900">Select vehicle type</option>
                       <option value="2-wheeler" className="bg-zinc-900">2-wheeler</option>
                       <option value="3-wheeler" className="bg-zinc-900">3-wheeler</option>
                       <option value="4-wheeler" className="bg-zinc-900">4-wheeler</option>
                     </select>
                     <select onChange={(e) =>
-                          setAddStationDetails({
-                            ...addStationDetails,
-                            chargingType: e.target.value,
-                          })
-                        } value={addStationDetails.chargingType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        chargingType: e.target.value,
+                      })
+                    } value={addStationDetails.chargingType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
                       <option value="" className="bg-zinc-900">Select charging type</option>
                       <option value="slow" className="bg-zinc-900">Slow</option>
                       <option value="fast" className="bg-zinc-900">Fast</option>
@@ -351,26 +368,26 @@ const UpdateStation = ({ station }) => {
                   </div>
 
                   <input onChange={(e) =>
-                        setAddStationDetails({
-                          ...addStationDetails,
-                          mapUrl: e.target.value,
-                        })
-                      } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="url" placeholder="Map URL" value={addStationDetails.mapUrl} />
+                    setAddStationDetails({
+                      ...addStationDetails,
+                      mapUrl: e.target.value,
+                    })
+                  } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="url" placeholder="Map URL" value={addStationDetails.mapUrl} />
 
                   {/* Slots / Price */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <input onChange={(e) =>
-                        setAddStationDetails({
-                          ...addStationDetails,
-                          availableSlots: e.target.value,
-                        })
-                      } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Active slots" value={addStationDetails.availableSlots} />
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        availableSlots: e.target.value,
+                      })
+                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Active slots" value={addStationDetails.availableSlots} />
                     <input onChange={(e) =>
-                        setAddStationDetails({
-                          ...addStationDetails,
-                          pricePerHour: e.target.value,
-                        })
-                      } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Price/hr" value={addStationDetails.pricePerHour} />
+                      setAddStationDetails({
+                        ...addStationDetails,
+                        pricePerHour: e.target.value,
+                      })
+                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Price/hr" value={addStationDetails.pricePerHour} />
                   </div>
 
                 </div>
