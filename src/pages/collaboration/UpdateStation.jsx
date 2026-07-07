@@ -34,14 +34,15 @@ const UpdateStation = ({ station }) => {
 
 
   useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
+    setPreviewUrl(station.image || null)
+    setImage(null)
+  }, [station.image]);
 
   // modal open/close
   const openModal = () => {
     setIsOpen(true);
+    setImage(null)
+    setPreviewUrl(station.image || null)
     setAddStationDetails({
       id: station._id,
       stationName: station.stationName,

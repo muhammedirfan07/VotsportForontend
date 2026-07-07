@@ -49,7 +49,7 @@ const Profile = () => {
           memberSince: formatJoinDate(result.data.createdAt)
         });
         if (result.data.profileImage) {
-          setImagePreview(`${SERVER_URL}/${result.data.profileImage}`);
+          setImagePreview(result.data.profileImage);
         }
       }
     } catch (error) {
