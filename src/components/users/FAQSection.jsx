@@ -78,7 +78,7 @@ const FAQSection = () => {
                 className="border border-neutral-700 rounded-xl overflow-hidden bg-card"
               >
                 <button
-                  className="w-full flex justify-between items-center p-5 text-left font-heading font-semibold text-foreground hover:text-emerald-700 transition-colors duration-200"
+                  className="w-full flex justify-between items-center p-5 text-left font-heading font-semibold text-foreground hover:text-green-300 transition-colors duration-200"
                   onClick={() => toggleAccordion(faq.id)}
                 >
                   <span>{faq.question}</span>

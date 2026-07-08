@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+const  rollers = sessionStorage.getItem("user")  
+const navigate = useNavigate()
+
+
+     
+
     return (
         <footer className="bg-neutral-950 z-100  text-white pt-10">
             <div className="container font-[Dm_Sans]  z-100  mx-auto px-4">
@@ -11,8 +17,7 @@ const Footer = () => {
                             <i class="fa-solid fa-bolt text-2xl" style={{ color: "#f0efef" }}></i>
                             <span className="text-2xl  text-green-600 font-michroma">Volt</span>Spot
                         </h1>
-                        <p className="my-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, quibusdam.</p>
-                        <Link to={'/homecolab'}> <button className='py-2 px-6  rounded-lg bg-emerald-800'>Patterns</button></Link>
+                        <p className="my-4">Powering the future of EV charging, one station at a time..</p>
                     </div>
                     <div className='col-span-2 flex justify-evenly  md:p-3 p-1'>
                         <div className='flex flex-col p-3'>
@@ -21,7 +26,7 @@ const Footer = () => {
                                 <li><Link to="/">Home</Link></li>
                                 <li><Link to="/about">About</Link></li>
                                 <li><Link to="/contact">Contact</Link></li>
-                                <li><Link to="/collabration">Collabration</Link></li>
+                                <li><Link to={'/homecolab'}>Collabration</Link></li>
                             </ul>
                         </div>
                         <div className='flex flex-col  md:p-3 py-4 '>

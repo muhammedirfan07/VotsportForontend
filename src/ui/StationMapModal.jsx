@@ -97,7 +97,7 @@ const StationsMapModal = ({ stations = [], onClose }) => {
               <Popup>
                 <div style={{ minWidth: 180 }}>
                   <img
-                    src={`${SERVER_URL}/${station.image}`}
+                    src={station.image}
                     alt={station.stationName}
                     style={{
                       width: "100%",

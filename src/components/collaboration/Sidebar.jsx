@@ -1,5 +1,5 @@
 import React from 'react';
-import { BadgeIndianRupee, MapPinHouse, Menu } from 'lucide-react';
+import { Bell , MapPinHouse, Menu,ChartColumnIncreasing,User,ChartArea   } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 const Sidebar = () => {
   const location = useLocation();
@@ -21,9 +21,24 @@ const Sidebar = () => {
           <MapPinHouse className=" ms-2 w-5 h-5" /> Stations
           </button>
         </Link>
+        <Link to="/PartnerProfile">
+          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/PartnerProfile') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <User className=" ms-2 w-5 h-5" /> Profile
+          </button>
+        </Link> 
+        <Link to="#">
+          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('#') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <ChartColumnIncreasing className=" ms-2 w-5 h-5" /> Booking Charts
+          </button>
+        </Link> 
+        <Link to="#">
+          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/#') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+          <ChartArea className=" ms-2 w-5 h-5" /> Payments
+          </button>
+        </Link> 
         <Link to="/notifation">
           <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/notifation') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
-          <BadgeIndianRupee className=" ms-2 w-5 h-5" /> Notification
+          <Bell  className=" ms-2 w-5 h-5" /> Notification
           </button>
         </Link> 
       </nav>

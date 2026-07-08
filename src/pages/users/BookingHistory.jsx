@@ -202,25 +202,25 @@ const BookingHistory = ({ joinData }) => {
     new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(amount);
 
   return (
-    <div className="bg-neutral-900 drop-shadow-xl rounded-xl overflow-hidden">
+    <div className="bg-zinc-900 drop-shadow-xl rounded-xl ">
       {/* Header */}
       <div className="px-6 py-5 border-b border-neutral-600 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl text-amber-50 font-semibold">Booking History</h2>
         <div className="relative w-full sm:w-auto">
           <button
             onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-            className="w-full sm:w-auto bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg flex items-center justify-between gap-3 border border-neutral-600 transition-all min-w-[180px]"
+            className="w-full sm:w-auto bg-neutral-800 hover:bg-zinc-900 text-white px-4 py-2 rounded-lg flex items-center justify-between gap-3 border border-neutral-600 transition-all min-w-[180px]"
           >
             <span className="text-sm">{timeFilters.find((f) => f.value === selectedFilter)?.label}</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${showFilterDropdown ? "rotate-180" : ""}`} />
           </button>
           {showFilterDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-neutral-600 bg-neutral-800 shadow-xl z-40">
+            <div className="absolute top-full left-0 right-0 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-900 custom-scroll shadow-xl z-40">
               {timeFilters.map((filter) => (
                 <button
                   key={filter.value}
                   onClick={() => { setSelectedFilter(filter.value); setShowFilterDropdown(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-neutral-700 ${selectedFilter === filter.value ? "bg-green-900/30 text-green-400" : "text-white"
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-zinc-800 ${selectedFilter === filter.value ? "bg-green-900/30 text-green-400" : "text-white"
                     }`}
                 >
                   {filter.label}
@@ -250,8 +250,8 @@ const BookingHistory = ({ joinData }) => {
                 <div
                   key={booking._id}
                   className={`rounded-xl border overflow-hidden transition-all ease-in-out ${isCanceled
-                      ? "bg-neutral-950/60 border-neutral-800 opacity-70"
-                      : "bg-neutral-900/50 border-neutral-700 hover:border-green-600/30 shadow"
+                      ? "bg-zinc-900/60 border-zinc-800 opacity-70"
+                      : "bg-zinc-950/50 border-zinc-700 hover:border-green-600/30 shadow"
                     }`}
                 >
                   {/* Confirm-cancel overlay */}

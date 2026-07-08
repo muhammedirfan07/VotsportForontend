@@ -204,9 +204,9 @@ const VehicleDetails = () => {
   };
 
   return (
-    <div className="bg-neutral-900 font-[DM_Sans] rounded-xl overflow-hidden">
+    <div className="bg-zinc-900 font-[DM_Sans] rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-5 border-b border-gray-800 flex justify-between items-center">
+      <div className="px-6 py-5 border-b border-zinc-800 flex justify-between items-center">
         <div>
           <h2 className="text-xl md:text-2xl text-white font-semibold">
             Vehicle Details
@@ -217,7 +217,7 @@ const VehicleDetails = () => {
         </div>
         <button
           onClick={openAddModal}
-          className="flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm md:font-medium transition-transform duration-200 group cursor-pointer"
+          className="flex items-center gap-2 bg-green-500/60 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm md:font-medium transition-transform duration-200 group cursor-pointer"
         >
           <Plus
             size={20}

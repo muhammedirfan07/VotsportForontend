@@ -11,7 +11,8 @@ import Auth from "./components/users/Authendication"
 import Profile from "./components/users/profile/Profile"
 import ForgotPassword from "./pages/users/ForgotPassword"
 import ResetPassword from "./pages/users/ResentPassword"
-
+import About from "./components/users/About"
+import Contact from "./components/users/profile/Contact"
 ///payments 
 import CheckoutForms from "./pages/users/CheckoutForms"
 import PaymentSuccessPage from "./pages/users/PaymentSuccessPage"
@@ -29,11 +30,12 @@ import ProjectManagementApp from "./components/collaboration/CHome"
 import StationHome from "./components/collaboration/StationHome"
 import OTPInput from "./components/collaboration/authenticationPatners/optBox"
 import Notification from "./pages/collaboration/Notification"
-
+import PartnerProfile from "./pages/collaboration/PartnerProfile"
 // Common Components
 import Footer from "./components/common/Footer"
 import EVChargingLoader from "./ui/loading/ev-charging-loader"
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
+import AboutSection from "./components/users/AboutSection"
 
 
 
@@ -52,12 +54,12 @@ function App() {
   }
   return (
     <>
-    
+
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
-    
+
 
         {/* Authentication Routes */}
         <Route path="/login" element={<Auth />} />
@@ -78,13 +80,16 @@ function App() {
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/resent-password/:token" element={<ResetPassword />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Collaboration Pages */}
         <Route path="/homecolab" element={<ProjectManagementApp />} />
         <Route path="/patnerDashboard" element={<StationHome />} />
         <Route path="/optVerifyPage" element={<OTPInput />} />
         <Route path="/notifation" element={<Notification />} />
-      
+        <Route path="/PartnerProfile" element={<PartnerProfile />} />
+
       </Routes>
       {/* Footer */}
       <Footer />

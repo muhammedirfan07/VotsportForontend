@@ -129,7 +129,7 @@ const Profile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <aside className="lg:col-span-1">
-            <div className="bg-neutral-900 border border-neutral-800 shadow w-full rounded-2xl p-6 sticky top-8">
+            <div className="bg-zinc-900 border border-zinc-800 shadow w-full rounded-2xl p-6 sticky top-8">
               <div className="flex flex-col items-center text-center mb-6">
                 <div className="h-24 w-24 rounded-full bg-green-500/20 border-2 border-green-400 flex items-center justify-center overflow-hidden">
                   <img src={imagePreview} alt="Profile" className="h-full w-full object-cover" />
@@ -185,7 +185,7 @@ const Profile = () => {
           {/* Content Area */}
           <section className="lg:col-span-3">
             {activeTab === 'profile' && (
-              <div className="bg-neutral-900 border border-neutral-800 rounded-2xl px-7 py-6">
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-7 py-6">
                 <h1 className="text-2xl text-white font-bold mb-1">Profile Information</h1>
                 <p className="text-md text-neutral-400 mb-6">Update your personal details</p>
 
@@ -199,7 +199,7 @@ const Profile = () => {
                         </div>
                         <button
                           onClick={() => fileInputRef.current.click()}
-                          className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-green-500 text-black flex items-center justify-center hover:bg-green-400 hover:scale-110 transition-all"
+                          className="absolute bottom-0 cursor-pointer right-0 h-8 w-8 rounded-full bg-green-500 text-black flex items-center justify-center hover:bg-green-400 hover:scale-110 transition-all"
                         >
                           <Camera className="h-4 w-4" />
                         </button>
@@ -216,7 +216,7 @@ const Profile = () => {
                         <p className="text-sm text-neutral-400 mt-1">JPG, PNG or GIF — max 5MB</p>
                         <button
                           onClick={() => fileInputRef.current.click()}
-                          className="mt-3 px-4 py-1.5 text-sm rounded-lg border border-green-500/50 text-green-400 hover:bg-green-500/10 transition-all"
+                          className="mt-3 px-4 py-1.5 cursor-pointer text-sm rounded-lg border border-green-500/50 text-green-400 hover:bg-green-500/10 transition-all"
                         >
                           Change Photo
                         </button>
@@ -233,7 +233,7 @@ const Profile = () => {
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                         placeholder="Enter your full name"
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-800 text-neutral-200 border border-neutral-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-400/40 transition-all"
+                        className="w-full px-3 py-2 rounded-xl bg-neutral-900 text-neutral-200 border border-neutral-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-400/40 transition-all"
                       />
                     </div>
 
@@ -244,7 +244,7 @@ const Profile = () => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+91 ..."
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-800 text-neutral-200 border border-neutral-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-400/40 transition-all"
+                        className="w-full px-3 py-2 rounded-xl bg-neutral-900 text-neutral-200 border border-neutral-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-400/40 transition-all"
                       />
                     </div>
 
@@ -260,7 +260,7 @@ const Profile = () => {
                         type="email"
                         value={formData.email}
                         disabled
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-800/50 text-neutral-500 border border-neutral-700 opacity-60 cursor-not-allowed"
+                        className="w-full px-3 py-2 rounded-xl bg-neutral-900/50 text-neutral-500 border border-neutral-700 opacity-60 cursor-not-allowed"
                       />
                     </div>
 
@@ -270,7 +270,7 @@ const Profile = () => {
                       <input
                         value={formData.memberSince}
                         disabled
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-800/50 text-neutral-500 border border-neutral-700 opacity-60 cursor-not-allowed"
+                        className="w-full px-3 py-2 rounded-xl bg-neutral-900/50 text-neutral-500 border border-neutral-700 opacity-60 cursor-not-allowed"
                       />
                     </div>
                   </div>

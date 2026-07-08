@@ -78,6 +78,16 @@ export const viewNotificationsAPI = (reqHeader) => {
     return commonAPI("GET", `${SERVER_URL}/notifications`,{},reqHeader);
   };
   
+
+  // get partner profile + stats
+export const getPartnerProfileAPI = (reqHeader) => {
+    return commonAPI("GET", `${SERVER_URL}/PartnerProfile`, {}, reqHeader);
+};
+
+// update partner profile
+export const updatePartnerProfileAPI = (reqBody, reqHeader) => {
+    return commonAPI("PUT", `${SERVER_URL}/patner/profile`, reqBody, reqHeader);
+};
 //   export const markNotificationAsReadAPI = (notificationId) => {
 //     return commonAPI("PUT", `${SERVER_URL}/notifications/${notificationId}/read`);
 //   };
