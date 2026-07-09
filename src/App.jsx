@@ -31,6 +31,7 @@ import StationHome from "./components/collaboration/StationHome"
 import OTPInput from "./components/collaboration/authenticationPatners/optBox"
 import Notification from "./pages/collaboration/Notification"
 import PartnerProfile from "./pages/collaboration/PartnerProfile"
+import BookingCharts from "./pages/collaboration/Charts/Bookingcharts"
 // Common Components
 import Footer from "./components/common/Footer"
 import EVChargingLoader from "./ui/loading/ev-charging-loader"
@@ -89,6 +90,7 @@ function App() {
         <Route path="/optVerifyPage" element={<OTPInput />} />
         <Route path="/notifation" element={<Notification />} />
         <Route path="/PartnerProfile" element={<PartnerProfile />} />
+        <Route path="/BookingCharts" element={<BookingCharts />} />
 
       </Routes>
       {/* Footer */}

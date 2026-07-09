@@ -88,9 +88,6 @@ export const getPartnerProfileAPI = (reqHeader) => {
 export const updatePartnerProfileAPI = (reqBody, reqHeader) => {
     return commonAPI("PUT", `${SERVER_URL}/patner/profile`, reqBody, reqHeader);
 };
-//   export const markNotificationAsReadAPI = (notificationId) => {
-//     return commonAPI("PUT", `${SERVER_URL}/notifications/${notificationId}/read`);
-//   };
 
 // delete single notification
 export const deleteNotificationAPI = (notificationId,reqHeader) => {
@@ -102,7 +99,10 @@ export const deleteNotificationAPI = (notificationId,reqHeader) => {
     return commonAPI("DELETE", `${SERVER_URL}/notifications`,{},reqHeader);
   };
 
-
+// get booking chart stats (bookings, revenue, utilization, vehicle mix, monthly trend)
+export const getPartnerBookingChartStatsAPI = (reqHeader) => {
+  return commonAPI("GET", `${SERVER_URL}/patner/bookingChartStats`, {}, reqHeader);
+};
 
 
 //---------------------STATION---------------------

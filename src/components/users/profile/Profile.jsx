@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { User, Car, Wallet, Calendar, LogOut, Camera, Save, ArrowBigRightDash, Lock } from 'lucide-react';
 import BookingHistory from '../../../pages/users/BookingHistory';
 import { singleUserDetailsAPI, updateUserProfileAPI } from '../../../Server/allAPI';
-import SERVER_URL from '../../../Server/serverURL';
+import avatar from "../../../assets/avatar.png"
 import { useNavigate } from 'react-router-dom';
 import VehicleDetails from '../../../pages/users/Vechle -details/VechileDetails';
 import Payments from '../../../pages/users/Wallet/Paymets';
@@ -19,7 +19,7 @@ const Profile = () => {
   });
   const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(
-    "https://api.dicebear.com/7.x/avataaars/svg?seed=John"
+   avatar
   );
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState("");
@@ -31,6 +31,8 @@ const Profile = () => {
     getViewUserDetails();
   }, []);
 
+  console.log("current image privous =",imagePreview);
+  
   const getViewUserDetails = async () => {
     const userData = sessionStorage.getItem("user");
     const authUser = JSON.parse(userData);
@@ -40,6 +42,7 @@ const Profile = () => {
     const reqHeaders = { Authorization: `Bearer ${token}` };
     try {
       const result = await singleUserDetailsAPI(userId, reqHeaders);
+      console.log("result ",result);
       if (result.status === 200) {
         setSingleUserDetails(result.data);
         setFormData({
@@ -48,9 +51,13 @@ const Profile = () => {
           phone: result.data.phone || "",
           memberSince: formatJoinDate(result.data.createdAt)
         });
-        if (result.data.profileImage) {
+        if (result.data.profileImage && result.data.profileImage.startsWith('http')) {
           setImagePreview(result.data.profileImage);
+        }else{
+          setImagePreview(avatar)
         }
+        
+        
       }
     } catch (error) {
       console.log(error);
@@ -87,7 +94,8 @@ const Profile = () => {
     data.append("fullName", formData.fullName);
     data.append("phone", formData.phone);
     if (profileImage) data.append("profileImage", profileImage);
-
+     console.log("profileImage =",profileImage);
+     
     setLoading(true);
     setSaveError("");
     try {
