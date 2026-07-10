@@ -32,6 +32,7 @@ import OTPInput from "./components/collaboration/authenticationPatners/optBox"
 import Notification from "./pages/collaboration/Notification"
 import PartnerProfile from "./pages/collaboration/PartnerProfile"
 import BookingCharts from "./pages/collaboration/Charts/Bookingcharts"
+import PaymentsPageChart from "./pages/collaboration/Charts/PaymentsPageChart"
 // Common Components
 import Footer from "./components/common/Footer"
 import EVChargingLoader from "./ui/loading/ev-charging-loader"
@@ -91,6 +92,7 @@ function App() {
         <Route path="/notifation" element={<Notification />} />
         <Route path="/PartnerProfile" element={<PartnerProfile />} />
         <Route path="/BookingCharts" element={<BookingCharts />} />
+        <Route path="/PaymentsPageChart" element={<PaymentsPageChart />} />
 
       </Routes>
       {/* Footer */}

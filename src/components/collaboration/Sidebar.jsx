@@ -31,8 +31,8 @@ const Sidebar = () => {
           <ChartColumnIncreasing className=" ms-2 w-5 h-5" /> Booking Charts
           </button>
         </Link> 
-        <Link to="#">
-          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/#') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
+        <Link to="/PaymentsPageChart">
+          <button className={`w-full font-semibold flex items-center gap-2 md:gap-3 mb-2  px-2 md:px-3 py-3  text-sm  rounded-2xl ${isActive('/PaymentsPageChart') ? 'bg-green-500/10 border-l-4 border-emerald-500 pl-4 text-emerald-500' : 'text-gray-300 hover:bg-zinc-900'}`}>
           <ChartArea className=" ms-2 w-5 h-5" /> Payments
           </button>
         </Link> 

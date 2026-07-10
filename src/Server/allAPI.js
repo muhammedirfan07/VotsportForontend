@@ -101,7 +101,11 @@ export const deleteNotificationAPI = (notificationId,reqHeader) => {
 
 // get booking chart stats (bookings, revenue, utilization, vehicle mix, monthly trend)
 export const getPartnerBookingChartStatsAPI = (reqHeader) => {
-  return commonAPI("GET", `${SERVER_URL}/patner/bookingChartStats`, {}, reqHeader);
+  return commonAPI("GET", `${SERVER_URL}/BookingCharts`, {}, reqHeader);
+};
+// get booking chart stats (bookings, revenue, utilization, vehicle mix, monthly trend)
+export const getPartnerPaymentsOverviewAPI = (reqHeader) => {
+  return commonAPI("GET", `${SERVER_URL}/PaymentsPageChart`, {}, reqHeader);
 };
 
 

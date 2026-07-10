@@ -22,6 +22,7 @@ const StationDetailsPage = () => {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [overallRating, setOverallRating] = useState(0);
   const [reviews, setReviews] = useState([]);
+  
   const [startTime, setStartTime] = useState("")
   const navigate = useNavigate();
   const [isSlotOpen, setIsSlotOpen] = useState(false);
@@ -157,16 +158,11 @@ const StationDetailsPage = () => {
 
   try {
     setIsSubmitting(true);
-
-    // STEP 1 — create booking
     const result = await bookingStaionAPI(bookingData, reqHeaders);
-    
-    // DEBUG — remove after fix confirmed
-    console.log("🟡 bookingStaionAPI raw result:", result);
-    console.log("🟡 result.status:", result?.status);
-    console.log("🟡 result.data:", result?.data);
+    console.log(" bookingStaionAPI raw result:", result);
+    console.log(" result.status:", result?.status);
+    console.log(" result.data:", result?.data);
 
-    // Handle both axios success shape AND axios error shape
     const isSuccess = result?.status === 200 || result?.data?.booking;
     
     if (!isSuccess) {
@@ -177,19 +173,16 @@ const StationDetailsPage = () => {
       return;
     }
 
-    // STEP 2 — extract bookingId safely
     const bookingMongoId = result?.data?.booking?._id 
       || result?.data?.booking?.id;
 
-    console.log("🟡 bookingMongoId:", bookingMongoId);
+    console.log(" bookingMongoId:", bookingMongoId);
 
     if (!bookingMongoId) {
       toast.error("Booking ID missing. Please try again.");
-      console.error("❌ booking._id is undefined. Full data:", result?.data);
+      console.error(" booking._id is undefined. Full data:", result?.data);
       return;
     }
-
-    // Save for PaymentSuccessPage
     sessionStorage.setItem("pendingBookingId", bookingMongoId);
     toast.success("Slot booked! Redirecting to payment...", {
       position: "top-center", theme: "dark",
@@ -197,10 +190,9 @@ const StationDetailsPage = () => {
     setSlotNumber("");
     setDuration(1);
 
-    // STEP 3 — create Stripe session WITH bookingId
     const paymentResult = await paymentAPI(stationId, userId, price, bookingMongoId);
     
-    console.log("🟡 paymentResult:", paymentResult?.data);
+    console.log(" paymentResult:", paymentResult?.data);
 
     if (paymentResult?.data?.id) {
       navigate(`/stripe-checkout/${paymentResult.data.id}`);
@@ -211,7 +203,7 @@ const StationDetailsPage = () => {
     }
 
   } catch (err) {
-    console.error("❌ handleBooking crash:", err);
+    console.error(" handleBooking crash:", err);
     toast.error("Something went wrong!", {
       position: "bottom-right", theme: "dark",
     });
