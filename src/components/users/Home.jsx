@@ -1,28 +1,23 @@
-import React, { useEffect, useState, } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Search,
   MapPin,
   Battery,
   Car,
   Clock,
-  X,
   SlidersHorizontal,
   Filter,
   User
 } from "lucide-react";
-import station1 from "../../assets/station1.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "./Header";
 import { cn } from "../../util/lib/utils";
 import { feachApproveStationAPI, filterStationAPI } from "../../Server/allAPI";
-import SERVER_URL from "../../Server/serverURL";
 import Sidebar from "../../ui/SideBarFillter";
 import { useRef } from "react";
 import StationsMapModal from "../../ui/StationMapModal";
-
+import ThemeToggle from "../../ui/ThemeToggle";
 
 const Home = () => {
-  const [isloging, setLoaging] = useState(true);
   const [isloding, setLoading] = useState(true);
   const [viewStation, setViewStation] = useState([]);
   const [viewStations, setViewStations] = useState([]);
@@ -32,7 +27,7 @@ const Home = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [currentPage, SetCurrentPage] = useState(1);
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     city: "",
@@ -40,24 +35,19 @@ const Home = () => {
     chargingType: "",
     vehicleType: "",
   });
-  const navigate = useNavigate()
-  const lastScrollY = useRef(0)
+  const navigate = useNavigate();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        // Scrolling DOWN → hide
         setVisible(false);
       } else {
-        // Scrolling UP → show
         setVisible(true);
       }
-
       lastScrollY.current = currentScrollY;
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -65,7 +55,6 @@ const Home = () => {
   useEffect(() => {
     fetchViewStations();
   }, []);
-
 
   useEffect(() => {
     SetCurrentPage(1);
@@ -86,7 +75,6 @@ const Home = () => {
     }
   }, [searchStation]);
 
-
   useEffect(() => {
     SetCurrentPage(1);
     if (filters.city || filters.state || filters.chargingType || filters.vehicleType) {
@@ -96,41 +84,23 @@ const Home = () => {
     }
   }, [filters]);
 
-  // Fetch all approved stations
   const fetchViewStations = async () => {
-    console.log("Fetching approved stations...");
     const token = sessionStorage.getItem("token");
-
     if (!token) {
-      console.log("No token found!");
       setLoading(false);
       return;
     }
-
-    const reqHeaders = {
-      Authorization: `Bearer ${token}`,
-    };
-
+    const reqHeaders = { Authorization: `Bearer ${token}` };
     try {
       setLoading(true);
       const result = await feachApproveStationAPI(reqHeaders);
-      console.log("API Result:", result);
-
       if (result.status === 200) {
         setViewStation(result.data);
         setViewStations(result.data);
-        // Extract unique cities and states
-        const uniqueCities = [
-          ...new Set(result.data.map((station) => station.city)),
-        ];
-        const uniqueStates = [
-          ...new Set(result.data.map((station) => station.state)),
-        ];
-
+        const uniqueCities = [...new Set(result.data.map((station) => station.city))];
+        const uniqueStates = [...new Set(result.data.map((station) => station.state))];
         setCities(uniqueCities);
         setStates(uniqueStates);
-      } else {
-        console.log("Failed to fetch stations, status:", result.status);
       }
     } catch (error) {
       console.log("Error fetching stations:", error);
@@ -139,20 +109,10 @@ const Home = () => {
     }
   };
 
-  // Filter stations based on user inputs
   const fetchFilteredStations = async () => {
-    console.log("Fetching filtered stations...");
     const token = sessionStorage.getItem("token");
-
-    if (!token) {
-      console.log("No token found!");
-      return;
-    }
-
-    const reqHeaders = {
-      Authorization: `Bearer ${token}`,
-    };
-
+    if (!token) return;
+    const reqHeaders = { Authorization: `Bearer ${token}` };
     try {
       const result = await filterStationAPI(
         filters.city,
@@ -161,12 +121,9 @@ const Home = () => {
         filters.vehicleType,
         reqHeaders
       );
-
-      console.log("Filtered API Response:", result);
       if (result.status === 200) {
         setViewStations(result.data);
       } else {
-        console.log("No stations found!");
         setViewStations([]);
       }
     } catch (error) {
@@ -174,72 +131,70 @@ const Home = () => {
     }
   };
 
-  // Handle city selection from autocomplete suggestions
   const handleCitySelect = (city) => {
     setSearchStation(city);
     setSuggestions([]);
   };
 
   const getBatteryColor = (type) => {
-    console.log("type =", type);
-
-    if (!type) return "text-gray-500";
+    if (!type) return "text-muted-foreground";
     switch (type.toLowerCase()) {
       case "slow":
-        return "text-green-500";
+        return "text-primary";
       case "fast":
         return "text-yellow-500";
       case "superfast":
-        return "text-red-500";
+        return "text-destructive";
       default:
-        return "text-gray-500";
+        return "text-muted-foreground";
     }
   };
+
   const handlePageChange = (newPage) => {
     const totalPages = Math.ceil(viewStations.length / 4);
-
     if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
       SetCurrentPage(newPage);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-  const activeFiltersCount = Object.values(filters).filter(value => value !== '').length;
+
+  const activeFiltersCount = Object.values(filters).filter((value) => value !== "").length;
 
   return (
     <>
-      <div className="min-h-screen  font-[DM_Sans] pt-15 bg-neutral-950">
+      <div className="min-h-screen font-display pt-15 bg-background">
         <header
           className={cn(
-            "fixed top-5 left-0 w-full z-50 font-[DM_Sans] flex justify-center px-4 md:px-25 font-manrope",
+            "fixed top-5 left-0 w-full z-50 font-display flex justify-center px-4 md:px-25",
             "transition-transform duration-300",
             visible ? "translate-y-0" : "-translate-y-20"
           )}
         >
           <nav
             className={cn(
-              "nav-pill flex items-center w-full justify-between px-2 md:px-4 py-2 md:pl-5 transition-[border-radius] duration-300",
-              open ? "rounded-3xl" : "rounded-full"
+              "nav-pill flex items-center w-full justify-between px-2 md:px-4 py-2 md:pl-5 transition-[border-radius] duration-300 rounded-full"
             )}
           >
             {/* Logo */}
             <div>
               <Link to="/">
-                <h3 className="flex text-xl gap-1 md:gap-2 text-green-100 font-bold">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600">
-                    <i className="fa-solid fa-bolt text-xl" style={{ color: "#f0efef" }}></i>
+                <h3 className="flex text-xl gap-1 md:gap-2 text-foreground font-bold">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+                    <i className="fa-solid fa-bolt text-xl text-primary-foreground"></i>
                   </span>
                   <p>
-                    <span className="md:text-2xl text-green-600 font-michroma">Volt</span>Spot
+                    <span className="md:text-2xl text-primary font-heading">Volt</span>Spot
                   </p>
                 </h3>
               </Link>
             </div>
 
-            {/* Profile Button */}
-            <div>
+            {/* Theme + Profile */}
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
               <button
                 onClick={() => navigate("/profile")}
-                className="w-full flex rounded-full bg-[hsl(143,71%,28%)] items-center gap-1 px-3 py-2 hover:bg-green-700/50 transition-colors cursor-pointer text-gray-300"
+                className="flex rounded-full bg-primary/20 items-center gap-1 px-3 py-2 hover:bg-primary/30 transition-colors cursor-pointer text-foreground"
               >
                 <User className="w-5 h-5" />
                 <span className="text-md font-normal">Profile</span>
@@ -249,79 +204,62 @@ const Home = () => {
         </header>
         <div className="container mx-auto px-4 py-6">
           <div className="flex gap-8">
-            {/* Sidebar - Full width on mobile, fixed width on desktop */}
-            <aside className="hidden lg:block w-80  flex-shrink-0">
+            {/* Sidebar */}
+            <aside className="hidden lg:block w-80 flex-shrink-0">
               <div className="sticky top-24">
-
-                {/* DESKTOP FILTER BOX */}
-                <div className="hidden mb-20 mt-4 lg:block bg-neutral-900 border border-neutral-800  px-8 py-6 rounded-xl shadow-lg ">
+                <div className="hidden mb-20 mt-4 lg:block bg-card border border-border px-8 py-6 rounded-xl shadow-lg">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-9 h-9 bg-green-500/10 rounded-lg flex items-center justify-center">
-                      <Filter className="w-5 h-5 text-green-400/75" />
+                    <div className="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Filter className="w-5 h-5 text-primary" />
                     </div>
-                    <h2 className="text-lg font-bold text-white">Filters</h2>
+                    <h2 className="text-lg font-bold text-foreground font-heading">Filters</h2>
                     {activeFiltersCount > 0 && (
                       <button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setFilters({ city: '', state: '', chargingType: '', vehicleType: '' })}
-                        className="text-red-600 hover:text-red-400/100 ml-auto"
+                        onClick={() => setFilters({ city: "", state: "", chargingType: "", vehicleType: "" })}
+                        className="text-destructive hover:opacity-80 ml-auto"
                       >
                         Clear all
                       </button>
                     )}
                   </div>
+
                   {/* City */}
                   <div className="min-w-[250px] rounded-xl mb-4 md:min-w-0 space-y-2">
-                    <label className="block text-gray-300 text-sm mb-1">City</label>
+                    <label className="block text-muted-foreground text-sm mb-1">City</label>
                     <select
-                      className="w-full bg-neutral-800 text-white  rounded-xl px-2 py-3"
+                      className="w-full bg-secondary text-foreground rounded-xl px-2 py-3 border border-border"
                       value={filters.city}
-                      onChange={(e) =>
-                        setFilters({ ...filters, city: e.target.value })
-                      }
+                      onChange={(e) => setFilters({ ...filters, city: e.target.value })}
                     >
                       <option value="">Select City</option>
                       {cities.map((city, index) => (
-                        <option key={index} value={city}>
-                          {city}
-                        </option>
+                        <option key={index} value={city}>{city}</option>
                       ))}
                     </select>
                   </div>
 
                   {/* State */}
                   <div className="min-w-[200px] mb-4 md:min-w-0 space-y-2">
-                    <label className="block text-gray-300 text-sm mb-1">
-                      State
-                    </label>
+                    <label className="block text-muted-foreground text-sm mb-1">State</label>
                     <select
-                      className="w-full bg-neutral-800 text-white rounded-xl px- py-3"
+                      className="w-full bg-secondary text-foreground rounded-xl px-2 py-3 border border-border"
                       value={filters.state}
-                      onChange={(e) =>
-                        setFilters({ ...filters, state: e.target.value })
-                      }
+                      onChange={(e) => setFilters({ ...filters, state: e.target.value })}
                     >
                       <option value="">Select State</option>
                       {states.map((state, index) => (
-                        <option key={index} value={state}>
-                          {state}
-                        </option>
+                        <option key={index} value={state}>{state}</option>
                       ))}
                     </select>
                   </div>
 
                   {/* Vehicle */}
                   <div className="min-w-[200px] mb-4 md:min-w-0 space-y-2">
-                    <label className="block w-full text-gray-300 text-sm mb-1">
-                      Vehicle Type
-                    </label>
+                    <label className="block w-full text-muted-foreground text-sm mb-1">Vehicle Type</label>
                     <select
-                      className="px-2 py-3 rounded-xl w-full bg-neutral-800 text-white "
+                      className="px-2 py-3 rounded-xl w-full bg-secondary text-foreground border border-border"
                       value={filters.vehicleType}
-                      onChange={(e) =>
-                        setFilters({ ...filters, vehicleType: e.target.value })
-                      }
+                      onChange={(e) => setFilters({ ...filters, vehicleType: e.target.value })}
                     >
                       <option value="">All Vehicles</option>
                       <option value="2-wheeler">2-Wheeler</option>
@@ -332,15 +270,11 @@ const Home = () => {
 
                   {/* Charging Type */}
                   <div className="min-w-[200px] mb-4 md:min-w-0 space-y-2">
-                    <label className="block text-gray-300 text-sm mb-1">
-                      Charging  Type
-                    </label>
+                    <label className="block text-muted-foreground text-sm mb-1">Charging Type</label>
                     <select
-                      className="p-2 w-full bg-neutral-800 text-white rounded-xl px-2 py-3"
+                      className="p-2 w-full bg-secondary text-foreground rounded-xl px-2 py-3 border border-border"
                       value={filters.chargingType}
-                      onChange={(e) =>
-                        setFilters({ ...filters, chargingType: e.target.value })
-                      }
+                      onChange={(e) => setFilters({ ...filters, chargingType: e.target.value })}
                     >
                       <option value="">All Charging Types</option>
                       <option value="slow">Slow</option>
@@ -352,16 +286,15 @@ const Home = () => {
               </div>
             </aside>
 
-            {/* Main Content*/}
-            <main className={`${isMobileFilterOpen ? "blur-sm" : "flex-1 min-w-0 p-4"} `}>
-              {/* Header */}
+            {/* Main Content */}
+            <main className={`${isMobileFilterOpen ? "blur-sm" : "flex-1 min-w-0 p-4"}`}>
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                <h1 className="text-xl font-[Manrope] md:text-2xl font-bold text-white">
+                <h1 className="text-xl font-heading md:text-2xl font-bold text-foreground">
                   Explore EV Charging station in India
                 </h1>
                 <button
                   onClick={() => setShowMap(!showMap)}
-                  className="w-full md:w-auto bg-emerald-800 text-white px-4 py-2 rounded-2xl hover:bg-emerald-600"
+                  className="w-full md:w-auto bg-primary text-primary-foreground px-4 py-2 rounded-2xl hover:opacity-90"
                 >
                   {showMap ? "Hide Map" : "Explore Map"}
                 </button>
@@ -370,7 +303,7 @@ const Home = () => {
               <div className="lg:hidden mt-3">
                 <button
                   onClick={() => setIsMobileFilterOpen(true)}
-                  className="w-full mb-4 bg-neuttral-950 text-white p-3 rounded-lg flex items-center justify-center gap-2 border border-zinc-700"
+                  className="w-full mb-4 bg-card text-foreground p-3 rounded-lg flex items-center justify-center gap-2 border border-border"
                 >
                   <SlidersHorizontal className="h-5 w-5" />
                   Filters
@@ -383,20 +316,19 @@ const Home = () => {
                   <input
                     type="text"
                     placeholder="Search by city or state"
-                    className="w-full px-4 py-3 bg-neutral-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-4 py-3 bg-secondary rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring border border-border"
                     value={searchStation}
-                    onChange={(e) => setSearchStation(e.target.value)} // Update state on input
+                    onChange={(e) => setSearchStation(e.target.value)}
                   />
                   <button>
-                    <Search className="absolute right-4 top-3 text-gray-400" />
+                    <Search className="absolute right-4 top-3 text-muted-foreground" />
                   </button>
-                  {/* Autocomplete Suggestions */}
                   {suggestions.length > 0 && (
-                    <div className="absolute z-10 w-full bg-neutral-800 rounded-lg mt-1 max-h-40 overflow-y-auto">
+                    <div className="absolute z-10 w-full bg-card border border-border rounded-lg mt-1 max-h-40 overflow-y-auto">
                       {suggestions.map((city, index) => (
                         <div
                           key={index}
-                          className="px-4 py-2 text-white hover:bg-neutral-700 cursor-pointer"
+                          className="px-4 py-2 text-foreground hover:bg-muted cursor-pointer"
                           onClick={() => handleCitySelect(city)}
                         >
                           {city}
@@ -407,75 +339,58 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Map View - Conditionally rendered */}
               {showMap && (
-                
-                <StationsMapModal
-                  stations={viewStation}
-                  onClose={() => setShowMap(false)}
-                />
+                <StationsMapModal stations={viewStation} onClose={() => setShowMap(false)} />
               )}
 
-              {/* Pagination */}
+              {/* Pagination info */}
               <div className="my-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-gray-400 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Showing{" "}
-                  <span className="text-white font-medium">
+                  <span className="text-foreground font-medium">
                     {Math.min((currentPage - 1) * 4 + 1, viewStations.length)}–
                     {Math.min(currentPage * 4, viewStations.length)}
                   </span>{" "}
-                  of <span className="text-white font-medium">{viewStations.length}</span> stations
+                  of <span className="text-foreground font-medium">{viewStations.length}</span> stations
                 </p>
-                <p className="text-emerald-400 hover:text-emerald-300">
-                  {" "}
+                <p className="text-primary hover:opacity-80">
                   Page {currentPage} of {Math.ceil(viewStations.length / 4)}
                 </p>
               </div>
 
               {/* Charging Stations Grid */}
-              <div className=" items-center font-[Dm_Sans] overflow-y-auto  ">
+              <div className="items-center font-display overflow-y-auto">
                 {isloding ? (
                   <div className="space-y-6 animate-pulse">
                     {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="bg-zinc-950 border border-zinc-900 rounded-xl overflow-hidden"
-                      >
+                      <div key={i} className="bg-card border border-border rounded-xl overflow-hidden">
                         <div className="flex flex-col sm:flex-row">
-                          {/* Image skeleton */}
                           <div className="sm:w-64 sm:flex-shrink-0">
-                            <div className="w-full h-48 sm:h-[276px] bg-zinc-900" />
+                            <div className="w-full h-48 sm:h-[276px] bg-muted" />
                           </div>
-
-                          {/* Content skeleton */}
                           <div className="flex-1 p-6">
                             <div className="flex flex-col h-full">
-                              {/* Header skeleton */}
                               <div className="mb-4">
-                                <div className="h-6 w-2/3 bg-zinc-900 rounded mb-3" />
-                                <div className="h-4 w-1/3 bg-zinc-900 rounded" />
+                                <div className="h-6 w-2/3 bg-muted rounded mb-3" />
+                                <div className="h-4 w-1/3 bg-muted rounded" />
                               </div>
-
-                              {/* Details skeleton */}
                               <div className="space-y-4 mb-4 flex-1">
                                 <div className="flex items-center justify-between">
-                                  <div className="h-4 w-24 bg-zinc-900 rounded" />
-                                  <div className="h-4 w-16 bg-zinc-900 rounded" />
+                                  <div className="h-4 w-24 bg-muted rounded" />
+                                  <div className="h-4 w-16 bg-muted rounded" />
                                 </div>
                                 <div className="flex items-center justify-between">
-                                  <div className="h-4 w-28 bg-zinc-900 rounded" />
-                                  <div className="h-4 w-20 bg-zinc-900 rounded" />
+                                  <div className="h-4 w-28 bg-muted rounded" />
+                                  <div className="h-4 w-20 bg-muted rounded" />
                                 </div>
                                 <div className="flex items-center justify-between">
-                                  <div className="h-4 w-32 bg-zinc-900 rounded" />
-                                  <div className="h-5 w-16 bg-zinc-900 rounded" />
+                                  <div className="h-4 w-32 bg-muted rounded" />
+                                  <div className="h-5 w-16 bg-muted rounded" />
                                 </div>
                               </div>
-
-                              {/* Actions skeleton */}
                               <div className="flex items-center justify-between gap-4">
-                                <div className="h-4 w-28 bg-zinc-900 rounded" />
-                                <div className="h-9 w-24 bg-zinc-900 rounded-lg" />
+                                <div className="h-4 w-28 bg-muted rounded" />
+                                <div className="h-9 w-24 bg-muted rounded-lg" />
                               </div>
                             </div>
                           </div>
@@ -485,73 +400,71 @@ const Home = () => {
                   </div>
                 ) : viewStations.length > 0 ? (
                   viewStations.slice(currentPage * 4 - 4, currentPage * 4).map((station) => (
-                    <div className="bg-neutral-900 mb-6 border border-gray-800 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 hover:-translate-y-1 group">
+                    <div
+                      key={station?._id}
+                      className="bg-card mb-6 border border-border rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1 group"
+                    >
                       <div className="flex flex-col sm:flex-row">
-                        {/* Image */}
                         <div className="relative overflow-hidden sm:w-64 sm:flex-shrink-0">
                           <img
                             className="w-full h-48 sm:h-[276px] object-cover transition-transform duration-300 group-hover:scale-105"
                             src={station?.image}
                             alt={station.stationName}
                           />
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <div className="absolute inset-0 bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
-                        {/* Content */}
                         <div className="flex-1 p-6">
                           <div className="flex flex-col h-full">
-                            {/* Header */}
                             <div className="mb-4">
-                              <h3 className="text-2xl font-semibold text-white mb-2 line-clamp-1">
+                              <h3 className="text-2xl font-heading font-semibold text-foreground mb-2 line-clamp-1">
                                 {station?.stationName}
                               </h3>
-                              <div className="flex items-center gap-2 text-gray-400 text-sm">
+                              <div className="flex items-center gap-2 text-muted-foreground text-sm">
                                 <MapPin className="w-4 h-4" />
                                 <span>{`${station?.city}, ${station?.state}`}</span>
                               </div>
                             </div>
-                            {/* Details */}
                             <div className="space-y-3 mb-4 flex-1">
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                                <div className="flex items-center gap-2 text-muted-foreground text-sm">
                                   <Battery className={getBatteryColor(station?.chargingType)} />
                                   <span>Socket Type</span>
                                 </div>
-                                <span className="text-white text-sm font-medium capitalize">
+                                <span className="text-foreground text-sm font-medium capitalize">
                                   {station?.chargingType}
                                 </span>
                               </div>
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                                <div className="flex items-center gap-2 text-muted-foreground text-sm">
                                   <Car />
                                   <span>Vehicle Type</span>
                                 </div>
-                                <span className="text-white text-sm font-medium capitalize">
+                                <span className="text-foreground text-sm font-medium capitalize">
                                   {station?.vehicleType}
                                 </span>
                               </div>
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                                <div className="flex items-center gap-2 text-muted-foreground text-sm">
                                   <Clock className="w-4 h-4" />
                                   <span>Price per hour</span>
                                 </div>
-                                <span className="text-emerald-400 text-lg font-bold">
+                                <span className="text-primary text-lg font-bold">
                                   ₹{station?.pricePerHour}
                                 </span>
                               </div>
                             </div>
-                            {/* Actions */}
                             <div className="flex items-center justify-between gap-4">
                               <a
                                 href={station?.mapUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm font-medium"
+                                className="flex items-center gap-1 text-accent hover:opacity-80 text-sm font-medium"
                               >
                                 <MapPin className="w-4 h-4" />
                                 View Location
                               </a>
                               <Link to={`/${station?._id}/view`}>
-                                <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm">
+                                <button className="bg-primary hover:opacity-90 text-primary-foreground px-4 py-2 rounded-lg text-sm">
                                   Booking
                                 </button>
                               </Link>
@@ -563,13 +476,13 @@ const Home = () => {
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-surface-elevated rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Search className="w-8 h-8 text-gray-400" />
+                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Search className="w-8 h-8 text-muted-foreground" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-400 mb-2">
+                    <h3 className="text-lg font-medium text-muted-foreground mb-2">
                       No stations found
                     </h3>
-                    <p className="text-gray-400">
+                    <p className="text-muted-foreground">
                       Try adjusting your filters or search terms
                     </p>
                   </div>
@@ -579,33 +492,29 @@ const Home = () => {
               {/* Pagination */}
               {viewStations.length > 0 && (() => {
                 const totalPages = Math.ceil(viewStations.length / 4);
-
                 const getPageNumbers = () => {
                   if (totalPages <= 5) return [...Array(totalPages)].map((_, i) => i + 1);
                   const pages = new Set(
-                    [1, totalPages, currentPage, currentPage - 1, currentPage + 1]
-                      .filter((p) => p >= 1 && p <= totalPages)
+                    [1, totalPages, currentPage, currentPage - 1, currentPage + 1].filter(
+                      (p) => p >= 1 && p <= totalPages
+                    )
                   );
                   return [...pages].sort((a, b) => a - b);
                 };
-
                 const pageNumbers = getPageNumbers();
 
                 return (
                   <div className="flex items-center justify-center gap-2 mt-8 flex-wrap">
-
-                    {/* Previous */}
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="px-3 sm:px-5 py-2 bg-neutral-900 text-gray-300 rounded-lg border border-gray-700
-          hover:bg-neutral-800 hover:border-gray-600 transition-all duration-200
-          disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium"
+                      className="px-3 sm:px-5 py-2 bg-card text-foreground rounded-lg border border-border
+                      hover:bg-muted hover:border-ring transition-all duration-200
+                      disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium"
                     >
                       ← <span className="hidden sm:inline">Prev</span>
                     </button>
 
-                    {/* Page numbers with ellipsis */}
                     <div className="flex gap-1.5 flex-wrap justify-center">
                       {pageNumbers.map((page, i) => {
                         const prev = pageNumbers[i - 1];
@@ -613,16 +522,16 @@ const Home = () => {
                         return (
                           <React.Fragment key={page}>
                             {showEllipsis && (
-                              <span className="min-w-[36px] h-[36px] flex items-center justify-center text-gray-500 text-sm select-none">
+                              <span className="min-w-[36px] h-[36px] flex items-center justify-center text-muted-foreground text-sm select-none">
                                 …
                               </span>
                             )}
                             <button
                               onClick={() => handlePageChange(page)}
                               className={`min-w-[36px] h-[36px] sm:min-w-[40px] sm:h-[40px] rounded-lg text-sm font-semibold transition-all duration-200
-                  ${currentPage === page
-                                  ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/30"
-                                  : "bg-neutral-900 text-gray-300 border border-gray-700 hover:bg-neutral-800 hover:border-gray-600"
+                              ${currentPage === page
+                                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
+                                  : "bg-card text-foreground border border-border hover:bg-muted hover:border-ring"
                                 }`}
                             >
                               {page}
@@ -632,24 +541,22 @@ const Home = () => {
                       })}
                     </div>
 
-                    {/* Next */}
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="px-3 sm:px-5 py-2 bg-neutral-900 text-gray-300 rounded-lg border border-gray-700
-          hover:bg-neutral-800 hover:border-gray-600 transition-all duration-200
-          disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium"
+                      className="px-3 sm:px-5 py-2 bg-card text-foreground rounded-lg border border-border
+                      hover:bg-muted hover:border-ring transition-all duration-200
+                      disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium"
                     >
                       <span className="hidden sm:inline">Next</span> →
                     </button>
-
                   </div>
                 );
               })()}
             </main>
-          </div >
+          </div>
         </div>
-        {/* MOBILE FILTER DRAWER */}
+
         <div className="lg:hidden">
           <Sidebar
             isOpen={isMobileFilterOpen}

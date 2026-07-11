@@ -9,42 +9,32 @@ import AboutSection from "./AboutSection"
 import FAQSection from "./FAQSection"
 import FeaturesSection from "./FeaturesSection"
 import { MapPin, Search } from "lucide-react"
+
 const Landing = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
 
-
   useEffect(() => {
-    // Function to stop loader after a delay
     const stopLoading = () => {
       setTimeout(() => setIsLoading(false), 3000)
     }
-
-    // --- Initial check on page load ---
     if (navigator.onLine) {
       stopLoading()
     } else {
       setIsLoading(true)
     }
-
-    // --- Event listeners for network status ---
     const handleOffline = () => setIsLoading(true)
     const handleOnline = () => stopLoading()
-
     window.addEventListener("offline", handleOffline)
     window.addEventListener("online", handleOnline)
-
     return () => {
       window.removeEventListener("offline", handleOffline)
       window.removeEventListener("online", handleOnline)
     }
   }, [])
 
-
-
   const tokenChecking = sessionStorage.getItem("token")
   const GoToHomePage = () => {
-    console.log("buton clicked")
     if (!tokenChecking) {
       navigate("/login")
       return
@@ -58,44 +48,39 @@ const Landing = () => {
     <>
       <AnimatePresence>{isLoading && <EVChargingLoader />}</AnimatePresence>
       <motion.main
-        className="min-h-screen"
+        className="min-h-screen bg-background"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.8 }}
       >
         <Header />
-        {/*-----landing page start-----------*/}
         <section
           id="home"
           className="relative h-screen bg-cover bg-left bg-no-repeat flex pt-30 ps-10 items-start md:items-center md:pt-0 justify-start px-6"
           style={{ backgroundImage: `url(${landingImg})` }}
         >
-          {/* Left-Side Gradient Overlay (40% Opacity) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/100 to-transparent  " />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent  " />
-          {/* Content Section */}
-          <div className="relative text-white max-w-3xl">
-            {/* Added relative to appear above overlay */}
-            <div className=" max-w-md">
-              {" "}
-              <p className="font-[DM_Sans] text-green-600 font-bold text-md md:text-xm mb-2 ">
-                For Every One<span className="text-green-300 px-1">-</span>Every Business<span className="text-green-300 px-1">-</span>Every Eclectic Vechile
+          <div className="absolute inset-0 bg-gradient-to-r from-background to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+          <div className="relative text-foreground max-w-3xl">
+            <div className="max-w-md">
+              <p className="font-display text-primary font-bold text-md md:text-xm mb-2">
+                For Every One<span className="text-primary/70 px-1">-</span>Every Business<span className="text-primary/70 px-1">-</span>Every Eclectic Vechile
               </p>
             </div>
-            <h1 className="font-[Manrope] text-4xl md:text-6xl font-bold leading-tight mb-8 ">
-              Keep Your <span className="text-green-500">Electric Vehicle</span> <br />
+            <h1 className="font-heading text-4xl md:text-6xl font-bold leading-tight mb-8">
+              Keep Your <span className="text-primary">Electric Vehicle</span> <br />
               Charging Ready for <br />
               Every Adventure
             </h1>
             <div className="max-w-lg">
-              <p className="font-[DM_Sans] mt-10 text-sm md:text-md text-gray-400 md:mt-4 mb-6">
+              <p className="font-display mt-10 text-sm md:text-md text-muted-foreground md:mt-4 mb-6">
                 Our residential, commercial, and fast charging stations are widely compatible, built on open
                 standards, and designed to be accessible for everyone.
               </p>
             </div>
             <button
               onClick={GoToHomePage}
-              className="font-[DM_Sans]  px-6 py-4 bg-gradient-to-r from-gray-900 to-green-600 text-white rounded-2xl transition duration-300 group cursor-pointer"
+              className="font-display px-6 py-4 bg-primary text-primary-foreground rounded-2xl transition duration-300 group cursor-pointer hover:opacity-90"
             >
               {!tokenChecking ? (
                 <span className="flex items-center gap-1">
@@ -111,13 +96,9 @@ const Landing = () => {
             </button>
           </div>
         </section>
-        {/*-----landing page end-----------*/}
         <AboutSection />
-        {/*------- about page end ----------*/}
         <FeaturesSection />
-        {/* ------features page end--------- */}
         <FAQSection />
-        {/* -----support page end-------- */}
       </motion.main>
     </>
   )

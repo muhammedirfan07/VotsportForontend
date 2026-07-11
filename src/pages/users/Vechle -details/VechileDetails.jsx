@@ -204,20 +204,20 @@ const VehicleDetails = () => {
   };
 
   return (
-    <div className="bg-zinc-900 font-[DM_Sans] rounded-xl overflow-hidden">
+    <div className="bg-card font-[DM_Sans] rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-5 border-b border-zinc-800 flex justify-between items-center">
+      <div className="px-6 py-5 border-b border-border flex justify-between items-center">
         <div>
-          <h2 className="text-xl md:text-2xl text-white font-semibold">
+          <h2 className="text-xl md:text-2xl text-foreground font-semibold">
             Vehicle Details
           </h2>
-          <p className="text-gray-400 text-xs md:text-sm mt-1">
+          <p className="text-muted-foreground text-xs md:text-sm mt-1">
             Manage your electric vehicles
           </p>
         </div>
         <button
           onClick={openAddModal}
-          className="flex items-center gap-2 bg-green-500/60 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm md:font-medium transition-transform duration-200 group cursor-pointer"
+          className="flex items-center gap-2 bg-primary/80 hover:bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm md:font-medium transition-transform duration-200 group cursor-pointer"
         >
           <Plus
             size={20}
@@ -230,7 +230,7 @@ const VehicleDetails = () => {
       {/* Card grid */}
       <div className="p-6">
         {loading ? (
-         <p className="text-gray-400 flex gap-2 justify-center py-8">
+         <p className="text-muted-foreground flex gap-2 justify-center py-8">
               <Loader2 className="w-5 h-5 animate-spin mt-1" /> Loading History...
             </p>
         ) : vehicles?.length > 0 ? (
@@ -246,11 +246,11 @@ const VehicleDetails = () => {
           </div>
         ) : (
           <div className="py-12 text-center">
-            <Car className="mx-auto text-gray-600 mb-4" size={48} />
-            <p className="text-gray-400 text-lg mb-4">No vehicles added yet</p>
+            <Car className="mx-auto text-muted-foreground mb-4" size={48} />
+            <p className="text-muted-foreground text-lg mb-4">No vehicles added yet</p>
             <button
               onClick={openAddModal}
-              className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-medium transition-colors"
             >
               <Plus size={20} />
               Add Your First Vehicle

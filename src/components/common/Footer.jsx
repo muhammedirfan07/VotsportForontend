@@ -1,62 +1,110 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Zap, Twitter, Instagram, Facebook, Github } from "lucide-react";
+
+const SOCIALS = [
+  { icon: Twitter, href: "https://x.com/", label: "Twitter" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Facebook, href: "#", label: "Facebook" },
+  { icon: Github, href: "https://github.com/muhammedirfan07", label: "GitHub" },
+];
+
+const RESOURCES = [
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Contact", to: "/Networks" },
+  { label: "Collaboration", to: "/homecolab" },
+];
+
+const CITIES = ["Kannur", "Kochi", "Bengaluru"];
 
 const Footer = () => {
-const  rollers = sessionStorage.getItem("user")  
-const navigate = useNavigate()
+  return (
+    <footer className="bg-zinc-950 text-zinc-100 border-t border-zinc-800">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        {/* BRAND */}
+        <div className="sm:col-span-2 lg:col-span-1">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-8 h-8 rounded-md bg-emerald-600 flex items-center justify-center">
+              <Zap size={16} className="text-zinc-950" fill="currentColor" />
+            </span>
+            <span className="text-xl font-bold tracking-wide">
+              <span className="text-emerald-500">Volt</span>Spot
+            </span>
+          </div>
+          <p className="text-zinc-400 text-sm max-w-xs">
+            Powering the future of EV charging, one station at a time.
+          </p>
+          <div className="flex gap-4 mt-6">
+            {SOCIALS.map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
+                className="w-9 h-9 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-emerald-500 hover:border-emerald-600/50 transition"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
+          </div>
+        </div>
 
+        {/* RESOURCES */}
+        <div>
+          <p className="text-[0.7rem] tracking-[0.15em] uppercase text-zinc-500 mb-4">
+            Resources
+          </p>
+          <ul className="space-y-3 text-sm">
+            {RESOURCES.map((r) => (
+              <li key={r.label}>
+                <Link to={r.to} className="text-zinc-300 hover:text-emerald-500 transition">
+                  {r.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-     
+        {/* CONTACT */}
+        <div>
+          <p className="text-[0.7rem] tracking-[0.15em] uppercase text-zinc-500 mb-4">
+            Contact
+          </p>
+          <p className="text-sm text-zinc-300 leading-relaxed">
+            123, Main Road, New City
+            <br />
+            State, Country
+            <br />
+            <br />
+            <span className="text-zinc-500">Email </span>evstation@gmail.com
+            <br />
+            <span className="text-zinc-500">Phone </span>+91 12345 67890
+          </p>
+        </div>
 
-    return (
-        <footer className="bg-neutral-950 z-100  text-white pt-10">
-            <div className="container font-[Dm_Sans]  z-100  mx-auto px-4">
-                <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
-                    <div className='flex flex-col justify-center p-3'>
-                        <h1 className="text-xl text-green-100 font-bold">
-                            <i class="fa-solid fa-bolt text-2xl" style={{ color: "#f0efef" }}></i>
-                            <span className="text-2xl  text-green-600 font-michroma">Volt</span>Spot
-                        </h1>
-                        <p className="my-4">Powering the future of EV charging, one station at a time..</p>
-                    </div>
-                    <div className='col-span-2 flex justify-evenly  md:p-3 p-1'>
-                        <div className='flex flex-col p-3'>
-                            <h1 className="text-2xl font-bold mb-3">Resourse</h1>
-                            <ul className="space-y-2">
-                                <li><Link to="/">Home</Link></li>
-                                <li><Link to="/about">About</Link></li>
-                                <li><Link to="/contact">Contact</Link></li>
-                                <li><Link to={'/homecolab'}>Collabration</Link></li>
-                            </ul>
-                        </div>
-                        <div className='flex flex-col  md:p-3 py-4 '>
-                            <h1 className="text-2xl font-bold mb-3">Contact US</h1>
-                            <p>
-                                123, Main Road, New City
-                                <br />
-                                State, Country
-                                <br />
-                                <span className='py-1'>Email:</span>evStaion@gmail.com <br />
-                                <span className='py-1'>Phone:</span>+91 1234567890
-                            </p>
-                        </div>
-                    </div>
-                    <div className='flex flex-col text-center p-3  '>
-                        <h1 className="text-2xl font-bold mb-3" >Follower Us</h1>
-                        <div className='flex justify-center space-x-6'>
-                            <a className="mb-3" style={{ textDecoration: "none", color: "white", fontSize: "18px" }} href="https://x.com/?" target="_blind"><i class="fa-brands fa-twitter"></i></a>
-                            <a className="mb-3" style={{ textDecoration: "none", color: "white", fontSize: "18px" }} href="" target="_blind"><i class="fa-brands fa-instagram"></i></a>
-                            <a className="mb-3" style={{ textDecoration: "none", color: "white", fontSize: "18px" }} href="" target="_blind"><i class="fa-brands fa-facebook"></i></a>
-                            <a className="mb-3" style={{ textDecoration: "none", color: "white", fontSize: "18px" }} href="" target="_blind"><i class="fa-brands fa-github"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div className='w-full text-center'> <span >copy right developed irfan</span></div>
-            </div>
-        </footer>
+        {/* CITIES */}
+        <div>
+          <p className="text-[0.7rem] tracking-[0.15em] uppercase text-zinc-500 mb-4">
+            Cities
+          </p>
+          <ul className="space-y-3 text-sm text-zinc-300">
+            {CITIES.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
-
-    );
+      {/* BOTTOM BAR */}
+      <div className="border-t border-zinc-800 px-6 md:px-10 py-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
+          <span>EST. 2024</span>
+          <span className="text-center">© 2026 VoltSpot EV Charging — developed by Irfan</span>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

@@ -61,7 +61,7 @@ const AddReview = ({stationId}) => {
     <div className="relative">
       <button 
         onClick={toggleCollapse} 
-        className="bg-green-700 hover:bg-green-800 text-white rounded-lg py-1 px-3 transition-all duration-200"
+        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-1 px-3 transition-all duration-200"
       >
         Add Review
       </button>
@@ -71,12 +71,12 @@ const AddReview = ({stationId}) => {
           isOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
-        <div className="p-4 border ms-9 md:ms-0 border-gray-700 rounded-lg bg-neutral-900 shadow-lg">
-          <h3 className="text-white font-bold mb-3">Add Your Review</h3>
+        <div className="p-4 border ms-9 md:ms-0 border-border rounded-lg bg-popover shadow-lg">
+          <h3 className="text-foreground font-bold mb-3">Add Your Review</h3>
           
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label className="block text-gray-300 mb-1">Rating</label>
+              <label className="block text-muted-foreground mb-1">Rating</label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
@@ -84,7 +84,7 @@ const AddReview = ({stationId}) => {
                     size={20}
                     onClick={() => setRating(star)}
                     className={`cursor-pointer ${
-                      star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-600"
+                      star <= rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
                     }`}
                   />
                 ))}
@@ -92,11 +92,11 @@ const AddReview = ({stationId}) => {
             </div>
             
             <div className="mb-3">
-              <label className="block text-gray-300 mb-1">Review</label>
+              <label className="block text-muted-foreground mb-1">Review</label>
               <textarea
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
-                className="w-full bg-neutral-700 text-white rounded p-2 custom-scroll"
+                className="w-full bg-input text-foreground rounded p-2 custom-scroll border border-border"
                 rows="3"
                 placeholder="Share your experience..."
               ></textarea>
@@ -106,13 +106,13 @@ const AddReview = ({stationId}) => {
               <button
                 type="button"
                 onClick={toggleCollapse}
-                className="bg-gray-700 hover:bg-gray-600 text-white rounded px-3 py-1"
+                className="bg-secondary hover:bg-muted text-secondary-foreground rounded px-3 py-1"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="bg-green-700 hover:bg-green-600 text-white rounded px-3 py-1"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded px-3 py-1"
               >
                 Submit
               </button>

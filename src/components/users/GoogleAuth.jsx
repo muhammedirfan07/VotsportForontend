@@ -8,26 +8,23 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import socket from '../../Server/socket'
 
-
 function GoogleAuth() {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
   const googleAuth = async (e) => {
     e.preventDefault()
-
+    setIsLoading(true)
     try {
       const result = await signInWithPopup(auth, googleProvider)
       const user = result.user
-      console.log(" google logging user  =", result.user);
 
       const reqBody = {
         fullName: user.displayName,
         email: user.email,
         googleId: user.uid
       }
-      console.log(" reqbody =", reqBody);
       const loggingUser = await googleAuthAPI(reqBody)
-      console.log("logginUser =", loggingUser);
 
       if (loggingUser.status === 200) {
         const { user, token } = loggingUser.data
@@ -35,13 +32,10 @@ function GoogleAuth() {
         socket.connect();
         socket.emit("registerUser", user._id);
         sessionStorage.setItem("token", token)
-        toast.success(
-          `Welcome ${user?.fullName || ""} 🎉`,
-          {
-            position: "top-right",
-            theme: "dark",
-          }
-        );
+        toast.success(`Welcome ${user?.fullName || ""} 🎉`, {
+          position: "top-right",
+          theme: "dark",
+        });
         navigate('/')
       }
     } catch (error) {
@@ -59,16 +53,15 @@ function GoogleAuth() {
     <button
       onClick={googleAuth}
       type="button"
-      className="h-12 flex justify-center rounded-2xl text-sm cursor-pointer gap-1.5 hover:text-gray-100 text-white/60 bg-black/40 border border-neutral-800 hover:border-gray-700 font-medium items-center transition"
+      disabled={isLoading}
+      className="h-12 flex justify-center rounded-2xl text-sm cursor-pointer gap-1.5 hover:text-foreground text-muted-foreground bg-card border border-border hover:border-primary/50 font-medium items-center transition disabled:opacity-60"
     >
       {isLoading ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
           Loading...
         </>
-      ) : (<p>Google</p>)
-
-      }
+      ) : (<p>Google</p>)}
     </button>
   )
 }

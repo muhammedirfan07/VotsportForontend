@@ -43,7 +43,7 @@ const ProjectManagementApp = () => {
           
           <div  className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
             <button  onClick={verifactionHandile}  className="bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-md font-medium">
-              lest go..
+              let's go..
             </button>
             <button onClick={()=>{navigate("/logPatners")}}   className="bg-gray-800 hover:bg-gray-700 text-white py-3 px-8 rounded-md font-medium border border-gray-700">
               Sing in

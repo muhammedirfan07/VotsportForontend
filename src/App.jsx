@@ -11,8 +11,7 @@ import Auth from "./components/users/Authendication"
 import Profile from "./components/users/profile/Profile"
 import ForgotPassword from "./pages/users/ForgotPassword"
 import ResetPassword from "./pages/users/ResentPassword"
-import About from "./components/users/About"
-import Contact from "./components/users/profile/Contact"
+
 ///payments 
 import CheckoutForms from "./pages/users/CheckoutForms"
 import PaymentSuccessPage from "./pages/users/PaymentSuccessPage"
@@ -27,12 +26,14 @@ import ViewAllStationList from "./pages/admin/AllStionList/ViewAllStationList"
 import StationDetailsPage from "./pages/users/StationDetailsPage"
 import Authen from "./components/collaboration/authenticationPatners/Authent"
 import ProjectManagementApp from "./components/collaboration/CHome"
+import About from "./components/collaboration/About"
 import StationHome from "./components/collaboration/StationHome"
 import OTPInput from "./components/collaboration/authenticationPatners/optBox"
 import Notification from "./pages/collaboration/Notification"
 import PartnerProfile from "./pages/collaboration/PartnerProfile"
 import BookingCharts from "./pages/collaboration/Charts/Bookingcharts"
 import PaymentsPageChart from "./pages/collaboration/Charts/PaymentsPageChart"
+import Networks from "./components/collaboration/Networks"
 // Common Components
 import Footer from "./components/common/Footer"
 import EVChargingLoader from "./ui/loading/ev-charging-loader"
@@ -82,8 +83,7 @@ function App() {
         <Route path="/payment-success" element={<PaymentSuccessPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/resent-password/:token" element={<ResetPassword />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+
 
         {/* Collaboration Pages */}
         <Route path="/homecolab" element={<ProjectManagementApp />} />
@@ -93,7 +93,8 @@ function App() {
         <Route path="/PartnerProfile" element={<PartnerProfile />} />
         <Route path="/BookingCharts" element={<BookingCharts />} />
         <Route path="/PaymentsPageChart" element={<PaymentsPageChart />} />
-
+        <Route path="/about" element={<About />} />
+        <Route path="/Networks" element={<Networks />} />
       </Routes>
       {/* Footer */}
       <Footer />

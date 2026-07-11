@@ -41,13 +41,13 @@ const ReviewsAndRatingPage = ({ stationId ,onReviewsFetched  }) => {
     <div>
       <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scroll">
         {loading ? (
-          <p className="text-gray-400">Loading reviews...</p>
+          <p className="text-muted-foreground">Loading reviews...</p>
         ) : reviews.length > 0 ? (
           reviews.map((review) => (
             <Reviewcard key={review._id} review={review} />
           ))
         ) : (
-          <p className="text-gray-400">No reviews yet.</p>
+          <p className="text-muted-foreground">No reviews yet.</p>
         )}
       </div>
     </div>

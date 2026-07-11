@@ -191,10 +191,10 @@ const BookingHistory = ({ joinData }) => {
 
   const getStatusStyles = (status) => {
     switch (status.toLowerCase()) {
-      case "confirmed": return "bg-green-500/20 text-green-400 border border-green-500/30";
-      case "completed": return "bg-blue-500/20 text-blue-400 border border-blue-500/30";
-      case "canceled": return "bg-red-500/20 text-red-400 border border-red-500/30";
-      default: return "bg-gray-500/20 text-gray-400 border border-gray-500/30";
+      case "confirmed": return "bg-green-500/20 text-green-500 border border-green-500/30";
+      case "completed": return "bg-blue-500/20 text-blue-500 border border-blue-500/30";
+      case "canceled": return "bg-destructive/20 text-destructive border border-destructive/30";
+      default: return "bg-secondary text-secondary-foreground border border-border";
     }
   };
 
@@ -202,25 +202,25 @@ const BookingHistory = ({ joinData }) => {
     new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(amount);
 
   return (
-    <div className="bg-zinc-900 drop-shadow-xl rounded-xl ">
+    <div className="bg-card drop-shadow-xl rounded-xl ">
       {/* Header */}
-      <div className="px-6 py-5 border-b border-neutral-600 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-xl text-amber-50 font-semibold">Booking History</h2>
+      <div className="px-6 py-5 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-xl text-foreground font-semibold">Booking History</h2>
         <div className="relative w-full sm:w-auto">
           <button
             onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-            className="w-full sm:w-auto bg-neutral-800 hover:bg-zinc-900 text-white px-4 py-2 rounded-lg flex items-center justify-between gap-3 border border-neutral-600 transition-all min-w-[180px]"
+            className="w-full sm:w-auto bg-secondary hover:bg-muted text-foreground px-4 py-2 rounded-lg flex items-center justify-between gap-3 border border-border transition-all min-w-[180px]"
           >
             <span className="text-sm">{timeFilters.find((f) => f.value === selectedFilter)?.label}</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${showFilterDropdown ? "rotate-180" : ""}`} />
           </button>
           {showFilterDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-900 custom-scroll shadow-xl z-40">
+            <div className="absolute top-full left-0 right-0 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-border bg-popover custom-scroll shadow-xl z-40">
               {timeFilters.map((filter) => (
                 <button
                   key={filter.value}
                   onClick={() => { setSelectedFilter(filter.value); setShowFilterDropdown(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-zinc-800 ${selectedFilter === filter.value ? "bg-green-900/30 text-green-400" : "text-white"
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-muted ${selectedFilter === filter.value ? "bg-primary/10 text-primary" : "text-foreground"
                     }`}
                 >
                   {filter.label}
@@ -235,7 +235,7 @@ const BookingHistory = ({ joinData }) => {
       <div className="p-6">
         <div className={`space-y-4 pr-2 ${enableScroll ? "max-h-[560px] overflow-y-auto custom-scroll" : ""}`}>
           {isLoading ? (
-            <p className="text-gray-400 flex gap-2 justify-center py-8">
+            <p className="text-muted-foreground flex gap-2 justify-center py-8">
               <Loader2 className="w-5 h-5 animate-spin mt-1" /> Loading History...
             </p>
           ) : filteredBookings.length > 0 ? (
@@ -250,21 +250,21 @@ const BookingHistory = ({ joinData }) => {
                 <div
                   key={booking._id}
                   className={`rounded-xl border overflow-hidden transition-all ease-in-out ${isCanceled
-                      ? "bg-zinc-900/60 border-zinc-800 opacity-70"
-                      : "bg-zinc-950/50 border-zinc-700 hover:border-green-600/30 shadow"
+                      ? "bg-muted border-border opacity-70"
+                      : "bg-background border-border hover:border-primary/40 shadow"
                     }`}
                 >
                   {/* Confirm-cancel overlay */}
                   {confirmCancelId === booking._id && (
-                    <div className="bg-red-950/60 border-b border-red-800 px-6 py-3 flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
-                      <p className="text-red-300 text-sm">
+                    <div className="bg-destructive/10 border-b border-destructive/30 px-6 py-3 flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
+                      <p className="text-destructive text-sm">
                         Cancel this booking? The amount will be refunded to your wallet.
                       </p>
                       <div className="flex gap-2 flex-shrink-0">
                         <button
                           onClick={() => handleCancel(booking._id)}
                           disabled={!!cancellingId}
-                          className="bg-red-600 hover:bg-red-700 text-white text-xs px-4 py-1.5 rounded-lg transition disabled:opacity-50 flex items-center gap-1"
+                          className="bg-destructive hover:bg-destructive/90 text-destructive-foreground text-xs px-4 py-1.5 rounded-lg transition disabled:opacity-50 flex items-center gap-1"
                         >
                           {cancellingId === booking._id ? (
                             <><Loader2 className="w-3 h-3 animate-spin" /> Cancelling...</>
@@ -272,7 +272,7 @@ const BookingHistory = ({ joinData }) => {
                         </button>
                         <button
                           onClick={() => setConfirmCancelId(null)}
-                          className="bg-neutral-700 hover:bg-neutral-600 text-white text-xs px-4 py-1.5 rounded-lg transition"
+                          className="bg-secondary hover:bg-muted text-secondary-foreground text-xs px-4 py-1.5 rounded-lg transition"
                         >
                           Keep Booking
                         </button>
@@ -285,42 +285,42 @@ const BookingHistory = ({ joinData }) => {
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2 flex-wrap">
-                          <h3 className="text-base font-semibold text-white">
+                          <h3 className="text-base font-semibold text-foreground">
                             {booking.stationId?.stationName || "Unknown Station"}
                           </h3>
                           <span className={`px-2.5 py-0.5 text-xs font-medium rounded-full ${getStatusStyles(booking.status)}`}>
                             {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                           </span>
                         </div>
-                        <div className="flex items-center text-gray-400 text-sm">
+                        <div className="flex items-center text-muted-foreground text-sm">
                           <MapPin size={13} className="mr-1" />
                           {booking.stationId?.city}
                           {booking.stationId?.state ? `, ${booking.stationId.state}` : ""}
                         </div>
                       </div>
-                      <button className="text-gray-400 hover:text-white transition-colors ml-2">
+                      <button className="text-muted-foreground hover:text-foreground transition-colors ml-2">
                         {expandedBooking === booking._id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                       </button>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       <div>
-                        <div className="flex items-center text-gray-400 text-xs mb-1"><Calendar size={13} className="mr-1" />Date</div>
-                        <p className="text-white font-medium text-sm">
+                        <div className="flex items-center text-muted-foreground text-xs mb-1"><Calendar size={13} className="mr-1" />Date</div>
+                        <p className="text-foreground font-medium text-sm">
                           {startTime.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
                         </p>
                       </div>
                       <div>
-                        <div className="flex items-center text-gray-400 text-xs mb-1"><Clock size={13} className="mr-1" />Time</div>
-                        <p className="text-white font-medium text-sm">{startTime.toLocaleTimeString([], timeOpts)}</p>
+                        <div className="flex items-center text-muted-foreground text-xs mb-1"><Clock size={13} className="mr-1" />Time</div>
+                        <p className="text-foreground font-medium text-sm">{startTime.toLocaleTimeString([], timeOpts)}</p>
                       </div>
                       <div>
-                        <div className="flex items-center text-gray-400 text-xs mb-1"><Battery size={13} className="mr-1" />Energy</div>
-                        <p className="text-white font-medium text-sm">{booking.stationId?.chargingType || "N/A"}</p>
+                        <div className="flex items-center text-muted-foreground text-xs mb-1"><Battery size={13} className="mr-1" />Energy</div>
+                        <p className="text-foreground font-medium text-sm">{booking.stationId?.chargingType || "N/A"}</p>
                       </div>
                       <div>
-                        <div className="text-gray-400 text-xs mb-1">Amount</div>
-                        <p className={`font-semibold text-base ${isCanceled ? "text-red-400 line-through" : "text-green-400"}`}>
+                        <div className="text-muted-foreground text-xs mb-1">Amount</div>
+                        <p className={`font-semibold text-base ${isCanceled ? "text-destructive line-through" : "text-primary"}`}>
                           {formatCurrency(booking.totalPrice)}
                         </p>
                       </div>
@@ -329,46 +329,46 @@ const BookingHistory = ({ joinData }) => {
 
                   {/* Expanded details */}
                   {expandedBooking === booking._id && (
-                    <div className="px-5 pb-5 pt-2 border-t border-gray-800">
+                    <div className="px-5 pb-5 pt-2 border-t border-border">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-5">
                         <div>
-                          <p className="text-gray-400 mb-1">Slot Number</p>
-                          <p className="text-white font-medium">Slot {booking.slotNumber}</p>
+                          <p className="text-muted-foreground mb-1">Slot Number</p>
+                          <p className="text-foreground font-medium">Slot {booking.slotNumber}</p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">Duration</p>
-                          <p className="text-white font-medium">
+                          <p className="text-muted-foreground mb-1">Duration</p>
+                          <p className="text-foreground font-medium">
                             {booking.duration} {booking.duration === 1 ? "hour" : "hours"}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">Start Time</p>
-                          <p className="text-white font-medium">{startTime.toLocaleTimeString([], timeOpts)}</p>
+                          <p className="text-muted-foreground mb-1">Start Time</p>
+                          <p className="text-foreground font-medium">{startTime.toLocaleTimeString([], timeOpts)}</p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">End Time</p>
-                          <p className="text-white font-medium">{endTime.toLocaleTimeString([], timeOpts)}</p>
+                          <p className="text-muted-foreground mb-1">End Time</p>
+                          <p className="text-foreground font-medium">{endTime.toLocaleTimeString([], timeOpts)}</p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">Total Price</p>
-                          <p className={`font-semibold ${isCanceled ? "text-red-400" : "text-green-400"}`}>
+                          <p className="text-muted-foreground mb-1">Total Price</p>
+                          <p className={`font-semibold ${isCanceled ? "text-destructive" : "text-primary"}`}>
                             {formatCurrency(booking.totalPrice)}
-                            {isCanceled && <span className="text-xs text-gray-400 ml-2">(Refunded to wallet)</span>}
+                            {isCanceled && <span className="text-xs text-muted-foreground ml-2">(Refunded to wallet)</span>}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-400 mb-1">Energy Type</p>
-                          <p className="text-white font-medium">{booking.stationId?.chargingType || "N/A"}</p>
+                          <p className="text-muted-foreground mb-1">Energy Type</p>
+                          <p className="text-foreground font-medium">{booking.stationId?.chargingType || "N/A"}</p>
                         </div>
                       </div>
                       {/* Action buttons */}
-                      <div className="flex flex-wrap gap-3 pt-3 border-t border-neutral-800">
+                      <div className="flex flex-wrap gap-3 pt-3 border-t border-border">
                         {/* Cancel only within 15 min */}
                         {isConfirmed && isCancelAllowed(booking) && (
                           <button
                             onClick={(e) => { e.stopPropagation(); setConfirmCancelId(booking._id); }}
                             disabled={!!cancellingId}
-                            className="flex items-center gap-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-700/40 text-red-400 hover:text-red-300 text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
+                            className="flex items-center gap-1.5 bg-destructive/10 hover:bg-destructive/20 border border-destructive/30 text-destructive hover:text-destructive text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
                           >
                             <XCircle size={15} /> Cancel Booking
                           </button>
@@ -379,7 +379,7 @@ const BookingHistory = ({ joinData }) => {
                           <button
                             onClick={(e) => { e.stopPropagation(); handleRebook(booking); }}
                             disabled={rebookingId === booking._id}
-                            className="flex items-center gap-1.5 bg-green-900/30 hover:bg-green-900/50 border border-green-700/40 text-green-400 hover:text-green-300 text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
+                            className="flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary hover:text-primary text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
                           >
                             {rebookingId === booking._id ? (
                               <><Loader2 size={14} className="animate-spin" /> Checking slot...</>
@@ -394,7 +394,7 @@ const BookingHistory = ({ joinData }) => {
                           <button
                             onClick={(e) => { e.stopPropagation(); handleRebook(booking); }}
                             disabled={rebookingId === booking._id}
-                            className="flex items-center gap-1.5 bg-green-900/30 hover:bg-green-900/50 border border-green-700/40 text-green-400 hover:text-green-300 text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
+                            className="flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary hover:text-primary text-sm px-4 py-2 rounded-lg transition disabled:opacity-50"
                           >
                             {rebookingId === booking._id ? (
                               <><Loader2 size={14} className="animate-spin" /> Checking slot...</>
@@ -411,8 +411,8 @@ const BookingHistory = ({ joinData }) => {
             })
           ) : (
             <div className="py-12 text-center">
-              <Battery className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-              <p className="text-gray-400 text-lg">No bookings found for this period</p>
+              <Battery className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+              <p className="text-muted-foreground text-lg">No bookings found for this period</p>
             </div>
           )}
         </div>

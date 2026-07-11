@@ -116,12 +116,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       {/* Top Bar */}
       <div className="flex  justify-end  px-4 pt-4 pb-0 max-w-7xl mx-auto">
         <button
           onClick={() => navigate('/home')}
-          className="flex items-center gap-1.5 text-green-500 font-semibold hover:text-green-400 transition-all duration-300 group flex-shrink-0 ml-4"
+          className="flex items-center gap-1.5 text-primary font-semibold hover:text-primary/80 transition-all duration-300 group flex-shrink-0 ml-4"
         >
           <span className=" text-sm">Home</span>
           <ArrowBigRightDash className="h-5 w-5 transform transition-all duration-300 group-hover:translate-x-1" />
@@ -130,22 +130,22 @@ const Profile = () => {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white">My Profile</h1>
-          <p className="text-neutral-500 text-md mt-2">Manage your account and EV charging preferences</p>
+          <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
+          <p className="text-muted-foreground text-md mt-2">Manage your account and EV charging preferences</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <aside className="lg:col-span-1">
-            <div className="bg-zinc-900 border border-zinc-800 shadow w-full rounded-2xl p-6 sticky top-8">
+            <div className="bg-card border border-border shadow w-full rounded-2xl p-6 sticky top-8">
               <div className="flex flex-col items-center text-center mb-6">
-                <div className="h-24 w-24 rounded-full bg-green-500/20 border-2 border-green-400 flex items-center justify-center overflow-hidden">
+                <div className="h-24 w-24 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center overflow-hidden">
                   <img src={imagePreview} alt="Profile" className="h-full w-full object-cover" />
                 </div>
-                <h2 className="text-xl text-gray-200 font-semibold mt-3">
+                <h2 className="text-xl text-foreground font-semibold mt-3">
                   {singleUserDetails.fullName}
                 </h2>
-                <p className="text-neutral-400 text-sm mt-1">
+                <p className="text-muted-foreground text-sm mt-1">
                   Member since {formatYearOnly(singleUserDetails.createdAt)}
                 </p>
               </div>
@@ -162,8 +162,8 @@ const Profile = () => {
                       <button
                         onClick={() => setActiveTab(key)}
                         className={`w-full flex items-center p-3 text-left cursor-pointer rounded-2xl transition-all ease-in-out ${activeTab === key
-                          ? 'bg-green-500/10 border-l-4 border-green-500 pl-4 text-green-500'
-                          : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
+                          ? 'bg-primary/10 border-l-4 border-primary pl-4 text-primary'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                           }`}
                       >
                         <Icon size={18} className="mr-3" />
@@ -172,7 +172,7 @@ const Profile = () => {
                     </li>
                   ))}
 
-                  <div className="h-px bg-neutral-700 my-4"></div>
+                  <div className="h-px bg-border my-4"></div>
 
                   <button
                     onClick={() => {
@@ -180,7 +180,7 @@ const Profile = () => {
                       sessionStorage.clear();
                       navigate("/"); 
                     }}
-                    className="w-full flex cursor-pointer items-center gap-4 px-3 py-3 rounded-2xl text-red-500 hover:bg-red-800/10 transition-all duration-200"
+                    className="w-full flex cursor-pointer items-center gap-4 px-3 py-3 rounded-2xl text-destructive hover:bg-destructive/10 transition-all duration-200"
                   >
                     <LogOut className="w-5 h-5" />
                     <span className="text-base font-medium">Logout</span>
@@ -193,21 +193,21 @@ const Profile = () => {
           {/* Content Area */}
           <section className="lg:col-span-3">
             {activeTab === 'profile' && (
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-7 py-6">
-                <h1 className="text-2xl text-white font-bold mb-1">Profile Information</h1>
-                <p className="text-md text-neutral-400 mb-6">Update your personal details</p>
+              <div className="bg-card border border-border rounded-2xl px-7 py-6">
+                <h1 className="text-2xl text-foreground font-bold mb-1">Profile Information</h1>
+                <p className="text-md text-muted-foreground mb-6">Update your personal details</p>
 
                 <div className="space-y-6">
                   {/* Profile Photo Card */}
-                  <div className="p-6 rounded-xl bg-neutral-800/50 border border-neutral-700 hover:border-green-500/40 transition-all duration-300">
+                  <div className="p-6 rounded-xl bg-muted border border-border hover:border-primary/40 transition-all duration-300">
                     <div className="flex flex-col sm:flex-row items-center gap-6">
                       <div className="relative flex-shrink-0">
-                        <div className="h-24 w-24 rounded-full bg-green-500/20 border-2 border-green-400 overflow-hidden">
+                        <div className="h-24 w-24 rounded-full bg-primary/20 border-2 border-primary overflow-hidden">
                           <img src={imagePreview} alt="Profile" className="h-full w-full object-cover" />
                         </div>
                         <button
                           onClick={() => fileInputRef.current.click()}
-                          className="absolute bottom-0 cursor-pointer right-0 h-8 w-8 rounded-full bg-green-500 text-black flex items-center justify-center hover:bg-green-400 hover:scale-110 transition-all"
+                          className="absolute bottom-0 cursor-pointer right-0 h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 hover:scale-110 transition-all"
                         >
                           <Camera className="h-4 w-4" />
                         </button>
@@ -220,11 +220,11 @@ const Profile = () => {
                         />
                       </div>
                       <div className="text-center sm:text-left">
-                        <h3 className="text-lg font-semibold text-neutral-200">Profile Photo</h3>
-                        <p className="text-sm text-neutral-400 mt-1">JPG, PNG or GIF — max 5MB</p>
+                        <h3 className="text-lg font-semibold text-foreground">Profile Photo</h3>
+                        <p className="text-sm text-muted-foreground mt-1">JPG, PNG or GIF — max 5MB</p>
                         <button
                           onClick={() => fileInputRef.current.click()}
-                          className="mt-3 px-4 py-1.5 cursor-pointer text-sm rounded-lg border border-green-500/50 text-green-400 hover:bg-green-500/10 transition-all"
+                          className="mt-3 px-4 py-1.5 cursor-pointer text-sm rounded-lg border border-primary/50 text-primary hover:bg-primary/10 transition-all"
                         >
                           Change Photo
                         </button>
@@ -236,31 +236,31 @@ const Profile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Full Name */}
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-200">Full Name</label>
+                      <label className="block text-sm font-medium text-foreground">Full Name</label>
                       <input
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                         placeholder="Enter your full name"
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-900 text-neutral-200 border border-neutral-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-400/40 transition-all"
+                        className="w-full px-3 py-2 rounded-xl bg-input text-foreground border border-border focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition-all"
                       />
                     </div>
 
                     {/* Phone */}
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-200">Phone Number</label>
+                      <label className="block text-sm font-medium text-foreground">Phone Number</label>
                       <input
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+91 ..."
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-900 text-neutral-200 border border-neutral-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-400/40 transition-all"
+                        className="w-full px-3 py-2 rounded-xl bg-input text-foreground border border-border focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition-all"
                       />
                     </div>
 
                     {/* Email — LOCKED */}
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-200 flex items-center gap-2">
+                      <label className="block text-sm font-medium text-foreground flex items-center gap-2">
                         Email Address
-                        {/* <span className="inline-flex items-center gap-1 text-xs text-neutral-500 bg-neutral-800 border border-neutral-700 px-2 py-0.5 rounded-full">
+                        {/* <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-secondary border border-border px-2 py-0.5 rounded-full">
                           <Lock className="h-3 w-3" /> locked
                         </span> */}
                       </label>
@@ -268,33 +268,33 @@ const Profile = () => {
                         type="email"
                         value={formData.email}
                         disabled
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-900/50 text-neutral-500 border border-neutral-700 opacity-60 cursor-not-allowed"
+                        className="w-full px-3 py-2 rounded-xl bg-muted/50 text-muted-foreground border border-border opacity-60 cursor-not-allowed"
                       />
                     </div>
 
                     {/* Member Since */}
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-200">Member Since</label>
+                      <label className="block text-sm font-medium text-foreground">Member Since</label>
                       <input
                         value={formData.memberSince}
                         disabled
-                        className="w-full px-3 py-2 rounded-xl bg-neutral-900/50 text-neutral-500 border border-neutral-700 opacity-60 cursor-not-allowed"
+                        className="w-full px-3 py-2 rounded-xl bg-muted/50 text-muted-foreground border border-border opacity-60 cursor-not-allowed"
                       />
                     </div>
                   </div>
 
                   {/* Save Button */}
-                  <div className="flex justify-end items-center gap-4 pt-4 border-t border-neutral-800">
+                  <div className="flex justify-end items-center gap-4 pt-4 border-t border-border">
                     {saveSuccess && (
-                      <span className="text-sm text-green-400">✓ Profile saved successfully</span>
+                      <span className="text-sm text-primary">✓ Profile saved successfully</span>
                     )}
                     {saveError && (
-                      <span className="text-sm text-red-400">✗ {saveError}</span>
+                      <span className="text-sm text-destructive">✗ {saveError}</span>
                     )}
                     <button
                       onClick={handleSave}
                       disabled={loading}
-                      className="bg-green-500 cursor-pointer hover:bg-green-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-2 rounded-xl flex items-center gap-2 text-black font-medium transition-all"
+                      className="bg-primary cursor-pointer hover:bg-primary/90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-2 rounded-xl flex items-center gap-2 text-primary-foreground font-medium transition-all"
                     >
                       <Save className="h-4 w-4" />
                       {loading ? "Saving..." : "Save Changes"}
