@@ -10,8 +10,7 @@ const SOCIALS = [
 
 const RESOURCES = [
   { label: "Home", to: "/" },
-  { label: "About", to: "/about" },
-  { label: "Contact", to: "/Networks" },
+  { label: "Network", to: "/Networks" },
   { label: "Collaboration", to: "/homecolab" },
 ];
 

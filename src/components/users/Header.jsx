@@ -38,14 +38,18 @@ const Header = ({ isloging }) => {
             <>
               <Link to="home" smooth={true} duration={500} className="text-sm text-muted-foreground cursor-pointer hover:text-primary">Home</Link>
               <Link to="about" smooth={true} duration={500} className="text-sm text-muted-foreground cursor-pointer hover:text-primary">About</Link>
-              <button onClick={() => navigate("/About")} className="text-sm cursor-pointer text-muted-foreground hover:text-primary">Patners</button>
+              <button onClick={() => navigate("/homecolab")} className="text-sm cursor-pointer text-muted-foreground hover:text-primary">Patners</button>
               <Link to="features" smooth={true} duration={500} className="text-sm text-muted-foreground cursor-pointer hover:text-primary">features</Link>
               <Link to="support" smooth={true} duration={500} className="text-sm text-muted-foreground cursor-pointer hover:text-primary">support</Link>
-              <ThemeToggle />
               {!isToken && (
-                <button onClick={() => navigate("/login")} className="flex justify-center items-center gap-1 bg-primary cursor-pointer text-primary-foreground h-10 min-w-30 px-4 py-1 rounded-2xl font-semibold hover:opacity-90 transition-all duration-300 group">
-                  Sign Up <ArrowRight width={20} height={20} className="h-5 w-5 transform transition-all duration-300 group-hover:translate-x-1" />
-                </button>
+                <>
+                  <ThemeToggle />
+                  <button onClick={() => navigate("/login")} className="flex justify-center items-center gap-1 bg-primary cursor-pointer text-primary-foreground h-10 min-w-30 px-4 py-1 rounded-3xl font-semibold hover:opacity-90 transition-all duration-300 group">
+                    Sign Up <ArrowRight size={16}
+                    strokeWidth={1.75}
+                    className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                </>
               )}
             </>
           ) : (
@@ -63,7 +67,6 @@ const Header = ({ isloging }) => {
           {isOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
       </nav>
-
       {/* Mobile Menu */}
       {isOpen && (
         <div className={cn(
@@ -75,13 +78,17 @@ const Header = ({ isloging }) => {
               <>
                 <Link to="home" smooth={true} duration={500} className="hover:bg-muted text-sm rounded-xl px-2 py-2 cursor-pointer text-muted-foreground hover:text-foreground transition-all ease-in-out">Home</Link>
                 <Link to="about" smooth={true} duration={500} className="hover:bg-muted text-sm rounded-xl px-2 py-2 cursor-pointer text-muted-foreground hover:text-foreground transition-all ease-in-out">About</Link>
-                <button onClick={() => navigate("/About")} className="hover:bg-muted cursor-pointer text-sm rounded-xl px-2 py-2 text-muted-foreground hover:text-foreground transition-all ease-in-out text-left">Patners</button>
+                <button onClick={() => navigate("/homecolab")} className="hover:bg-muted justify-center cursor-pointer text-sm rounded-xl px-2 py-2 text-muted-foreground hover:text-foreground transition-all ease-in-out text-left">Patners</button>
                 <Link to="features" smooth={true} duration={500} className="hover:bg-muted cursor-pointer text-sm rounded-xl px-2 py-2 text-muted-foreground hover:text-foreground transition-all ease-in-out">features</Link>
                 <Link to="support" smooth={true} duration={500} className="hover:bg-muted cursor-pointer text-sm rounded-xl px-2 py-2 text-muted-foreground hover:text-foreground transition-all ease-in-out">support</Link>
-                <div className="flex justify-center py-2"><ThemeToggle /></div>
-                <button onClick={() => navigate("/login")} className="w-full bg-primary text-primary-foreground py-2 cursor-pointer font-semibold rounded-2xl hover:opacity-90 transition">
-                  Sign Up
-                </button>
+                 {!isToken && (
+                <>
+                  <div className="flex justify-center py-2"><ThemeToggle /></div>
+                  <button onClick={() => navigate("/login")} className="flex justify-center items-center gap-1 bg-primary cursor-pointer text-primary-foreground h-10 min-w-30 px-4 py-1 rounded-2xl font-semibold hover:opacity-90 transition-all duration-300 group">
+                    Sign Up <ArrowRight width={20} height={20} className="h-5 w-5 transform transition-all duration-300 group-hover:translate-x-1" />
+                  </button>
+                </>
+              )}
               </>
             ) : (
               <>

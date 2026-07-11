@@ -3,6 +3,7 @@ import chargingImg1 from "../../assets/cola.jpg"
 import chargingImg2 from "../../assets/charging.jpg"
 import { motion } from "framer-motion"
 
+
 function AboutSection() {
   return (
     <section id="about" className="relative bg-background text-foreground overflow-hidden">

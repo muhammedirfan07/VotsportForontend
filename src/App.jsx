@@ -35,7 +35,6 @@ import BookingCharts from "./pages/collaboration/Charts/Bookingcharts"
 import PaymentsPageChart from "./pages/collaboration/Charts/PaymentsPageChart"
 import Networks from "./components/collaboration/Networks"
 // Common Components
-import Footer from "./components/common/Footer"
 import EVChargingLoader from "./ui/loading/ev-charging-loader"
 import { useState, useEffect } from "react"
 import AboutSection from "./components/users/AboutSection"
@@ -47,13 +46,12 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API/auth check or startup delay
     const timer = setTimeout(() => setLoading(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
-    return <EVChargingLoader />; // Show loader ONLY during loading
+    return <EVChargingLoader />; 
   }
   return (
     <>
@@ -96,8 +94,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/Networks" element={<Networks />} />
       </Routes>
-      {/* Footer */}
-      <Footer />
+     
 
       {/* Add ToastContainer here */}
       <ToastContainer position="top-center" className="" autoClose={3000} />
