@@ -30,10 +30,10 @@ const VEHICLE_COLORS = {
 const CustomTooltip = ({ active, payload, label, prefix = "" }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs">
-      <p className="text-gray-400 mb-1">{label}</p>
+    <div className="bg-popover border border-border rounded-xl px-3 py-2 text-xs">
+      <p className="text-muted-foreground mb-1">{label}</p>
       {payload.map((p, i) => (
-        <p key={i} className="text-white font-semibold">
+        <p key={i} className="text-foreground font-semibold">
           {prefix}
           {p.value?.toLocaleString?.() ?? p.value}
         </p>
@@ -45,20 +45,20 @@ const CustomTooltip = ({ active, payload, label, prefix = "" }) => {
 const StatCard = ({ icon: Icon, label, value, subLabel, changePercent }) => {
   const positive = changePercent >= 0;
   return (
-    <div className="bg-neutral-950 border border-zinc-900 rounded-2xl px-5 py-4 flex-1 min-w-[220px]">
-      <div className="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-wide mb-3">
+    <div className="bg-card border border-border rounded-2xl px-5 py-4 flex-1 min-w-[220px]">
+      <div className="flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-wide mb-3">
         <Icon className="w-3.5 h-3.5" />
         {label}
       </div>
-      <div className="text-2xl font-bold text-white">{value}</div>
-      <div className="text-xs mt-1 text-gray-500">
+      <div className="text-2xl font-bold text-foreground">{value}</div>
+      <div className="text-xs mt-1 text-muted-foreground">
         {changePercent !== undefined ? (
-          <span className={positive ? "text-emerald-500" : "text-red-500"}>
+          <span className={positive ? "text-primary" : "text-destructive"}>
             {positive ? "+" : ""}
             {changePercent}%
           </span>
         ) : (
-          <span className="text-emerald-500">{subLabel}</span>
+          <span className="text-primary">{subLabel}</span>
         )}
         {changePercent !== undefined && subLabel ? <span className="ml-1">{subLabel}</span> : null}
       </div>
@@ -67,10 +67,10 @@ const StatCard = ({ icon: Icon, label, value, subLabel, changePercent }) => {
 };
 
 const ChartCard = ({ title, subtitle, children, className = "" }) => (
-  <div className={`bg-neutral-950 border border-zinc-900 rounded-2xl p-5 ${className}`}>
+  <div className={`bg-card border border-border rounded-2xl p-5 ${className}`}>
     <div className="mb-4">
-      <h3 className="text-white font-semibold text-[15px]">{title}</h3>
-      {subtitle && <p className="text-gray-500 text-xs mt-0.5">{subtitle}</p>}
+      <h3 className="text-foreground font-semibold text-[15px]">{title}</h3>
+      {subtitle && <p className="text-muted-foreground text-xs mt-0.5">{subtitle}</p>}
     </div>
     {children}
   </div>
@@ -116,18 +116,18 @@ const BookingCharts = () => {
     data || {};
 
   return (
-    <div className="min-h-screen bg-black overflow-hidden flex flex-col md:flex-row font-[Dm_Sans]">
+    <div className="min-h-screen bg-background overflow-hidden flex flex-col md:flex-row font-[Dm_Sans]">
       {/* Mobile top bar */}
-      <header className="flex z-0 w-full md:hidden justify-between border border-b-zinc-900 items-center px-4 py-3 bg-zinc-950">
+      <header className="flex z-0 w-full md:hidden justify-between border border-b-border items-center px-4 py-3 bg-card">
         <div className="flex items-center gap-1">
-          <i className="fa-solid fa-bolt text-lg md:text-xl" style={{ color: "#f0efef" }}></i>
-          <span className="text-lg md:text-2xl font-bold text-white">
-            <span className="text-green-600">Volt</span>Spot
+          <i className="fa-solid fa-bolt text-lg md:text-xl text-foreground"></i>
+          <span className="text-lg md:text-2xl font-bold text-foreground">
+            <span className="text-primary">Volt</span>Spot
           </span>
         </div>
         <div>
           <button
-            className="z-50 bg-zinc-900 p-2 rounded-md text-white"
+            className="z-50 bg-secondary p-2 rounded-md text-secondary-foreground"
             onClick={toggleSidebar}
           >
             {!sidebarOpen ? <Menu /> : <XIcon />}
@@ -166,10 +166,10 @@ const BookingCharts = () => {
         {/* Header */}
         <Headerr />
 
-        <section className="bg-zinc-950 border mb-6 border-zinc-900 flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <section className="bg-card border mb-6 border-border flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div className="min-w-0">
-            <h1 className="text-xl text-white font-semibold">Booking Charts</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className="text-xl text-foreground font-semibold">Booking Charts</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
                 Revenue, bookings, and utilization across your VoltSpot network.
             </p>
           </div>
@@ -179,10 +179,10 @@ const BookingCharts = () => {
         {error ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
-              <p className="text-gray-400 mb-3">{error}</p>
+              <p className="text-muted-foreground mb-3">{error}</p>
               <button
                 onClick={fetchChartStats}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm rounded-xl"
+                className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm rounded-xl"
               >
                 Try again
               </button>
@@ -192,18 +192,18 @@ const BookingCharts = () => {
           <div className="space-y-4 md:space-y-6 animate-pulse">
             <div className="flex flex-wrap gap-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-24 flex-1 min-w-[220px] bg-zinc-900 rounded-2xl" />
+                <div key={i} className="h-24 flex-1 min-w-[220px] bg-muted rounded-2xl" />
               ))}
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="h-72 bg-zinc-900 rounded-2xl" />
-              <div className="h-72 bg-zinc-900 rounded-2xl" />
+              <div className="h-72 bg-muted rounded-2xl" />
+              <div className="h-72 bg-muted rounded-2xl" />
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="h-72 bg-zinc-900 rounded-2xl" />
-              <div className="h-72 bg-zinc-900 rounded-2xl" />
+              <div className="h-72 bg-muted rounded-2xl" />
+              <div className="h-72 bg-muted rounded-2xl" />
             </div>
-            <div className="h-64 bg-zinc-900 rounded-2xl" />
+            <div className="h-64 bg-muted rounded-2xl" />
           </div>
         ) : (
           <>
@@ -242,15 +242,15 @@ const BookingCharts = () => {
                   <AreaChart data={bookingsLast7Days}>
                     <defs>
                       <linearGradient id="bookingsFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#10b981" stopOpacity={0.5} />
-                        <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+                        <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.5} />
+                        <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid stroke="#27272a" strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="day" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
+                    <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Area type="monotone" dataKey="count" stroke="#10b981" strokeWidth={2} fill="url(#bookingsFill)" />
+                    <Area type="monotone" dataKey="count" stroke="var(--color-primary)" strokeWidth={2} fill="url(#bookingsFill)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </ChartCard>
@@ -258,9 +258,9 @@ const BookingCharts = () => {
               <ChartCard title="Revenue — last 7 days" subtitle="₹ collected">
                 <ResponsiveContainer width="100%" height={260}>
                   <LineChart data={revenueLast7Days}>
-                    <CartesianGrid stroke="#27272a" strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="day" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
+                    <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                     <Tooltip content={<CustomTooltip prefix="₹" />} />
                     <Line
                       type="monotone"
@@ -279,19 +279,19 @@ const BookingCharts = () => {
               <ChartCard title="Slot utilization by station" subtitle="% occupied this week">
                 <ResponsiveContainer width="100%" height={280}>
                   <BarChart data={slotUtilizationByStation} layout="vertical" margin={{ left: 20 }}>
-                    <CartesianGrid stroke="#27272a" strokeDasharray="3 3" horizontal={false} />
-                    <XAxis type="number" domain={[0, 100]} stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
+                    <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" horizontal={false} />
+                    <XAxis type="number" domain={[0, 100]} stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis
                       type="category"
                       dataKey="stationName"
-                      stroke="#71717a"
+                      stroke="var(--color-muted-foreground)"
                       fontSize={12}
                       tickLine={false}
                       axisLine={false}
                       width={110}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="utilizationPercent" fill="#10b981" radius={[0, 6, 6, 0]} barSize={18} />
+                    <Bar dataKey="utilizationPercent" fill="var(--color-primary)" radius={[0, 6, 6, 0]} barSize={18} />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartCard>
@@ -308,14 +308,14 @@ const BookingCharts = () => {
                       paddingAngle={3}
                     >
                       {vehicleMix.map((entry, i) => (
-                        <Cell key={i} fill={VEHICLE_COLORS[entry.vehicleType] || "#a1a1aa"} stroke="none" />
+                        <Cell key={i} fill={VEHICLE_COLORS[entry.vehicleType] || "var(--color-muted-foreground)"} stroke="none" />
                       ))}
                     </Pie>
                     <Tooltip content={<CustomTooltip />} />
                     <Legend
                       verticalAlign="bottom"
                       iconType="circle"
-                      formatter={(value) => <span className="text-gray-400 text-xs">{value}</span>}
+                      formatter={(value) => <span className="text-muted-foreground text-xs">{value}</span>}
                     />
                   </PieChart>
                 </ResponsiveContainer>
@@ -326,11 +326,11 @@ const BookingCharts = () => {
             <ChartCard title="Bookings — monthly trend" subtitle="Last 6 months">
               <ResponsiveContainer width="100%" height={240}>
                 <BarChart data={monthlyTrend}>
-                  <CartesianGrid stroke="#27272a" strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="month" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
+                  <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="month" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="bookings" fill="#10b981" radius={[6, 6, 0, 0]} barSize={28} />
+                  <Bar dataKey="bookings" fill="var(--color-primary)" radius={[6, 6, 0, 0]} barSize={28} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartCard>

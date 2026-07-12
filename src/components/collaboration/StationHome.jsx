@@ -25,16 +25,16 @@ const StationHome = () => {
   };
 
   return (
-    <div className="min-h-screen  font-[DM_Sans] overflow-hidden bg-black flex flex-col  md:flex-row">
+    <div className="min-h-screen  font-[DM_Sans] overflow-hidden bg-background flex flex-col  md:flex-row">
       {/* Mobile Sidebar Toggle */}
 
-      <header className=' flex z-40 w-full md:hidden  justify-between items-center px-4 py-3 bg-zinc-950'>
+      <header className=' flex z-40 w-full md:hidden  justify-between items-center px-4 py-3 bg-card'>
         <div>
-           <i className="fa-solid fa-bolt text-lg md:text-xl" style={{color: "#f0efef"}}></i><span className="text-lg md:text-2xl font-bold  text-white"><span className='text-green-600'>Volt</span>Spot</span>
+           <i className="fa-solid fa-bolt text-lg md:text-xl text-foreground"></i><span className="text-lg md:text-2xl font-bold  text-foreground"><span className='text-primary'>Volt</span>Spot</span>
         </div>
         <div>
           <button
-            className="z-50 bg-zinc-900 p-2 rounded-md text-white"
+            className="z-50 bg-secondary p-2 rounded-md text-secondary-foreground"
             onClick={toggleSidebar}
           >
             {!sidebarOpen ? (<Menu className=''/>):(<XIcon/>)}
@@ -66,10 +66,10 @@ const StationHome = () => {
         <Headerr />
 
         {/* Stats Cards */}
-        <section className=" bg-zinc-950 border mb-6 border-zinc-900 flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <section className=" bg-card border mb-6 border-border flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div className="min-w-0">
-            <h2 className="text-lg text-white font-semibold">Add a new station</h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <h2 className="text-lg text-foreground font-semibold">Add a new station</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
               Onboard a new charging point to your VoltSpot network in under a minute.
             </p>
           </div>

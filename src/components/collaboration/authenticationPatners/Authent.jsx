@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { FaSpinner } from "react-icons/fa";
 import { ArrowRight, Check, Eye, EyeOff, Zap, Building2 } from "lucide-react";
-import loginPatnerImg from '../../../assets/loginpatnerImg.jpeg'
+import loginPatnerImg from '../../../assets/pt2.jpg'
 import socket from "../../../Server/socket";
 import Footer from '../../common/Footer';
 

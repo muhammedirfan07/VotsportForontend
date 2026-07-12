@@ -1,4 +1,3 @@
-"use client"
 import { useState, useEffect } from "react"
 import landingImg from "../../assets/bgImg1.jpg"
 import { motion, AnimatePresence } from "framer-motion"
@@ -16,19 +15,38 @@ const Landing = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const stopLoading = () => {
-      setTimeout(() => setIsLoading(false), 3000)
+    let cancelled = false
+    const waitForReady = async () => {
+      if (document.fonts?.ready) {
+        try { await document.fonts.ready } catch (e) {}
+      }
+      await new Promise((resolve) => {
+        const img = new Image()
+        img.src = landingImg
+        if (img.complete) return resolve()
+        img.onload = resolve
+        img.onerror = resolve
+      })
+
+      if (!cancelled) setIsLoading(false)
     }
-    if (navigator.onLine) {
-      stopLoading()
-    } else {
-      setIsLoading(true)
-    }
+    const maxWait = setTimeout(() => {
+      if (!cancelled) setIsLoading(false)
+    }, 15000)
+    const minWait = new Promise((resolve) => setTimeout(resolve, 1200))
+
+    Promise.all([waitForReady(), minWait]).then(() => {
+      clearTimeout(maxWait)
+    })
+
     const handleOffline = () => setIsLoading(true)
-    const handleOnline = () => stopLoading()
+    const handleOnline = () => waitForReady()
     window.addEventListener("offline", handleOffline)
     window.addEventListener("online", handleOnline)
+
     return () => {
+      cancelled = true
+      clearTimeout(maxWait)
       window.removeEventListener("offline", handleOffline)
       window.removeEventListener("online", handleOnline)
     }
@@ -88,7 +106,6 @@ const Landing = () => {
                   onClick={GoToHomePage}
                   className="group relative inline-flex items-center gap-2 cursor-pointer overflow-hidden rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform duration-200 active:scale-[0.98]"
                 >
-                  {/* subtle sheen sweep on hover */}
                   <span className="absolute inset-0 -translate-x-full bg-white/15 transition-transform duration-500 ease-out group-hover:translate-x-full" />
 
                   <span className="relative z-10 flex items-center gap-2">

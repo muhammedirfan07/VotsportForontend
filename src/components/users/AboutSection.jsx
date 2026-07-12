@@ -27,7 +27,7 @@ function AboutSection() {
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -5 }}
             >
-              <div className="px-3 py-6 bg-card/80 backdrop-blur-sm border border-border text-center hover:bg-muted transition duration-300 delay-150 hover:-translate-y-1 hover:scale-105 ease-in-out rounded-2xl">
+              <div className="px-3 py-6 bg-card/80 backdrop-blur-sm border border-border text-center hover:bg-muted transition-[transform,background-color] duration-300 hover:-translate-y-1 hover:scale-105 ease-in-out rounded-2xl">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading">{stat.number}</h1>
                 <p className="text-muted-foreground text-sm md:text-md leading-7 mt-1">{stat.label}</p>
               </div>

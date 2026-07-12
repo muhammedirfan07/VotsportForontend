@@ -172,7 +172,7 @@ const Home = () => {
         >
           <nav
             className={cn(
-              "nav-pill flex items-center w-full justify-between px-2 md:px-4 py-2 md:pl-5 transition-[border-radius] duration-300 rounded-full"
+              "nav-pill flex items-center w-full justify-between px-4 md:px-6 py-2 md:pl-5 transition-[border-radius] duration-300 rounded-full"
             )}
           >
             {/* Logo */}

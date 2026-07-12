@@ -46,7 +46,7 @@ const HeroSection = () => {
 
         <button
           onClick={GoToHomePage}
-          className="font-display px-6 py-3 min-w-[150px] bg-primary text-primary-foreground rounded-md hover:opacity-90 transition mb-2"
+          className="font-display px-6 py-3 min-w-[150px] bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
         >
           {!tokenChecking ? "Search Now" : "Explore Now"}
         </button>

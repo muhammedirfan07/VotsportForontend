@@ -230,7 +230,7 @@ const AddStationpage = () => {
     <>
       <button
         onClick={openModal}
-        className=" inline-flex gap-2 shrink-0 items-center cursor-pointer justify-center px-5 py-3 rounded-2xl bg-gradient-to-b from-gray-900 to-zinc-900 hover:-translate-y-1 hover:scale-105 group duration-300 hover:text-amber-100 text-amber-50 text-sm  md:text-base"
+        className=" inline-flex gap-2 shrink-0 items-center cursor-pointer justify-center px-5 py-3 rounded-2xl bg-secondary hover:-translate-y-1 hover:scale-105 group duration-300 hover:text-foreground text-secondary-foreground text-sm  md:text-base"
       >
         <Plus className="h-4 w-4 transition-transform group-hover:rotate-180  duration-300" />
         Add Station
@@ -239,15 +239,15 @@ const AddStationpage = () => {
       {/* Modal Backdrop */}
       {isOpen && (
         <div className="fixed font-[DM_Sans] inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl lg:max-w-4xl mx-auto flex flex-col max-h-[95dvh] sm:max-h-[90vh]">
+          <div className="bg-card border border-border rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl lg:max-w-4xl mx-auto flex flex-col max-h-[95dvh] sm:max-h-[90vh]">
 
             {/* Header */}
-            <div className="border-b border-zinc-800 px-4 py-3 md:px-6 md:py-4 flex-shrink-0">
+            <div className="border-b border-border px-4 py-3 md:px-6 md:py-4 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <h3 className="text-base md:text-lg font-semibold text-zinc-100">Add Station</h3>
+                <h3 className="text-base md:text-lg font-semibold text-foreground">Add Station</h3>
                 <button
                   onClick={closeModal}
-                  className="text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors p-1.5 rounded-lg"
+                  className="text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors p-1.5 rounded-lg"
                 >
                   <X className="h-4 w-4 md:h-5 md:w-5" />
                 </button>
@@ -262,7 +262,7 @@ const AddStationpage = () => {
                 <div className="w-full md:w-1/3 flex-shrink-0">
                   <label className="block cursor-pointer group">
                     <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
-                    <div className="relative rounded-xl overflow-hidden bg-zinc-950 border border-dashed border-zinc-700 group-hover:border-zinc-500 transition-colors">
+                    <div className="relative rounded-xl overflow-hidden bg-background border border-dashed border-border group-hover:border-zinc-soft transition-colors">
                       {previewUrl ? (
                         <img
                           src={previewUrl || "/placeholder.svg"}
@@ -270,15 +270,15 @@ const AddStationpage = () => {
                           className="w-full h-44 sm:h-52 md:h-72 lg:h-80 object-cover"
                         />
                       ) : (
-                        <div className="w-full h-44 sm:h-52 md:h-72 lg:h-80 flex flex-col items-center justify-center text-zinc-600 group-hover:text-zinc-400 transition-colors">
+                        <div className="w-full h-44 sm:h-52 md:h-72 lg:h-80 flex flex-col items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors">
                           <Upload className="w-6 h-6 mb-2" />
-                          <span className="text-sm text-zinc-500">Click to upload image</span>
-                          <span className="text-xs text-zinc-600 mt-1">PNG, JPG up to 10MB</span>
+                          <span className="text-sm text-muted-foreground">Click to upload image</span>
+                          <span className="text-xs text-muted-foreground/70 mt-1">PNG, JPG up to 10MB</span>
                         </div>
                       )}
                       {previewUrl && (
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="text-zinc-200 text-sm">Change image</span>
+                          <span className="text-foreground text-sm">Change image</span>
                         </div>
                       )}
                     </div>
@@ -294,7 +294,7 @@ const AddStationpage = () => {
                         stationName: e.target.value,
                       })
                     }
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors"
                     type="text"
                     placeholder="Station name"
                     value={addStationDetails.stationName}
@@ -307,13 +307,13 @@ const AddStationpage = () => {
                         ...addStationDetails,
                         latitude: e.target.value,
                       })
-                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Latitude" value={addStationDetails.latitude} />
+                    } className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" type="text" placeholder="Latitude" value={addStationDetails.latitude} />
                     <input onChange={(e) =>
                       setAddStationDetails({
                         ...addStationDetails,
                         longitude: e.target.value,
                       })
-                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="Longitude" value={addStationDetails.longitude} />
+                    } className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" type="text" placeholder="Longitude" value={addStationDetails.longitude} />
                   </div>
 
                   {/* City / State */}
@@ -323,13 +323,13 @@ const AddStationpage = () => {
                         ...addStationDetails,
                         city: e.target.value,
                       })
-                    } type="text" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" placeholder="City" value={addStationDetails.city} />
+                    } type="text" className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" placeholder="City" value={addStationDetails.city} />
                     <input onChange={(e) =>
                       setAddStationDetails({
                         ...addStationDetails,
                         state: e.target.value,
                       })
-                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="text" placeholder="State" value={addStationDetails.state} />
+                    } className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" type="text" placeholder="State" value={addStationDetails.state} />
                   </div>
 
                   {/* Vehicle / Charging Type */}
@@ -339,22 +339,22 @@ const AddStationpage = () => {
                         ...addStationDetails,
                         vehicleType: e.target.value,
                       })
-                    } value={addStationDetails.vehicleType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
-                      <option value="" className="bg-zinc-900">Select vehicle type</option>
-                      <option value="2-wheeler" className="bg-zinc-900">2-wheeler</option>
-                      <option value="3-wheeler" className="bg-zinc-900">3-wheeler</option>
-                      <option value="4-wheeler" className="bg-zinc-900">4-wheeler</option>
+                    } value={addStationDetails.vehicleType} className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors">
+                      <option value="" className="bg-card">Select vehicle type</option>
+                      <option value="2-wheeler" className="bg-card">2-wheeler</option>
+                      <option value="3-wheeler" className="bg-card">3-wheeler</option>
+                      <option value="4-wheeler" className="bg-card">4-wheeler</option>
                     </select>
                     <select onChange={(e) =>
                       setAddStationDetails({
                         ...addStationDetails,
                         chargingType: e.target.value,
                       })
-                    } value={addStationDetails.chargingType} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors">
-                      <option value="" className="bg-zinc-900">Select charging type</option>
-                      <option value="slow" className="bg-zinc-900">Slow</option>
-                      <option value="fast" className="bg-zinc-900">Fast</option>
-                      <option value="superfast" className="bg-zinc-900">Superfast</option>
+                    } value={addStationDetails.chargingType} className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors">
+                      <option value="" className="bg-card">Select charging type</option>
+                      <option value="slow" className="bg-card">Slow</option>
+                      <option value="fast" className="bg-card">Fast</option>
+                      <option value="superfast" className="bg-card">Superfast</option>
                     </select>
                   </div>
 
@@ -363,7 +363,7 @@ const AddStationpage = () => {
                       ...addStationDetails,
                       mapUrl: e.target.value,
                     })
-                  } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="url" placeholder="Map URL" value={addStationDetails.mapUrl} />
+                  } className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" type="url" placeholder="Map URL" value={addStationDetails.mapUrl} />
 
                   {/* Slots / Price */}
                   <div className="grid grid-cols-2 gap-2.5">
@@ -372,13 +372,13 @@ const AddStationpage = () => {
                         ...addStationDetails,
                         availableSlots: e.target.value,
                       })
-                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Active slots" value={addStationDetails.availableSlots} />
+                    } className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" type="number" placeholder="Active slots" value={addStationDetails.availableSlots} />
                     <input onChange={(e) =>
                       setAddStationDetails({
                         ...addStationDetails,
                         pricePerHour: e.target.value,
                       })
-                    } className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 md:py-2.5 text-zinc-100 placeholder-zinc-500 text-sm focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors" type="number" placeholder="Price/hr" value={addStationDetails.pricePerHour} />
+                    } className="w-full bg-background border border-border rounded-lg px-3 py-2 md:py-2.5 text-foreground placeholder-muted-foreground text-sm focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none transition-colors" type="number" placeholder="Price/hr" value={addStationDetails.pricePerHour} />
                   </div>
 
                 </div>
@@ -386,17 +386,17 @@ const AddStationpage = () => {
             </div>
 
             {/* Footer */}
-            <div className="border-t border-zinc-800 px-4 py-3 md:px-6 md:py-4 flex justify-end gap-3 flex-shrink-0">
+            <div className="border-t border-border px-4 py-3 md:px-6 md:py-4 flex justify-end gap-3 flex-shrink-0">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-100 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-600"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground bg-secondary hover:bg-secondary/80 border border-border transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 Cancel
               </button>
               <button
                 onClick={stationDetailHandler}
                 disabled={isSubmitting}
-                className={`px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-900 hover:from-green-900 hover:to-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-700 ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-ring ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
               >
                 {isSubmitting ? "Adding..." : "Add Station"}
               </button>

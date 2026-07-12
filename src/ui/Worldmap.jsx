@@ -74,7 +74,8 @@ export function WorldMap({ dots = [] }) {
                 stroke="url(#path-gradient)"
                 strokeWidth="1"
                 initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
                 transition={{ duration: 1, delay: 0.5 * i, ease: "easeOut" }}
               />
             </g>

@@ -48,7 +48,7 @@ const FeaturesSection = () => {
             return (
               <div
                 key={i}
-                className="rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+                className="rounded-2xl border border-border bg-card p-6 transition-[transform,box-shadow] duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
               >
                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-6">
                   <Icon className="w-6 h-6 text-primary" strokeWidth={2} />

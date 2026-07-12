@@ -38,11 +38,11 @@ import { format } from "timeago.js";
 function DetailField({ icon: Icon, label, value }) {
   return (
     <div className="min-w-0">
-      <p className="text-[11px] tracking-wider text-zinc-500 uppercase mb-1.5 flex items-center gap-1.5">
+      <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1.5 flex items-center gap-1.5">
         <Icon size={13} /> {label}
       </p>
-      <div className="bg-zinc-900 border border-zinc-800 rounded-lg px-3.5 py-2.5">
-        <p className="text-sm text-zinc-200 truncate">{value || "—"}</p>
+      <div className="bg-input border border-border rounded-lg px-3.5 py-2.5">
+        <p className="text-sm text-foreground truncate">{value || "—"}</p>
       </div>
     </div>
   );
@@ -52,7 +52,6 @@ const PartnerProfile = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [partnerData, setPartnerData] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ StationName: "", address: "" });
@@ -125,18 +124,18 @@ const PartnerProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black overflow-hidden flex flex-col md:flex-row">
+    <div className="min-h-screen bg-background overflow-hidden flex flex-col md:flex-row">
       {/* Mobile Sidebar Toggle */}
-      <header className="flex z-0 w-full md:hidden justify-between border border-b-zinc-900 items-center px-4 py-3 bg-zinc-950">
+      <header className="flex z-0 w-full md:hidden justify-between border border-b-border items-center px-4 py-3 bg-card">
         <div className="flex items-center gap-1">
-          <i className="fa-solid fa-bolt text-lg md:text-xl" style={{ color: "#f0efef" }}></i>
-          <span className="text-lg md:text-2xl font-bold text-white">
-            <span className="text-green-600">Volt</span>Spot
+          <i className="fa-solid fa-bolt text-lg md:text-xl text-foreground"></i>
+          <span className="text-lg md:text-2xl font-bold text-foreground">
+            <span className="text-primary">Volt</span>Spot
           </span>
         </div>
         <div>
           <button
-            className="z-50 bg-zinc-900 p-2 rounded-md text-white"
+            className="z-50 bg-secondary p-2 rounded-md text-secondary-foreground"
             onClick={toggleSidebar}
           >
             {!sidebarOpen ? <Menu /> : <XIcon />}
@@ -167,16 +166,16 @@ const PartnerProfile = () => {
         {/* Header */}
         <Headerr />
 
-        <section className="bg-zinc-950 border mb-6 border-zinc-900 flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <section className="bg-card border mb-6 border-border flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div className="min-w-0">
-            <h1 className="text-xl text-white font-semibold">Partner Profile</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className="text-xl text-foreground font-semibold">Partner Profile</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
               Your account identity and contact details.
             </p>
           </div>
           <button
             onClick={openEditModal}
-            className="flex items-center justify-center gap-1.5 text-xs font-medium text-zinc-300 hover:text-white bg-zinc-900 border border-zinc-800 hover:border-zinc-700 px-3.5 py-2 rounded-full shrink-0 self-start sm:self-auto"
+            className="flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-secondary border border-border hover:border-zinc-soft px-3.5 py-2 rounded-full shrink-0 self-start sm:self-auto"
           >
             <Pencil size={12} /> Edit profile
           </button>
@@ -187,25 +186,25 @@ const PartnerProfile = () => {
           {loading ? (
             <>
               {/* Profile card skeleton */}
-              <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 sm:p-6 animate-pulse">
+              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 animate-pulse">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-zinc-900 shrink-0" />
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-muted shrink-0" />
                   <div className="min-w-0 flex-1 space-y-2.5">
-                    <div className="h-5 w-1/2 bg-zinc-900 rounded" />
-                    <div className="h-3.5 w-1/3 bg-zinc-900 rounded" />
-                    <div className="h-3.5 w-2/3 bg-zinc-900 rounded" />
+                    <div className="h-5 w-1/2 bg-muted rounded" />
+                    <div className="h-3.5 w-1/3 bg-muted rounded" />
+                    <div className="h-3.5 w-2/3 bg-muted rounded" />
                   </div>
                 </div>
               </div>
 
               {/* Account details skeleton */}
-              <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 sm:p-6 animate-pulse">
-                <div className="h-4 w-40 bg-zinc-900 rounded mb-5" />
+              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 animate-pulse">
+                <div className="h-4 w-40 bg-muted rounded mb-5" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                   {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="space-y-1.5">
-                      <div className="h-3 w-24 bg-zinc-900 rounded" />
-                      <div className="h-9 w-full bg-zinc-900 rounded-lg" />
+                      <div className="h-3 w-24 bg-muted rounded" />
+                      <div className="h-9 w-full bg-muted rounded-lg" />
                     </div>
                   ))}
                 </div>
@@ -214,9 +213,9 @@ const PartnerProfile = () => {
               {/* Stats skeleton */}
               <div className="grid grid-cols-3 gap-3 md:gap-4 animate-pulse">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-zinc-950 border border-zinc-900 rounded-xl p-4 space-y-2">
-                    <div className="h-3 w-16 bg-zinc-900 rounded" />
-                    <div className="h-6 w-10 bg-zinc-900 rounded" />
+                  <div key={i} className="bg-card border border-border rounded-xl p-4 space-y-2">
+                    <div className="h-3 w-16 bg-muted rounded" />
+                    <div className="h-6 w-10 bg-muted rounded" />
                   </div>
                 ))}
               </div>
@@ -224,22 +223,22 @@ const PartnerProfile = () => {
           ) : (
             <>
               {/* Profile card */}
-              <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 sm:p-6">
+              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-900/60 border border-emerald-800/50 flex items-center justify-center font-semibold text-emerald-400 text-base sm:text-lg shrink-0">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center font-semibold text-primary text-base sm:text-lg shrink-0">
                       {initials}
                     </div>
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2.5 flex-wrap">
-                        <h2 className="text-lg sm:text-xl font-semibold text-zinc-100 truncate">
+                        <h2 className="text-lg sm:text-xl font-semibold text-foreground truncate">
                           {partner?.StationName || "Add your business name"}
                         </h2>
                         <span
                           className={`flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full shrink-0 ${
                             partner?.isVerified
-                              ? "bg-emerald-500/10 text-emerald-400"
+                              ? "bg-primary/10 text-primary"
                               : "bg-amber-500/10 text-amber-400"
                           }`}
                         >
@@ -247,8 +246,8 @@ const PartnerProfile = () => {
                           {partner?.isVerified ? "Verified partner" : "Pending verification"}
                         </span>
                       </div>
-                      <p className="text-sm text-zinc-400 mt-0.5 truncate">{partner?.email}</p>
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-[13px] text-zinc-500">
+                      <p className="text-sm text-muted-foreground mt-0.5 truncate">{partner?.email}</p>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-[13px] text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <MapPin size={14} /> {partner?.address || "—"}
                         </span>
@@ -259,7 +258,7 @@ const PartnerProfile = () => {
                           <Star size={14} className="fill-amber-400" />
                           {stats.rating || 0} rating
                           {stats.ratingCount > 0 && (
-                            <span className="text-zinc-500">({stats.ratingCount})</span>
+                            <span className="text-muted-foreground">({stats.ratingCount})</span>
                           )}
                         </span>
                       </div>
@@ -269,8 +268,8 @@ const PartnerProfile = () => {
               </div>
 
               {/* Account details */}
-              <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 sm:p-6">
-                <h3 className="text-base font-medium text-zinc-100 mb-5">Account details</h3>
+              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6">
+                <h3 className="text-base font-medium text-foreground mb-5">Account details</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                   <DetailField icon={Store} label="Business name" value={partner?.StationName} />
@@ -282,17 +281,17 @@ const PartnerProfile = () => {
 
               {/* Stats row */}
               <div className="grid grid-cols-3 gap-3 md:gap-4">
-                <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-                  <p className="text-[11px] tracking-wider text-zinc-500 uppercase mb-1.5">Stations</p>
-                  <p className="text-xl font-semibold text-zinc-100">{stats.stations}</p>
+                <div className="bg-card border border-border rounded-xl p-4">
+                  <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1.5">Stations</p>
+                  <p className="text-xl font-semibold text-foreground">{stats.stations}</p>
                 </div>
-                <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-                  <p className="text-[11px] tracking-wider text-zinc-500 uppercase mb-1.5">Bookings</p>
-                  <p className="text-xl font-semibold text-zinc-100">{stats.bookings}</p>
+                <div className="bg-card border border-border rounded-xl p-4">
+                  <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1.5">Bookings</p>
+                  <p className="text-xl font-semibold text-foreground">{stats.bookings}</p>
                 </div>
-                <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4">
-                  <p className="text-[11px] tracking-wider text-zinc-500 uppercase mb-1.5">Rating</p>
-                  <p className="text-xl font-semibold text-zinc-100">{stats.rating || "—"}</p>
+                <div className="bg-card border border-border rounded-xl p-4">
+                  <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1.5">Rating</p>
+                  <p className="text-xl font-semibold text-foreground">{stats.rating || "—"}</p>
                 </div>
               </div>
             </>
@@ -303,12 +302,12 @@ const PartnerProfile = () => {
       {/* Edit profile modal — bottom sheet on mobile, centered dialog on desktop */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm">
-          <div className="bg-zinc-950 border border-zinc-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-card border border-border w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-white font-semibold text-base">Edit profile</h3>
+              <h3 className="text-foreground font-semibold text-base">Edit profile</h3>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-zinc-500 hover:text-white p-1 -m-1"
+                className="text-muted-foreground hover:text-foreground p-1 -m-1"
               >
                 <X size={18} />
               </button>
@@ -316,26 +315,26 @@ const PartnerProfile = () => {
 
             <div className="space-y-4">
               <div>
-                <label className="text-[11px] tracking-wider text-zinc-500 uppercase mb-1.5 block">
+                <label className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1.5 block">
                   Business name
                 </label>
                 <input
                   type="text"
                   value={form.StationName}
                   onChange={(e) => setForm({ ...form, StationName: e.target.value })}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3.5 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-600"
+                  className="w-full bg-input border border-border rounded-lg px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:border-ring"
                   placeholder="e.g. VoltSpot Kannur"
                 />
               </div>
               <div>
-                <label className="text-[11px] tracking-wider text-zinc-500 uppercase mb-1.5 block">
+                <label className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1.5 block">
                   Address
                 </label>
                 <input
                   type="text"
                   value={form.address}
                   onChange={(e) => setForm({ ...form, address: e.target.value })}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3.5 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-600"
+                  className="w-full bg-input border border-border rounded-lg px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:border-ring"
                   placeholder="e.g. Thavakkara, Kannur"
                 />
               </div>
@@ -345,14 +344,14 @@ const PartnerProfile = () => {
               <button
                 onClick={() => setShowModal(false)}
                 disabled={saving}
-                className="flex-1 py-2.5 rounded-xl border border-zinc-800 text-zinc-300 text-sm font-medium hover:bg-zinc-900 disabled:opacity-60"
+                className="flex-1 py-2.5 rounded-xl border border-border text-muted-foreground text-sm font-medium hover:bg-secondary disabled:opacity-60"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveProfile}
                 disabled={saving}
-                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold disabled:opacity-60 flex items-center justify-center gap-2"
+                className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {saving && <Loader2 size={14} className="animate-spin" />}
                 {saving ? "Saving..." : "Save changes"}
