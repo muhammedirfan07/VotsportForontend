@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import stationHero from "../../assets/charging.jpg";
+import stationHero from "../../assets/net.jpg";
 import stationDetail from "../../assets/charging.jpg"
 import SubNavbar from "./SubNavbar";
 import Footer from "../common/Footer";
