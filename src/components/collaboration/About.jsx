@@ -13,20 +13,20 @@ const RAIL = [
   { id: "team", label: "Team" },
 ];
 
- function About() {
+function About() {
   useEffect(() => {
     document.title = "About — VoltSpot EV Charging";
   }, []);
 
   return (
     <div className="relative">
-       <SubNavbar/>
+      <SubNavbar />
       {/* INTRO */}
       <section
         id="intro"
         className="relative min-h-[90vh] overflow-hidden flex items-end"
       >
-          <div className="absolute inset-0 grid-lines pointer-events-none" />
+        <div className="absolute inset-0 grid-lines pointer-events-none" />
 
         <div className="absolute inset-0 grid-lines opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -254,8 +254,9 @@ const RAIL = [
       </section>
 
       {/* TEAM */}
-      <section id="team" className="border-t border-border bg-card/30">
-        <div className="mx-auto max-w-[1600px] px-6 lg:px-10 py-28 grid lg:grid-cols-12 gap-12">
+      <section id="team" className="border-t border-border  bg-card/30">
+        <div
+          className="mx-auto max-w-[1600px] px-6 lg:px-10 py-28 grid lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4 text-mono text-muted-foreground">
             <div className="flex items-center gap-3 text-primary">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -271,7 +272,11 @@ const RAIL = [
             </h2>
 
             <div className="mt-12 max-w-sm">
-              <div className="group rounded-2xl border border-border bg-background p-6 hover:border-primary/60 transition-colors">
+              <a
+                href="https://muhammed-irfan.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-2xl border cursor-pointer border-border bg-background p-6 hover:border-primary/60 transition-colors block">
                 <div className="aspect-[4/5] rounded-xl bg-gradient-to-br from-secondary via-zinc to-background border border-border relative overflow-hidden">
                   <div className="absolute inset-0 grid-lines opacity-40" />
                   <div className="absolute bottom-3 left-3 text-mono text-primary">
@@ -284,12 +289,12 @@ const RAIL = [
                     Founder & Full-stack Developer
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>
       </section>
-     <Footer />
+      <Footer />
     </div>
   );
 }

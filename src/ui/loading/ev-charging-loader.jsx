@@ -35,8 +35,8 @@ export default function EVChargingLoader() {
   }, []) 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black z-[9999]">
-      <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-background z-[9999]">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-white p-4">
         <motion.div
           className="relative w-32 h-32 md:w-48 md:h-48 rounded-full flex items-center justify-center"
           initial={{ scale: 0 }} 

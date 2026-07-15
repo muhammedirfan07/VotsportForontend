@@ -118,8 +118,8 @@ function Networks() {
       <section className="border-y border-border bg-card/40">
         <div className="mx-auto max-w-[1600px] px-6 lg:px-10 py-14 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { k: "860", l: "Stations live" },
-            { k: "22", l: "Cities served" },
+            { k: "12", l: "Stations live" },
+            { k: "5", l: "Cities served" },
             { k: "99.6%", l: "Uptime SLA" },
             { k: "240 kW", l: "Peak per stall" },
           ].map((s) => (
